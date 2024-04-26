@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="b391378c-f42e-4807-8149-fc71b596ea16" name="Changes" comment="PO2" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="PUSH_AUTO_UPDATE" value="true" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 7
+}</component>
+  <component name="ProjectId" id="2eg5WM5inAYjWZouVP6GUxwPGbt" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.HannaBarbera.executor&quot;: &quot;Run&quot;,
+    &quot;Application.MyThread.executor&quot;: &quot;Run&quot;,
+    &quot;Application.Threads.executor&quot;: &quot;Run&quot;,
+    &quot;Downloaded.Files.Path.Enabled&quot;: &quot;false&quot;,
+    &quot;Repository.Attach.Annotations&quot;: &quot;false&quot;,
+    &quot;Repository.Attach.JavaDocs&quot;: &quot;false&quot;,
+    &quot;Repository.Attach.Sources&quot;: &quot;false&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Paolo/Desktop/Università/PO2/Coding/PO2-2023-24&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  }
+}</component>
+  <component name="RunManager" selected="Application.MyThread">
+    <configuration name="HannaBarbera" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="Esercizi_Eserciziario.Es12.HannaBarbera" />
+      <module name="PO2-2023-24" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="Esercizi_Eserciziario.Es12.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="MyThread" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="Tutorato.Lezione_3.MyThread" />
+      <module name="PO2-2023-24" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="Tutorato.Lezione_3.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Threads" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="Concurrent.Threads" />
+      <module name="PO2-2023-24" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="Concurrent.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.MyThread" />
+        <item itemvalue="Application.HannaBarbera" />
+        <item itemvalue="Application.Threads" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9f38398b9061-18abd8497189-intellij.indexing.shared.core-IU-241.14494.240" />
+        <option value="bundled-js-predefined-1d06a55b98c1-74d2a5396914-JavaScript-IU-241.14494.240" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="b391378c-f42e-4807-8149-fc71b596ea16" name="Changes" comment="" />
+      <created>1712313413219</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1712313413219</updated>
+      <workItem from="1712313414193" duration="730000" />
+      <workItem from="1712385534926" duration="61000" />
+      <workItem from="1712385623505" duration="785000" />
+      <workItem from="1712644307564" duration="5840000" />
+      <workItem from="1712756466784" duration="3456000" />
+      <workItem from="1712819704690" duration="2207000" />
+      <workItem from="1712824146423" duration="4532000" />
+      <workItem from="1712844424400" duration="1065000" />
+      <workItem from="1712923677115" duration="5025000" />
+      <workItem from="1713016303917" duration="2208000" />
+      <workItem from="1713073030122" duration="147000" />
+      <workItem from="1713073351011" duration="135000" />
+      <workItem from="1713073508135" duration="42000" />
+      <workItem from="1713249176378" duration="55000" />
+      <workItem from="1713249257105" duration="2574000" />
+      <workItem from="1713349767800" duration="4409000" />
+      <workItem from="1713354769753" duration="2225000" />
+      <workItem from="1713361095591" duration="5407000" />
+      <workItem from="1713428410439" duration="6629000" />
+      <workItem from="1713447159609" duration="5335000" />
+      <workItem from="1713686960705" duration="438000" />
+      <workItem from="1713689939553" duration="2809000" />
+      <workItem from="1713857065126" duration="279000" />
+      <workItem from="1713862234133" duration="694000" />
+      <workItem from="1713882470038" duration="5609000" />
+      <workItem from="1713965804678" duration="115000" />
+      <workItem from="1713965951912" duration="4887000" />
+      <workItem from="1714037068306" duration="2716000" />
+      <workItem from="1714050390648" duration="1891000" />
+      <workItem from="1714114345968" duration="744000" />
+    </task>
+    <task id="LOCAL-00001" summary="PO2 coding">
+      <option name="closed" value="true" />
+      <created>1712385801729</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1712385801729</updated>
+    </task>
+    <task id="LOCAL-00002" summary="PO2 coding">
+      <option name="closed" value="true" />
+      <created>1712821573837</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1712821573837</updated>
+    </task>
+    <task id="LOCAL-00003" summary="PO2 coding">
+      <option name="closed" value="true" />
+      <created>1712928713678</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1712928713678</updated>
+    </task>
+    <task id="LOCAL-00004" summary="PO2 coding">
+      <option name="closed" value="true" />
+      <created>1713254968730</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1713254968730</updated>
+    </task>
+    <task id="LOCAL-00005" summary="PO2">
+      <option name="closed" value="true" />
+      <created>1713862918375</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1713862918375</updated>
+    </task>
+    <task id="LOCAL-00006" summary="PO2">
+      <option name="closed" value="true" />
+      <created>1713887932629</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1713887932629</updated>
+    </task>
+    <task id="LOCAL-00007" summary="PO2">
+      <option name="closed" value="true" />
+      <created>1713888115122</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1713888115122</updated>
+    </task>
+    <task id="LOCAL-00008" summary="PO2">
+      <option name="closed" value="true" />
+      <created>1714039660407</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1714039660407</updated>
+    </task>
+    <task id="LOCAL-00009" summary="PO2">
+      <option name="closed" value="true" />
+      <created>1714052246745</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1714052246745</updated>
+    </task>
+    <task id="LOCAL-00010" summary="PO2">
+      <option name="closed" value="true" />
+      <created>1714114455860</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1714114455860</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="PO2 coding" />
+    <MESSAGE value="PO2" />
+    <option name="LAST_COMMIT_MESSAGE" value="PO2" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/Esercizi_Eserciziario/Es12/HannaBarbera.java</url>
+          <line>65</line>
+          <option name="timeStamp" value="4" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/Esercizi_Eserciziario/Es12/HannaBarbera.java</url>
+          <line>68</line>
+          <option name="timeStamp" value="5" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/Esercizi_Eserciziario/Es12/HannaBarbera.java</url>
+          <line>46</line>
+          <option name="timeStamp" value="6" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/Esercizi_Eserciziario/Es12/HannaBarbera.java</url>
+          <line>50</line>
+          <option name="timeStamp" value="8" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/Esercizi_Eserciziario/Es12/HannaBarbera.java</url>
+          <line>57</line>
+          <option name="timeStamp" value="9" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/Esercizi_Eserciziario/Es12/HannaBarbera.java</url>
+          <line>73</line>
+          <option name="timeStamp" value="10" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+</project>
