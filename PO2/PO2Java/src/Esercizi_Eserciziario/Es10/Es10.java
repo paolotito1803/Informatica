@@ -1,6 +1,6 @@
 package Esercizi_Eserciziario.Es10;
 
-import TinyJDK.ArrayList;
+import java.util.ArrayList;
 
 import java.util.Iterator;
 

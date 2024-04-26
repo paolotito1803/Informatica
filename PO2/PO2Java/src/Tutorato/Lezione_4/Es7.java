@@ -60,7 +60,7 @@ public class Es7 {
 
         int len;
 
-        public Random random(int len){
+        public RandomIterator(int len){
             this.len = len;
         }
 
@@ -71,7 +71,7 @@ public class Es7 {
 
         @Override
         public Integer next(){
-            .len--;
+            len--;
             return RandomSingleton.nextInt();
         }
 

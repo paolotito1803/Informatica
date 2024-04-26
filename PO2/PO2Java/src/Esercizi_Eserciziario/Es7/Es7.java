@@ -1,7 +1,7 @@
 package Esercizi_Eserciziario.Es7;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+/*import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;*/
 
 
 import java.util.Iterator;
@@ -11,10 +11,10 @@ public class Es7 {
     public static class RandomSingleton{
         private RandomSingleton() {
         }
-        @Nullable
+        //@Nullable
         private static Random instance;
 
-        @NotNull
+        //@NotNull
         private static Random instance() {
             if (instance == null)
                 instance = new Random();

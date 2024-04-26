@@ -51,7 +51,6 @@ public class Es5 {
                 }
             };
         }
-
         public static void main(String[] args) {
             Random rnd = new Random();
             Collection<Integer> c = new ArrayList<>();
@@ -59,12 +58,12 @@ public class Es5 {
             for(int i = 0; i < size; i++)
                 c.add(Math.abs(rnd.nextInt() % 1000));
             System.out.println(String.format("lista di cateti (size = %d):\n%s", c.size(), c));
-            Iterator<Pair<Integer, Integer>> cateti = pairIterator(c.iterator());
-            Iterator<Double> ipotenuse = mapIterator(cateti, (Pair<Integer, Integer> p) ->
+            //Iterator<Pair<Integer, Integer>> cateti = pairIterator(c.iterator());
+            /*Iterator<Double> ipotenuse = mapIterator(cateti, (Pair<Integer, Integer> p) ->
                     Math.sqrt(Math.pow(p.first, 2) + Math.pow(p.second, 2)));
             for (int cnt = 1; ipotenuse.hasNext(); ++cnt) {
                 System.out.println(String.format("ipotenusa #%d: %g", cnt, ipotenuse.next()));
-            }
+            }*/
         }
     }
 }
