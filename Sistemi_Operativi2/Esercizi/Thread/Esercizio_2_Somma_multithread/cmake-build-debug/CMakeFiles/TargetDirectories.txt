@@ -1,0 +1,3 @@
+/mnt/c/Users/Paolo/Desktop/Università/Sistemi Operativi/Esercizi/Thread/Esercizio_2_Somma_multithread/cmake-build-debug/CMakeFiles/Esercizio_2_Somma_multithread.dir
+/mnt/c/Users/Paolo/Desktop/Università/Sistemi Operativi/Esercizi/Thread/Esercizio_2_Somma_multithread/cmake-build-debug/CMakeFiles/edit_cache.dir
+/mnt/c/Users/Paolo/Desktop/Università/Sistemi Operativi/Esercizi/Thread/Esercizio_2_Somma_multithread/cmake-build-debug/CMakeFiles/rebuild_cache.dir

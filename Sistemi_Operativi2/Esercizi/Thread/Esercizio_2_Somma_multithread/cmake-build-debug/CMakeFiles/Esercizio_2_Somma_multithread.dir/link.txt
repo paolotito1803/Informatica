@@ -1,0 +1,1 @@
+/usr/bin/c++ -g CMakeFiles/Esercizio_2_Somma_multithread.dir/Somma_multithread.cpp.o -o Esercizio_2_Somma_multithread 

@@ -1,0 +1,3 @@
+/mnt/c/Users/Paolo/Desktop/Università/PO2/Coding/POCPP/cmake-build-debug/CMakeFiles/POCPP.dir
+/mnt/c/Users/Paolo/Desktop/Università/PO2/Coding/POCPP/cmake-build-debug/CMakeFiles/edit_cache.dir
+/mnt/c/Users/Paolo/Desktop/Università/PO2/Coding/POCPP/cmake-build-debug/CMakeFiles/rebuild_cache.dir

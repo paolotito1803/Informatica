@@ -1,0 +1,1 @@
+/usr/bin/c++ -g CMakeFiles/Esercizio_3_interferenze.dir/interferenze.cpp.o -o Esercizio_3_interferenze 

@@ -1,0 +1,1 @@
+/usr/bin/c++ -g CMakeFiles/Esercizio_1.dir/Esercizio_1.cpp.o -o Esercizio_1 

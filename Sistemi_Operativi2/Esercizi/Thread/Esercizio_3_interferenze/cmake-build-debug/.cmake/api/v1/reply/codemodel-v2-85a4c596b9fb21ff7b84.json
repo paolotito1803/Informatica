@@ -1,0 +1,60 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"jsonFile" : "directory-.-Debug-f5ebdc15457944623624.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.22"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "Esercizio_3_interferenze",
+					"targetIndexes" : 
+					[
+						0
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "Esercizio_3_interferenze::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-Esercizio_3_interferenze-Debug-c4d888996e6b7b07d4fb.json",
+					"name" : "Esercizio_3_interferenze",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "/mnt/c/Users/Paolo/Desktop/Universit\u00e0/Sistemi Operativi/Esercizi/Thread/Esercizio_3_interferenze/cmake-build-debug",
+		"source" : "/mnt/c/Users/Paolo/Desktop/Universit\u00e0/Sistemi Operativi/Esercizi/Thread/Esercizio_3_interferenze"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 3
+	}
+}

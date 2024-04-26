@@ -1,0 +1,3 @@
+/mnt/c/Users/Paolo/Desktop/Università/Sistemi Operativi/Esercizi/Thread/Esercizio_3_interferenze/cmake-build-debug/CMakeFiles/Esercizio_3_interferenze.dir
+/mnt/c/Users/Paolo/Desktop/Università/Sistemi Operativi/Esercizi/Thread/Esercizio_3_interferenze/cmake-build-debug/CMakeFiles/edit_cache.dir
+/mnt/c/Users/Paolo/Desktop/Università/Sistemi Operativi/Esercizi/Thread/Esercizio_3_interferenze/cmake-build-debug/CMakeFiles/rebuild_cache.dir
