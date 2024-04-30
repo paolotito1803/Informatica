@@ -19,7 +19,7 @@ public:
     }
 };
 
-class dog : public animal { //modo di ereditare
+class dog : public animal { //modo di ereditare una classe
 
 };
 
