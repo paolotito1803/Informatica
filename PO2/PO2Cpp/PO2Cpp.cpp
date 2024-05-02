@@ -5,8 +5,10 @@ class animal {
 protected:
     int weight;
     double speed;
+
 public:
     animal() : weight(0), speed(0.0){} //defualt constructor di animal
+
     animal(int w, double sp) : weight(w), speed(sp) {} //copy constructor di animal
 
     animal(const animal& a) : weight(a.weight), speed(a.speed) {} //copy constructor, uso la & perchè altrimenti rischio ricorsione
@@ -33,8 +35,9 @@ public:
     dog(int w, double sp, bool ped) :animal(w, sp), pedegree(ped) {}; //richiamo il super costruttore
 
     void eat(const animal& a) {
-        weight() += a.weight() / 2;
-    }
+		weight() += a.weight() / 2;
+       
+	}
 
 };
 
@@ -49,11 +52,17 @@ int main() {
     a2.eat(a2);
 
     dog fido(60, 45.34, false);
-    animal& a5 = fido;
+
+    animal& a5 = fido; //altro modo per modificare una variabile, senza crearne una nuova ma modificando quella originaria
     a5.eat(a2);
 
+   
     dog* fufi = new dog(3, 100., true);
     animal* a6 = fufi;
     a6->eat(a2);
+
+    animal a6(fido); //fido è subsunto ad animal, è legale tra due entità: si possono subsumere pointer e reference. 
+    //In questo caso è subsunto per reference 
+    a6.eat(); //chiama quello di animal
 }
 
