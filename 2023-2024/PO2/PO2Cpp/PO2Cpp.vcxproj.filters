@@ -16,8 +16,14 @@
     <Filter Include="File di origine\Esercizi_Esame">
       <UniqueIdentifier>{fb507bf3-0a9e-405c-b9d0-d731e68907d8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="File di origine\Esercizi_Esame\Esame_1_6_23">
+    <Filter Include="File di origine\Esercizi_Esame\Esame_2023_6_1">
       <UniqueIdentifier>{0d32ec0a-1de4-4f9c-bee4-f9e4abf4aed4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="File di origine\Esercizi_Esame\Esame_2023_6_30">
+      <UniqueIdentifier>{6e1bcb82-1c9c-49e8-830d-5d11b3476786}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="File di origine\Esercizi_Esame\Esame_2022-6-3">
+      <UniqueIdentifier>{b65929af-a595-47cd-8cad-7b2cd1fceda9}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -28,7 +34,13 @@
       <Filter>File di origine</Filter>
     </ClCompile>
     <ClCompile Include="Pair.cpp">
-      <Filter>File di origine\Esercizi_Esame\Esame_1_6_23</Filter>
+      <Filter>File di origine\Esercizi_Esame\Esame_2023_6_1</Filter>
+    </ClCompile>
+    <ClCompile Include="fun_seq.cpp">
+      <Filter>File di origine\Esercizi_Esame\Esame_2023_6_30</Filter>
+    </ClCompile>
+    <ClCompile Include="matrici.cpp">
+      <Filter>File di origine\Esercizi_Esame\Esame_2022-6-3</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -127,6 +127,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="fun_seq.cpp" />
+    <ClCompile Include="matrici.cpp" />
     <ClCompile Include="matrix.cpp" />
     <ClCompile Include="Pair.cpp" />
     <ClCompile Include="PO2Cpp.cpp" />
