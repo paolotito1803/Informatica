@@ -127,6 +127,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Es2.cpp" />
     <ClCompile Include="fun_seq.cpp" />
     <ClCompile Include="matrici.cpp" />
     <ClCompile Include="matrix.cpp" />
