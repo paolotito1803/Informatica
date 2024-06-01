@@ -127,7 +127,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Es2.cpp" />
+    <ClCompile Include="Esame_2022_7_1.cpp" />
+    <ClCompile Include="tree_node.cpp" />
     <ClCompile Include="fun_seq.cpp" />
     <ClCompile Include="matrici.cpp" />
     <ClCompile Include="matrix.cpp" />

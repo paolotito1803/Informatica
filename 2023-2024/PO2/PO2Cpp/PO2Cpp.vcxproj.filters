@@ -28,6 +28,9 @@
     <Filter Include="File di origine\Esercizi_Esame\Esame_2022_6_3">
       <UniqueIdentifier>{b65929af-a595-47cd-8cad-7b2cd1fceda9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="File di origine\Esercizi_Esame\Esame_2022_7_1">
+      <UniqueIdentifier>{118f5168-6705-4581-ad39-02f8456df28d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="PO2Cpp.cpp">
@@ -45,8 +48,11 @@
     <ClCompile Include="matrici.cpp">
       <Filter>File di origine\Esercizi_Esame\Esame_2022_6_3</Filter>
     </ClCompile>
-    <ClCompile Include="Es2.cpp">
+    <ClCompile Include="tree_node.cpp">
       <Filter>File di origine\Esercizi_Esame\Esame_2022_9_13</Filter>
+    </ClCompile>
+    <ClCompile Include="Esame_2022_7_1.cpp">
+      <Filter>File di origine\Esercizi_Esame\Esame_2022_7_1</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
