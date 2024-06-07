@@ -128,6 +128,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Esame_2022_7_1.cpp" />
+    <ClCompile Include="matriceBidim.cpp" />
     <ClCompile Include="tree_node.cpp" />
     <ClCompile Include="fun_seq.cpp" />
     <ClCompile Include="matrici.cpp" />
