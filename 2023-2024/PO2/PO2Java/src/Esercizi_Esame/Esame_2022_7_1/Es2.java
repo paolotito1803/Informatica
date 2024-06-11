@@ -6,6 +6,67 @@ import java.util.Map;
 
 public class Es2 {
     public static class FiboSequence implements Iterable<Integer>{
+        private int len;
+        private HashMap<Integer, Integer> map = new HashMap<>();
+        public FiboSequence(int len){
+            this.len = len;
+        }
+
+        public int calFib(int n){
+            if(n == 0) {
+                map.put(0, 1);
+                return 1;
+            }
+            if(n == 1) {
+                map.put(1, 1);
+                return 1;
+            }
+            else {
+                if(!map.containsKey(n))
+                    map.put(n, calFib(n - 1) + calFib(n - 2));
+            }
+            return map.get(n);
+        }
+
+        public Iterator<Integer> iterator(){
+            int n = 0;
+            return new Iterator(){
+                @Override
+                public boolean hasNext(){
+                    return len > 0;
+                }
+
+                @Override
+                public Integer next(){
+                    return calFib(n);
+                }
+            };
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /*public static class FiboSequence implements Iterable<Integer>{
         private final int len;
 
         FiboSequence(int len) {
@@ -75,5 +136,5 @@ public class Es2 {
         public GlobalCachedFiboSequence(int max) {
             super(max, globalCache);
         }
-    }
+    }*/
 }
