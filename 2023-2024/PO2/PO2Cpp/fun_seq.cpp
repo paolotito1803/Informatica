@@ -3,6 +3,7 @@
 
 using namespace std;
 
+
 template <class X, class Y>
 class fun_seq
 {

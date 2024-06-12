@@ -1,0 +1,167 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\Paolo\\Documents\\GitHub\\Informatica-A.A.-23-24\\2023-2024\\PO2\\PO2Cpp\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{788794D3-4710-4628-B54D-769BE5B409F5}|PO2Cpp.vcxproj|C:\\Users\\Paolo\\Documents\\GitHub\\Informatica-A.A.-23-24\\2023-2024\\PO2\\PO2Cpp\\matrici.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{788794D3-4710-4628-B54D-769BE5B409F5}|PO2Cpp.vcxproj|solutionrelative:matrici.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{788794D3-4710-4628-B54D-769BE5B409F5}|PO2Cpp.vcxproj|C:\\Users\\Paolo\\Documents\\GitHub\\Informatica-A.A.-23-24\\2023-2024\\PO2\\PO2Cpp\\fun_seq.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{788794D3-4710-4628-B54D-769BE5B409F5}|PO2Cpp.vcxproj|solutionrelative:fun_seq.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{788794D3-4710-4628-B54D-769BE5B409F5}|PO2Cpp.vcxproj|C:\\Users\\Paolo\\Documents\\GitHub\\Informatica-A.A.-23-24\\2023-2024\\PO2\\PO2Cpp\\Pair.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{788794D3-4710-4628-B54D-769BE5B409F5}|PO2Cpp.vcxproj|solutionrelative:Pair.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{788794D3-4710-4628-B54D-769BE5B409F5}|PO2Cpp.vcxproj|C:\\Users\\Paolo\\Documents\\GitHub\\Informatica-A.A.-23-24\\2023-2024\\PO2\\PO2Cpp\\Esame_2022_7_1.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{788794D3-4710-4628-B54D-769BE5B409F5}|PO2Cpp.vcxproj|solutionrelative:Esame_2022_7_1.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{788794D3-4710-4628-B54D-769BE5B409F5}|PO2Cpp.vcxproj|C:\\Users\\Paolo\\Documents\\GitHub\\Informatica-A.A.-23-24\\2023-2024\\PO2\\PO2Cpp\\Esame_2024_1_10.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{788794D3-4710-4628-B54D-769BE5B409F5}|PO2Cpp.vcxproj|solutionrelative:Esame_2024_1_10.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{788794D3-4710-4628-B54D-769BE5B409F5}|PO2Cpp.vcxproj|C:\\Users\\Paolo\\Documents\\GitHub\\Informatica-A.A.-23-24\\2023-2024\\PO2\\PO2Cpp\\matrix.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{788794D3-4710-4628-B54D-769BE5B409F5}|PO2Cpp.vcxproj|solutionrelative:matrix.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{788794D3-4710-4628-B54D-769BE5B409F5}|PO2Cpp.vcxproj|C:\\Users\\Paolo\\Documents\\GitHub\\Informatica-A.A.-23-24\\2023-2024\\PO2\\PO2Cpp\\matriceBidim.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{788794D3-4710-4628-B54D-769BE5B409F5}|PO2Cpp.vcxproj|solutionrelative:matriceBidim.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{788794D3-4710-4628-B54D-769BE5B409F5}|PO2Cpp.vcxproj|C:\\Users\\Paolo\\Documents\\GitHub\\Informatica-A.A.-23-24\\2023-2024\\PO2\\PO2Cpp\\tree_node.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{788794D3-4710-4628-B54D-769BE5B409F5}|PO2Cpp.vcxproj|solutionrelative:tree_node.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{788794D3-4710-4628-B54D-769BE5B409F5}|PO2Cpp.vcxproj|C:\\Users\\Paolo\\Documents\\GitHub\\Informatica-A.A.-23-24\\2023-2024\\PO2\\PO2Cpp\\PO2Cpp.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{788794D3-4710-4628-B54D-769BE5B409F5}|PO2Cpp.vcxproj|solutionrelative:PO2Cpp.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 3,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "matriceBidim.cpp",
+              "DocumentMoniker": "C:\\Users\\Paolo\\Documents\\GitHub\\Informatica-A.A.-23-24\\2023-2024\\PO2\\PO2Cpp\\matriceBidim.cpp",
+              "RelativeDocumentMoniker": "matriceBidim.cpp",
+              "ToolTip": "C:\\Users\\Paolo\\Documents\\GitHub\\Informatica-A.A.-23-24\\2023-2024\\PO2\\PO2Cpp\\matriceBidim.cpp",
+              "RelativeToolTip": "matriceBidim.cpp",
+              "ViewState": "AQIAAAwAAAAAAAAAAAAgwC8AAAARAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2024-06-07T08:25:20.515Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Esame_2022_7_1.cpp",
+              "DocumentMoniker": "C:\\Users\\Paolo\\Documents\\GitHub\\Informatica-A.A.-23-24\\2023-2024\\PO2\\PO2Cpp\\Esame_2022_7_1.cpp",
+              "RelativeDocumentMoniker": "Esame_2022_7_1.cpp",
+              "ToolTip": "C:\\Users\\Paolo\\Documents\\GitHub\\Informatica-A.A.-23-24\\2023-2024\\PO2\\PO2Cpp\\Esame_2022_7_1.cpp",
+              "RelativeToolTip": "Esame_2022_7_1.cpp",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAA0AAAAQAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2024-06-01T15:21:45.336Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "tree_node.cpp",
+              "DocumentMoniker": "C:\\Users\\Paolo\\Documents\\GitHub\\Informatica-A.A.-23-24\\2023-2024\\PO2\\PO2Cpp\\tree_node.cpp",
+              "RelativeDocumentMoniker": "tree_node.cpp",
+              "ToolTip": "C:\\Users\\Paolo\\Documents\\GitHub\\Informatica-A.A.-23-24\\2023-2024\\PO2\\PO2Cpp\\tree_node.cpp",
+              "RelativeToolTip": "tree_node.cpp",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAEoAAAAaAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2024-05-31T15:55:05.738Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "matrici.cpp",
+              "DocumentMoniker": "C:\\Users\\Paolo\\Documents\\GitHub\\Informatica-A.A.-23-24\\2023-2024\\PO2\\PO2Cpp\\matrici.cpp",
+              "RelativeDocumentMoniker": "matrici.cpp",
+              "ToolTip": "C:\\Users\\Paolo\\Documents\\GitHub\\Informatica-A.A.-23-24\\2023-2024\\PO2\\PO2Cpp\\matrici.cpp",
+              "RelativeToolTip": "matrici.cpp",
+              "ViewState": "AQIAABgAAAAAAAAAAAAgwC8AAAARAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2024-05-26T09:45:21.935Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "fun_seq.cpp",
+              "DocumentMoniker": "C:\\Users\\Paolo\\Documents\\GitHub\\Informatica-A.A.-23-24\\2023-2024\\PO2\\PO2Cpp\\fun_seq.cpp",
+              "RelativeDocumentMoniker": "fun_seq.cpp",
+              "ToolTip": "C:\\Users\\Paolo\\Documents\\GitHub\\Informatica-A.A.-23-24\\2023-2024\\PO2\\PO2Cpp\\fun_seq.cpp",
+              "RelativeToolTip": "fun_seq.cpp",
+              "ViewState": "AQIAABsAAAAAAAAAAAApwCwAAAADAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2024-05-26T09:41:12.147Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "matrix.cpp",
+              "DocumentMoniker": "C:\\Users\\Paolo\\Documents\\GitHub\\Informatica-A.A.-23-24\\2023-2024\\PO2\\PO2Cpp\\matrix.cpp",
+              "RelativeDocumentMoniker": "matrix.cpp",
+              "ToolTip": "C:\\Users\\Paolo\\Documents\\GitHub\\Informatica-A.A.-23-24\\2023-2024\\PO2\\PO2Cpp\\matrix.cpp",
+              "RelativeToolTip": "matrix.cpp",
+              "ViewState": "AQIAACQAAAAAAAAAAAAAAAsAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2024-05-26T07:58:41.94Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Pair.cpp",
+              "DocumentMoniker": "C:\\Users\\Paolo\\Documents\\GitHub\\Informatica-A.A.-23-24\\2023-2024\\PO2\\PO2Cpp\\Pair.cpp",
+              "RelativeDocumentMoniker": "Pair.cpp",
+              "ToolTip": "C:\\Users\\Paolo\\Documents\\GitHub\\Informatica-A.A.-23-24\\2023-2024\\PO2\\PO2Cpp\\Pair.cpp",
+              "RelativeToolTip": "Pair.cpp",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAEIAAABAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2024-05-26T07:58:41.464Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Esame_2024_1_10.cpp",
+              "DocumentMoniker": "C:\\Users\\Paolo\\Documents\\GitHub\\Informatica-A.A.-23-24\\2023-2024\\PO2\\PO2Cpp\\Esame_2024_1_10.cpp",
+              "RelativeDocumentMoniker": "Esame_2024_1_10.cpp",
+              "ToolTip": "C:\\Users\\Paolo\\Documents\\GitHub\\Informatica-A.A.-23-24\\2023-2024\\PO2\\PO2Cpp\\Esame_2024_1_10.cpp",
+              "RelativeToolTip": "Esame_2024_1_10.cpp",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAE0AAAAFAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2024-06-09T08:21:37.511Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "PO2Cpp.cpp",
+              "DocumentMoniker": "C:\\Users\\Paolo\\Documents\\GitHub\\Informatica-A.A.-23-24\\2023-2024\\PO2\\PO2Cpp\\PO2Cpp.cpp",
+              "RelativeDocumentMoniker": "PO2Cpp.cpp",
+              "ToolTip": "C:\\Users\\Paolo\\Documents\\GitHub\\Informatica-A.A.-23-24\\2023-2024\\PO2\\PO2Cpp\\PO2Cpp.cpp",
+              "RelativeToolTip": "PO2Cpp.cpp",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAADoAAAAWAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2024-05-26T07:58:41.945Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
