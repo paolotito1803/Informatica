@@ -2,21 +2,23 @@
 #include<vector>
 using namespace std;
 
-template<typename T>
+template<class T>
 class matrix {
-private;
-	vector<T> v > v;
-	int col;
+private:
+	vector<T> v;
+	int cols;
 public:
-	matrix() : v(), col(0) {}
-	matrix(const matrix<T>& m) : v(m.v), col(m.col) {}
-	matrix(int row, int col) : col(col), v(row * col) {}
-	matrix(int row, int col, const T& p) : col(col), v(row * col, p) {}
+	matrix() : cols(0), v() {}
 
-	matrix<T>& operator=(const matrix<T>& m) {
-		v = m.v;
-		col = m.col;
+	matrix(const matrix<T>& p) : cols(p.cols), v(p.v) {}
 
+	matrix(int col, int row) : cols(col), v(row * cols) {}
+
+	matrix(int row, int col, T& t) : cols(col), v(row * cols, t) {}
+
+	matrix<T>& operator=(const matrix<T>& p) {
+		cols = p.cols;
+		v = p.v;
 		return *this;
 	}
 
@@ -24,15 +26,19 @@ public:
 	typedef typename vector<T>::iterator iterator;
 	typedef typename vector<T>::const_iterator const_iterator;
 
-	T& operator()(int i, int j) {
-		return v[i * col + j];
+	const T& operator()(int i, int j) const{
+		return v[i * cols + j];
 	}
 
-	const T& operator()(int i, int j) const {
-		return v[i * col + j];
+	T& operator()(int i, int j) {
+		reutrn v[i * cols + j];
 	}
 
 	iterator begin() {
+		return v.begin();
+	}
+
+	cont_iterator begin() {
 		return v.begin();
 	}
 
@@ -40,13 +46,10 @@ public:
 		return v.end();
 	}
 
-	const iterator begin() const {
-		return v.begin();
-	}
-
-	const iterator end() const {
+	const_iterator end() {
 		return v.end();
 	}
+	 
 };
 
 

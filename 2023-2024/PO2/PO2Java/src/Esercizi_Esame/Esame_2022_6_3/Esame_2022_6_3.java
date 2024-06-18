@@ -16,6 +16,171 @@ public class Esame_2022_6_3 {
     }
 
     public static <T> double sumBy(Iterable<T> i, Function<T, Double> f){
+        return fold(i, 0., (res, x)->res + f.apply(x));
+    }
+
+    public static <T> int compareBy(T s1, T s2, Function<T, Double> f){
+        Double s11 = f.apply(s1);
+        Double s22 = f.apply(s2);
+        return s11.compareTo(s22);
+    }
+
+    public class Edge implements Comparable<Edge> {
+        private final double len;
+        public Edge(double len) { this.len = len; }
+        public double length() { return len; }
+        @Override
+        public int compareTo(Edge s) {
+            return compareBy(this, s, (len)->length());
+        }
+    }
+
+    public interface Surface extends Comparable<Surface> {
+        double area();
+        double perimiter();
+        @Override
+        default int compareTo(Surface s) {
+            return compareBy(this, s, (res)->area());
+        }
+    }
+
+    public interface Polygon extends Surface, Iterable<Edge> {
+        @Override
+        default double perimiter() {
+            return sumBy(this, (res)->res.length());
+        }
+    }
+
+    public interface Solid extends Comparable<Solid> {
+        double outerArea(); // area laterale totale
+        double volume();
+        @Override
+        default int compareTo(Solid s) {
+            return compareBy(this, s, (res)->volume());
+        }
+    }
+
+    public interface Polyhedron<P extends Polygon> extends Solid, Iterable<P> {
+        @Override
+        default double outerArea() {
+            return sumBy(this, (res)->res.area());
+        }
+    }
+
+    public class Sphere implements Solid{
+        private final double r;
+        public Sphere(double r){
+            this.r = r;
+        }
+
+        @Override
+        public double outerArea() {
+            return 4. * Math.PI * r * r;
+        }
+
+        @Override
+        public double volume() {
+            return (4./3.) * Math.PI * r * r * r;
+        }
+    }
+
+    public class Cilinder implements Solid{
+        private final double r, h;
+        public Cilinder(double r, double h){
+            this.r = r;
+            this.h = h;
+        }
+        @Override
+        public double outerArea(){
+            return (2. * Math.PI * r) + (Math.PI * r * r);
+        }
+        @Override
+        public double volume(){
+            return Math.PI * r * r * h * 2.;
+        }
+    }
+
+    public class Rectangle implements Polygon{
+        private final double ba, ha;
+        public Rectangle(double b, double h){
+            this.ba = b;
+            this.ha = h;
+        }
+        @Override
+        public double area(){return ba * ha;}
+
+        @Override
+        public Iterator<Edge> iterator(){
+           Edge b = new Edge(ba);
+           Edge h = new Edge(ha);
+           ArrayList<Edge> it = new ArrayList<>();
+           it.add(b);
+           it.add(h);
+           it.add(h);
+           it.add(b);
+           return it.iterator();
+        }
+    }
+    public class Square extends Rectangle{
+        private double l;
+        public Square(double l){
+            super(l, l);
+        }
+    }
+    public class Parallelepiped implements Polyhedron<Rectangle> {
+        protected final double width, height, depth;
+        public Parallelepiped(double width, double height, double depth) {
+            this.width = width;
+            this.height = height;
+            this.depth = depth;
+        }
+        @Override
+        public double volume() { return depth * width * height; }
+        @Override
+        public Iterator<Rectangle> iterator() {
+            Rectangle r1 = new Rectangle(width, height),
+                    r2 = new Rectangle(width, depth),
+                    r3 = new Rectangle(height, depth);
+            return List.of(r1, r2, r3, r1, r2, r3).iterator();
+        }
+    }
+    public class Cube extends Parallelepiped{
+        private double l;
+        public Cube(double l){super(l, l, l);}
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   /* public static <T, State> State fold(Iterable<T> i, final State st0, BiFunction<State, T, State> f) {
+        State st = st0;
+        for (final T e : i)
+            st = f.apply(st, e);
+        return st;
+    }
+
+    public static <T> double sumBy(Iterable<T> i, Function<T, Double> f){
         return fold(i, 0., (s, x)->s + f.apply(x));
     }
 
@@ -163,11 +328,7 @@ public class Esame_2022_6_3 {
         Cube(double l){
             super(l, l, l);
         }
-    }
-
-
-
-
+    }*/
 
     /* public static <T, State> State fold(Iterable<T> i, final State st0, BiFunction<State*//*1 pram*//*, T*//*2 param*//*, State*//*ret type*//*> f) {
         State st = st0;

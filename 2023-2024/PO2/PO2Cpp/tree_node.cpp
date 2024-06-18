@@ -49,8 +49,8 @@ private:
 		v.push_back(data);
 		if (left != nullptr)
 			left->dfs(v)
-			if (right != nullptr)
-				right->dfs(v);
+		if (right != nullptr)
+			right->dfs(v);
 	}
 
 	const_iterator begin() {

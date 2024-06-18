@@ -39,10 +39,10 @@ public class Es1 {
         }
 
         private boolean eq(TreeNode<T> o1, TreeNode<T> o2){
-           if(o1 != null && o2 != null){
-               return o1.data.equals(o2.data) && eq(o1.left, o2.left) && eq(o1.right, o2.right);
-           }
-           return false;
+            if(o1 != null && o2 != null){
+                return o1.data.equals(o2.data) && eq(o1.left, o2.left) && eq(o1.right, o2.right);
+            }
+            return false;
         }
 
         @Override
@@ -56,8 +56,8 @@ public class Es1 {
 
         public void Visita(TreeNode<T> p, Collection<T> t){
             t.add(p.data);
-           Visita(p.left, t);
-           Visita(p.right, t);
+            Visita(p.left, t);
+            Visita(p.right, t);
         }
 
         @Override
@@ -74,7 +74,7 @@ public class Es1 {
 
                 @Override
                 public T next(){
-                   return t.iterator().next();
+                    return t.iterator().next();
                 }
             };
         }
@@ -240,4 +240,28 @@ public class Es1 {
 
         }
     }*/
+    /*public void Visita(TreeNode<T> p, Collection<T> t){
+            t.add(p.data);
+           Visita(p.left, t);
+           Visita(p.right, t);
+        }
+
+        @Override
+        public Iterator<T> iterator(){
+            Collection<T> t = new ArrayList<>();
+            Visita(TreeNode.this, t);
+            return new Iterator<T>(){
+
+
+                @Override
+                public boolean hasNext(){
+                    return t.iterator().hasNext();
+                }
+
+                @Override
+                public T next(){
+                   return t.iterator().next();
+                }
+            };
+        }*/
 }

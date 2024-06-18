@@ -11,6 +11,66 @@ public class Es1 {
     }
 
     public static <A, B> Iterator<B> mapIterator(Iterator<A> it, Function<A, B> f){
+        return new Iterator<B>(){
+            @Override
+            public boolean hasNext(){
+                return it.hasNext();
+            }
+
+            @Override
+            public B next(){
+                A a = it.next();
+                return f.apply(a);
+            }
+        };
+    }
+
+    public static class Pair<A, B>{
+        public A first;
+        public B second;
+
+        public Pair(A first, B second){
+            this.first = first;
+            this.second = second;
+        }
+
+        public static <A, B> Iterator<Pair<A, A>> pairIterator(Iterator<A> it){
+            return new Iterator<Pair<A, A>>(){
+                @Override
+                public boolean hasNext(){
+                    boolean primo = it.hasNext();
+                    return primo && it.hasNext();
+                }
+
+                @Override
+                public Pair<A, A> next(){
+                    A primo = it.next();
+                    return new Pair<A, A>(primo, it.next());
+                }
+            };
+        }
+    }
+
+    public static void main(String args[]){
+        Collection<Integer> p = new ArrayList<>();
+        Random r = new Random();
+        for (int i = 0; i <= 10; i++)
+            p.add(r.nextInt());
+        Iterator<Pair<Integer, Integer>> it = Pair.pairIterator(p.iterator());
+        Iterator<Double> ipo = mapIterator(it, new Function<Pair<Integer, Integer>, Double>(){
+           @Override
+           public Double apply(Pair<Integer, Integer> c){
+               return Math.sqrt((c.first * c.first) + (c.second * c.second));
+           }
+        });
+    }
+
+
+    /*public interface Function<A, B>{
+        B apply(A a);
+    }
+
+    public static <A, B> Iterator<B> mapIterator(Iterator<A> it, Function<A, B> f){
         return new Iterator(){
             @Override
             public boolean hasNext(){
@@ -19,8 +79,8 @@ public class Es1 {
 
             @Override
             public B next(){
-                /*A p = it.next();
-                return f.apply(p);*/
+                *//*A p = it.next();
+                return f.apply(p);*//*
                 return f.apply(it.next());
             }
         };
@@ -63,5 +123,5 @@ public class Es1 {
                return Math.sqrt(Math.pow(p.first, 2) + Math.pow(p.second, 2));
            }
         });
-    }
+    }*/
 }

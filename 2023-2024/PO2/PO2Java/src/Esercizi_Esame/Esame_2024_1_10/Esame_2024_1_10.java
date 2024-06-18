@@ -8,8 +8,52 @@ import java.util.function.Function;
 import static functional.HigherOrderFunctions.map;
 
 public class Esame_2024_1_10 {
-
     public static class FactorialThread extends Thread{
+        private int res;
+        private final int num;
+        public FactorialThread(int num){
+            this.num = num;
+        }
+        @Override
+        public void run(){
+            res = factorial(num);
+        }
+        public int factorial(int num){
+            if(num == 0 || num == 1) return 1;
+            else return factorial(num - 1) + factorial(num - 2);
+        }
+        public int getRes(){
+            try{ join();}catch(InterruptedException e){throw new RuntimeException(e);}
+            return res;
+        }
+        public int getNum(){return num;}
+        static Collection<FactorialThread> parallelFactorial(Collection<Integer> c){
+            Collection<FactorialThread> p = new ArrayList<>();
+            for(int i : c){
+                FactorialThread ft = new FactorialThread(i);
+                ft.start();
+                p.add(ft);
+            }
+            return p;
+        }
+        public static void main(String[] args) {
+            for (FactorialThread t : parallelFactorial(List.of(0, 1, 2, 3, 11, 12, 23, 35)))   // chiamare anche parallelFactorial2() per provarla
+                System.out.printf("fact(%d) = %d\n", t.getRes(), t.getNum());
+        }
+        public static <A, B> List<B> map(Iterable<A> i, Function<A, B> f){
+            List<B> res = new ArrayList<>();
+            for(A it : i){
+                B b = f.apply(it);
+                res.add(b);
+            }
+            return res;
+        }
+
+        public static Collection<FactorialThread> parallelFactorial2(Collection<Integer> c){
+            return map(c,(n) -> { FactorialThread t = new FactorialThread(n); t.start(); return t; });
+        }
+    }
+    /* public static class FactorialThread extends Thread{
         private int res;
         private final int nume;
 
@@ -70,7 +114,7 @@ public class Esame_2024_1_10 {
         public static Collection<FactorialThread> parallelFactorial2(Collection<Integer> c){
             return map(c,(n) -> { FactorialThread t = new FactorialThread(n); t.start(); return t; });
         }
-    }
+    }*/
 
 
 

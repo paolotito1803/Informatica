@@ -11,15 +11,13 @@ public class Es1 {
     static <A, B> Iterator<Supplier<B>> asyncIterator(Iterator<A> it, Function<A, B> f) {
         return new Iterator<>() {
             @Override
-            public boolean hasNext() {
-                return it.hasNext();
-            }
+            public boolean hasNext() {return it.hasNext(); }
             private class Future implements Supplier<B> {
-                private final Thread t;
+                private Thread t;
                 private B res;
 
                 public Future(Supplier<B> f) {
-                    t = new Thread(()->res = f.get());
+                    t = new Thread(()->{res = f.get();});
                     t.start();
                 }
 
@@ -35,10 +33,11 @@ public class Es1 {
             }
             @Override
             public Supplier<B> next() {
-                A ret  = it.next();
-                return new Future(()->f.apply(ret));
+                A c = it.next();
+                return new Future(()->f.apply(c));
             }
         };
+
     }
 
     static <T extends Comparable<? super T>> void sortLists(Iterable<List<T>> c){

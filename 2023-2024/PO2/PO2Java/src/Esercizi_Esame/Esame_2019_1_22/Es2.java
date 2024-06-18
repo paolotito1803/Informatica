@@ -3,6 +3,10 @@ package Esercizi_Esame.Esame_2019_1_22;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class Es2 {
+    public interface Resource<T>{
+        void autorelease();
+    }
+
     public interface Pool<T, R> {
         void add(T x); // popola la pool con un nuovo elemento
         R acquire() throws InterruptedException; // acquisisce una risorsa
@@ -10,6 +14,58 @@ public class Es2 {
     }
 
     public interface BasicPool<T> extends Pool<T, T>{}
+
+    public static class SimplePool<T> implements BasicPool<T>{
+        LinkedBlockingQueue<T> it = new LinkedBlockingQueue<>();
+
+        @Override
+        public void add(T x){
+            it.add(x);
+        }
+
+        @Override
+        public T acquire() throws InterruptedException{
+            return it.take();
+        }
+
+        @Override
+        public void release(T x){
+            it.add(x);
+        }
+    }
+
+    public static class AutoPool<T> implements Pool<T, Resource<T>>{
+        private LinkedBlockingQueue<T> it = new LinkedBlockingQueue<>();
+
+        @Override
+        public void add(T x){
+            it.add(x);
+        }
+
+        @Override
+        public Resource<T> acquire() throws InterruptedException{
+            T k = it.take();
+            return new Resource<T>(){
+                @Override
+                public void autorelease(){
+                    it.add(k);
+                }
+
+                @Override
+                public void finalize(){
+                    autorelease();
+                }
+            };
+        }
+
+        @Override
+        public void release(Resource<T> x){
+            x.autorelease();
+        }
+    }
+
+
+   /* public interface BasicPool<T> extends Pool<T, T>{}
 
     public interface Resource<T>{
         void autoRelease();
@@ -60,6 +116,6 @@ public class Es2 {
         public void release(Resource<T> x){
             x.autoRelease();
         }
-    }
+    }*/
 
 }
