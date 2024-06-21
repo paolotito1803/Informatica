@@ -3,11 +3,12 @@ package Esercizi_Esame.Esame_2023_6_30;
 import java.util.Iterator;
 import java.util.function.Function;
 public class Es1 {
-    public class FunSeq<X extends Number & Comparable<? super X>, Y extends Number>
+    public static class FunSeq<X extends Number & Comparable<? super X>, Y extends Number>
             implements Iterable<Pair<X, Y>> {
         private final X a, b;
         private final Function<? super X, ? extends Y> f;
         private final Function<X, X> inc;
+
         public FunSeq(X a, X b, Function<? super X, ? extends Y> f, Function<X, X> inc) {
             this.a = a;
             this.b = b;
@@ -15,37 +16,38 @@ public class Es1 {
             this.inc = inc;
         }
 
+        @Override
         public Iterator<Pair<X, Y>> iterator(){
             return new Iterator<Pair<X, Y>>(){
-                X k = a;
+                X x = a;
                 @Override
                 public boolean hasNext(){
-                    return k.compareTo(b) <= 0;
+                    return x.compareTo(b) <= 0;
                 }
 
                 @Override
                 public Pair<X, Y> next(){
-                    Pair<X, Y> p = new Pair<>(k, f.apply(k));
-                    k = inc.apply(k);
-                    return p;
+                    Pair<X, Y> attuale = new Pair<>(x, f.apply(x));
+                    x = inc.apply(x);
+                    return attuale;
                 }
             };
         }
     }
-
-    public class Pair<X, Y>{
-        private final X first;
-        private final Y second;
-
-        public Pair(X first, Y second){
+    public static class Pair<A, B>{
+        private final A first;
+        private final B second;
+        public Pair(A first, B second){
             this.first = first;
             this.second = second;
         }
+        public A getFirst(){return first;}
+        public B getSecond(){return second;}
     }
 
-    public  void main(String[] args) {
-        FunSeq<Double, Double> parabola = new FunSeq<>(-2., 2., (x)->x*x+2*x-1, (x)->x+0.1);
-        FunSeq<Double, Integer> parabola2 = new FunSeq<>(-2., 2., (x)->(int)(x*x+2*x-1), (x)->x+0.1);
+    public static void main(String[] args){
+        FunSeq<Double, Double> parabola = new FunSeq<>(-2., 2., (x)->x*x + 2*x - 1, (x)->x + 0.1);
+        FunSeq<Double, Integer> parabola2 = new FunSeq<>(-2., 2., (x)->(int) (x*x + 2*x - 1), (x)->x + 0.1);
     }
 
 
@@ -227,5 +229,38 @@ public class Es1 {
                 System.out.printf("f(%g) = %d\n", x, y);
             }
         }
+    }*/
+
+        /*  public Iterator<Pair<X, Y>> iterator(){
+            return new Iterator<Pair<X, Y>>(){
+                X k = a;
+                @Override
+                public boolean hasNext(){
+                    return k.compareTo(b) <= 0;
+                }
+
+                @Override
+                public Pair<X, Y> next(){
+                    Pair<X, Y> p = new Pair<>(k, f.apply(k));
+                    k = inc.apply(k);
+                    return p;
+                }
+            };
+        }
+    }
+
+    public class Pair<X, Y>{
+        private final X first;
+        private final Y second;
+
+        public Pair(X first, Y second){
+            this.first = first;
+            this.second = second;
+        }
+    }
+
+    public  void main(String[] args) {
+        FunSeq<Double, Double> parabola = new FunSeq<>(-2., 2., (x)->x*x+2*x-1, (x)->x+0.1);
+        FunSeq<Double, Integer> parabola2 = new FunSeq<>(-2., 2., (x)->(int)(x*x+2*x-1), (x)->x+0.1);
     }*/
 }

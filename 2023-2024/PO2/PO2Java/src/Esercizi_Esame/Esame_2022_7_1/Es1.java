@@ -17,7 +17,7 @@ public class Es1 {
     public static class SkippableArrayList<E> extends ArrayList<E>{
         Iterator<E> iterator(Predicate<E> p, Either<E> f){
             Iterator<E> it = super.iterator();
-            return new Iterator(){
+            return new Iterator<E>(){
                 @Override
                 public boolean hasNext(){
                     return it.hasNext();

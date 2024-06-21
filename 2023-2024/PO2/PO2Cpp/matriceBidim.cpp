@@ -20,6 +20,7 @@ public:
 		return *this;
 	}
 
+
 	typedef T value_type;
 	typename typedef vector<T>::iterator iterator;
 	typename typedef vector<T>::const_iterator const_iterator;

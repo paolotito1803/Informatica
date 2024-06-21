@@ -37,6 +37,12 @@
     <Filter Include="File di origine\Esercizi_Esame\Esame_2023_9_5">
       <UniqueIdentifier>{719e44b6-7b17-460e-9351-6b60bfa13f7e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="File di origine\Esercizi_Esame\Esame_2023_1_13">
+      <UniqueIdentifier>{93f9ad37-61e2-45b7-b845-78d0cf79e3c8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="File di origine\Esercizi_Esame\Esame_2024_6_14">
+      <UniqueIdentifier>{1ad6813e-d4a0-41d3-b298-5bb9cd62afdc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="PO2Cpp.cpp">
@@ -68,6 +74,12 @@
     </ClCompile>
     <ClCompile Include="smart_pointer.cpp">
       <Filter>File di origine</Filter>
+    </ClCompile>
+    <ClCompile Include="Esame_2023_1_13.cpp">
+      <Filter>File di origine\Esercizi_Esame\Esame_2023_1_13</Filter>
+    </ClCompile>
+    <ClCompile Include="Esame_2024_6_14.cpp">
+      <Filter>File di origine\Esercizi_Esame\Esame_2024_6_14</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

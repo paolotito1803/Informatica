@@ -4,14 +4,22 @@ using namespace std;
 
 template<class T>
 class tree_node {
+private:
+	vector<T> v;
+
+	void dfs(vector<T>& v, tree_node<T>& t) {
+		v.push_back(data);
+		if (left != nullptr)
+			dfs(v, t->left);
+		if (right != nullptr)
+			dfs(v, t->right);
+	}
+
 public:
 	T data;
 	tree_node<T>* left, right;
-
 	tree_node() : data(0), left(), right() {}
-
-	tree_node(const tree_node<T>& m) : data(m.data), left(m.left), right(m.right) {}
-
+	tree_node(const tree_node<T>& t) : data(t.data), left(t.left), right(t.right) {}
 	~tree_node() {
 		if (left != nullptr) {
 			delete left;
@@ -22,51 +30,39 @@ public:
 			right = nullptr;
 		}
 	}
-
-	tree_node<T>& operator=(const tree_node<T>& t) {
+	tree_node<T>& operatro = (const tree_node<T>&t){
 		data = t.data;
-		right = t.right;
 		left = t.left;
-
+		right = t.right;
 		return *this;
 	}
 
-	bool eq(tree_node<T>& a, tree_node<T> p) {
-		if (a != nullptr && p != nullptr) {
-			return a.data == p.data && eq(a->left, p->left) && eq(a->right, p->right);
-		}
-		return false;
+	typedef value_type T;
+	typedef  typename vector<T>::iterator iterator;
+	typedef typename vector<T>::cont_iterator const_iterator;
+
+	bool eq(const tree_node<T>& t, const tree_node<T>& p) {
+		return p = t && (t != nullptr && p != nullptr && *t = *p);
 	}
 
-	bool operator==(tree_node<T>& p) const {
-		return eq(this, p);
-	}
-
-private:
-	vector<T> v;
-
-	void dfs(vector<T>& v) {
-		v.push_back(data);
-		if (left != nullptr)
-			left->dfs(v)
-		if (right != nullptr)
-			right->dfs(v);
-	}
-
-	const_iterator begin() {
-		return v.beign();
+	bool operator==(const tree_node<T>& t) {
+		return data == t.data && eq(right, t.right) && eq(left, t.left);
 	}
 
 	iterator begin() {
 		return v.begin();
 	}
 
-	const_iterator end() {
-		return v.end();
+	const_iterator being() const{
+		return v.begin();
 	}
 
 	iterator end() {
-		return v.end;
+		return v.end();
+	}
+
+	const_iterator end() const {
+		return v.end();
 	}
 };
 
@@ -149,3 +145,71 @@ private:
 	}
 
 };*/
+
+//template<class T>
+//class tree_node {
+//public:
+//	T data;
+//	tree_node<T>* left, right;
+//
+//	tree_node() : data(0), left(), right() {}
+//
+//	tree_node(const tree_node<T>& m) : data(m.data), left(m.left), right(m.right) {}
+//
+//	~tree_node() {
+//		if (left != nullptr) {
+//			delete left;
+//			left = nullptr;
+//		}
+//		if (right != nullptr) {
+//			delete right;
+//			right = nullptr;
+//		}
+//	}
+//
+//	tree_node<T>& operator=(const tree_node<T>& t) {
+//		data = t.data;
+//		right = t.right;
+//		left = t.left;
+//
+//		return *this;
+//	}
+//
+//	bool eq(tree_node<T>& a, tree_node<T> p) {
+//		if (a != nullptr && p != nullptr) {
+//			return a.data == p.data && eq(a->left, p->left) && eq(a->right, p->right);
+//		}
+//		return false;
+//	}
+//
+//	bool operator==(tree_node<T>& p) const {
+//		return eq(this, p);
+//	}
+//
+//private:
+//	vector<T> v;
+//
+//	void dfs(vector<T>& v) {
+//		v.push_back(data);
+//		if (left != nullptr)
+//			left->dfs(v)
+//		if (right != nullptr)
+//			right->dfs(v);
+//	}
+//
+//	const_iterator begin() {
+//		return v.beign();
+//	}
+//
+//	iterator begin() {
+//		return v.begin();
+//	}
+//
+//	const_iterator end() {
+//		return v.end();
+//	}
+//
+//	iterator end() {
+//		return v.end;
+//	}
+//};
