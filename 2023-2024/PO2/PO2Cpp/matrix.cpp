@@ -28,6 +28,30 @@ public:
 
 	explicit matrix(size_t dim) : matrix(dim, dim) {}
 
+	typedef T value_type;
+	typedef vector<T>::iterator iterator;
+	typedef vector<T>::const_iterator const_iterator;
+
+	iterator begin()
+	{
+		return v.begin();
+	}
+
+	iterator end()
+	{
+		return v.end();
+	}
+
+	const_iterator begin() const
+	{
+		return v.begin();
+	}
+
+	const_iterator end() const
+	{
+		return v.end();
+	}
+
 	const T& at(size_t i, size_t j) const{
 		//è valido per i right value che possono essere const ma non è valido per i left value perchè non sono const
 	

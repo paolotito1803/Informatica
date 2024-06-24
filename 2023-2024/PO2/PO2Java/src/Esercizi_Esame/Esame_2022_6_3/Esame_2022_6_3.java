@@ -166,6 +166,44 @@ public class Esame_2022_6_3 {
         private double l;
         public Cube(double l){super(l, l, l);}
     }
+    public  void main(String[] args) {
+        // 4.d
+        {
+            int facet_cnt = 1;
+            // questo foreach non compila perché Cube è sottotipo di Iterable<Rectangle>, non di Iterable<Square>
+            // si badi che NON è possibile co-variare il tipo di ritorno del metodo iterator() di Cube in modo che si specializzi in Iterator<Square>
+            // perché è sound co-variare il tipo più esterno di un tipo parametrico, ma non il type argument
+            // for (Square sq : new Cube(10.)) {
+            for (Rectangle sq : new Cube(10.)) {  // così invece compilerebbe
+                int side_cnt = 1;
+                for (Edge e : sq) {
+                    System.out.printf("side #%d/%d = %f\n", side_cnt++, facet_cnt, e.length());
+                }
+                ++facet_cnt;
+            }
+        }
+
+        // 5
+        {
+            Cube c1 = new Cube(1.), c2 = new Cube(2.);
+            Parallelepiped p1 = new Parallelepiped(1., 2., 3.), p2 = new Parallelepiped(2., 3., 4.);
+            List<Polyhedron<? extends Rectangle>> polys = new ArrayList<>(List.of(c1, c2, p1, p2));
+
+            // per testare rapidamente i risultati di queste sort, si usi debugger
+            Collections.sort(polys);                                                            // c1
+            Collections.sort(polys, (x, y) -> compareBy(x, y, Polyhedron::outerArea));          // c1
+            Collections.sort(polys, (x, y) -> compareBy(x, y, (p) -> p.outerArea()));           // c1
+//            Collections.sort(polys, (x, y) -> compareBy(x, y, (r) -> r.perimiter()));         // non compila
+            Collections.sort(polys, (x, y) -> compareBy(x, y, new Function<>() {                // c1
+                @Override
+                public Double apply(Polyhedron<? extends Rectangle> r) {
+                    return r.volume();
+                }
+            }));
+           // Collections.sort(polys, (x, y) -> Double.compare(sumBy(x, Square::perimiter),     // non compila
+             //                                                sumBy(y, Rectangle::perimiter)));
+        }
+    }
 
    /* public static <T, State> State fold(Iterable<T> i, final State st0, BiFunction<State, T, State> f) {
         State st = st0;
