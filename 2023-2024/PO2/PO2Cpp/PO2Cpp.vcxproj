@@ -131,6 +131,7 @@
     <ClCompile Include="Esame_2023_1_13.cpp" />
     <ClCompile Include="Esame_2024_1_10.cpp" />
     <ClCompile Include="Esame_2024_6_14.cpp" />
+    <ClCompile Include="Esame_2024_6_25.cpp" />
     <ClCompile Include="matriceBidim.cpp" />
     <ClCompile Include="smart_pointer.cpp" />
     <ClCompile Include="tree_node.cpp" />

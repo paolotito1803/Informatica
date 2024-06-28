@@ -3,12 +3,16 @@
   "WorkspaceRootPath": "C:\\Users\\Paolo\\Documents\\GitHub\\Informatica-A.A.-23-24\\2023-2024\\PO2\\PO2Cpp\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{788794D3-4710-4628-B54D-769BE5B409F5}|PO2Cpp.vcxproj|C:\\Users\\Paolo\\Documents\\GitHub\\Informatica-A.A.-23-24\\2023-2024\\PO2\\PO2Cpp\\matrix.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{788794D3-4710-4628-B54D-769BE5B409F5}|PO2Cpp.vcxproj|solutionrelative:matrix.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+      "AbsoluteMoniker": "D:0:0:{788794D3-4710-4628-B54D-769BE5B409F5}|PO2Cpp.vcxproj|C:\\Users\\Paolo\\Documents\\GitHub\\Informatica-A.A.-23-24\\2023-2024\\PO2\\PO2Cpp\\Esame_2024_6_25.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{788794D3-4710-4628-B54D-769BE5B409F5}|PO2Cpp.vcxproj|solutionrelative:Esame_2024_6_25.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{788794D3-4710-4628-B54D-769BE5B409F5}|PO2Cpp.vcxproj|C:\\Users\\Paolo\\Documents\\GitHub\\Informatica-A.A.-23-24\\2023-2024\\PO2\\PO2Cpp\\Esame_2024_6_14.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{788794D3-4710-4628-B54D-769BE5B409F5}|PO2Cpp.vcxproj|solutionrelative:Esame_2024_6_14.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{788794D3-4710-4628-B54D-769BE5B409F5}|PO2Cpp.vcxproj|C:\\Users\\Paolo\\Documents\\GitHub\\Informatica-A.A.-23-24\\2023-2024\\PO2\\PO2Cpp\\matrix.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{788794D3-4710-4628-B54D-769BE5B409F5}|PO2Cpp.vcxproj|solutionrelative:matrix.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{788794D3-4710-4628-B54D-769BE5B409F5}|PO2Cpp.vcxproj|C:\\Users\\Paolo\\Documents\\GitHub\\Informatica-A.A.-23-24\\2023-2024\\PO2\\PO2Cpp\\matriceBidim.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
@@ -54,8 +58,21 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 6,
+          "SelectedChildIndex": 0,
           "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Esame_2024_6_25.cpp",
+              "DocumentMoniker": "C:\\Users\\Paolo\\Documents\\GitHub\\Informatica-A.A.-23-24\\2023-2024\\PO2\\PO2Cpp\\Esame_2024_6_25.cpp",
+              "RelativeDocumentMoniker": "Esame_2024_6_25.cpp",
+              "ToolTip": "C:\\Users\\Paolo\\Documents\\GitHub\\Informatica-A.A.-23-24\\2023-2024\\PO2\\PO2Cpp\\Esame_2024_6_25.cpp",
+              "RelativeToolTip": "Esame_2024_6_25.cpp",
+              "ViewState": "AQIAADAAAAAAAAAAAAAgwFAAAAABAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2024-06-28T07:08:56.838Z",
+              "EditorCaption": ""
+            },
             {
               "$type": "Document",
               "DocumentIndex": 1,
@@ -64,14 +81,14 @@
               "RelativeDocumentMoniker": "Esame_2024_6_14.cpp",
               "ToolTip": "C:\\Users\\Paolo\\Documents\\GitHub\\Informatica-A.A.-23-24\\2023-2024\\PO2\\PO2Cpp\\Esame_2024_6_14.cpp",
               "RelativeToolTip": "Esame_2024_6_14.cpp",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAkAAAAMAAAA",
+              "ViewState": "AQIAAA0AAAAAAAAAAAAgwC0AAAABAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
               "WhenOpened": "2024-06-21T12:20:36.267Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "matriceBidim.cpp",
               "DocumentMoniker": "C:\\Users\\Paolo\\Documents\\GitHub\\Informatica-A.A.-23-24\\2023-2024\\PO2\\PO2Cpp\\matriceBidim.cpp",
               "RelativeDocumentMoniker": "matriceBidim.cpp",
@@ -83,7 +100,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 10,
               "Title": "Esame_2022_7_1.cpp",
               "DocumentMoniker": "C:\\Users\\Paolo\\Documents\\GitHub\\Informatica-A.A.-23-24\\2023-2024\\PO2\\PO2Cpp\\Esame_2022_7_1.cpp",
               "RelativeDocumentMoniker": "Esame_2022_7_1.cpp",
@@ -95,7 +112,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 6,
               "Title": "tree_node.cpp",
               "DocumentMoniker": "C:\\Users\\Paolo\\Documents\\GitHub\\Informatica-A.A.-23-24\\2023-2024\\PO2\\PO2Cpp\\tree_node.cpp",
               "RelativeDocumentMoniker": "tree_node.cpp",
@@ -107,7 +124,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 7,
               "Title": "matrici.cpp",
               "DocumentMoniker": "C:\\Users\\Paolo\\Documents\\GitHub\\Informatica-A.A.-23-24\\2023-2024\\PO2\\PO2Cpp\\matrici.cpp",
               "RelativeDocumentMoniker": "matrici.cpp",
@@ -119,7 +136,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 8,
               "Title": "fun_seq.cpp",
               "DocumentMoniker": "C:\\Users\\Paolo\\Documents\\GitHub\\Informatica-A.A.-23-24\\2023-2024\\PO2\\PO2Cpp\\fun_seq.cpp",
               "RelativeDocumentMoniker": "fun_seq.cpp",
@@ -131,7 +148,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 2,
               "Title": "matrix.cpp",
               "DocumentMoniker": "C:\\Users\\Paolo\\Documents\\GitHub\\Informatica-A.A.-23-24\\2023-2024\\PO2\\PO2Cpp\\matrix.cpp",
               "RelativeDocumentMoniker": "matrix.cpp",
@@ -144,7 +161,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 4,
               "Title": "Esame_2023_1_13.cpp",
               "DocumentMoniker": "C:\\Users\\Paolo\\Documents\\GitHub\\Informatica-A.A.-23-24\\2023-2024\\PO2\\PO2Cpp\\Esame_2023_1_13.cpp",
               "RelativeDocumentMoniker": "Esame_2023_1_13.cpp",
@@ -156,7 +173,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 9,
               "Title": "Pair.cpp",
               "DocumentMoniker": "C:\\Users\\Paolo\\Documents\\GitHub\\Informatica-A.A.-23-24\\2023-2024\\PO2\\PO2Cpp\\Pair.cpp",
               "RelativeDocumentMoniker": "Pair.cpp",
@@ -168,7 +185,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 5,
               "Title": "Esame_2024_1_10.cpp",
               "DocumentMoniker": "C:\\Users\\Paolo\\Documents\\GitHub\\Informatica-A.A.-23-24\\2023-2024\\PO2\\PO2Cpp\\Esame_2024_1_10.cpp",
               "RelativeDocumentMoniker": "Esame_2024_1_10.cpp",
@@ -180,7 +197,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 11,
               "Title": "PO2Cpp.cpp",
               "DocumentMoniker": "C:\\Users\\Paolo\\Documents\\GitHub\\Informatica-A.A.-23-24\\2023-2024\\PO2\\PO2Cpp\\PO2Cpp.cpp",
               "RelativeDocumentMoniker": "PO2Cpp.cpp",
