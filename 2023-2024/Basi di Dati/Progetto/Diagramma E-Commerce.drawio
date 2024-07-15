@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" modified="2024-07-12T16:13:35.221Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36" etag="YjLi6u8pHAhqkxmGG7gr" version="24.6.5" type="device">
+<mxfile host="app.diagrams.net" modified="2024-07-15T09:27:52.820Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36" etag="0J2fPEvwqeiVJFm3zteR" version="24.6.5" type="device">
   <diagram name="Pagina-1" id="gWRhbLyN7HNVdfnk4OtS">
-    <mxGraphModel dx="1050" dy="1726" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="1290" dy="1647" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -54,7 +54,7 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="BdaZgZHvzQFPSytIAgOV-34" value="UTENTI" style="swimlane;fontStyle=1;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;align=center;fontSize=14;" parent="1" vertex="1">
-          <mxGeometry x="830" y="1270" width="160" height="116" as="geometry" />
+          <mxGeometry x="830" y="1270" width="160" height="146" as="geometry" />
         </mxCell>
         <mxCell id="BdaZgZHvzQFPSytIAgOV-37" value="Email : String (PK)" style="text;strokeColor=none;fillColor=none;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=12;whiteSpace=wrap;html=1;" parent="BdaZgZHvzQFPSytIAgOV-34" vertex="1">
           <mxGeometry y="26" width="160" height="30" as="geometry" />
@@ -65,23 +65,20 @@
         <mxCell id="BdaZgZHvzQFPSytIAgOV-35" value="Nome : String" style="text;strokeColor=none;fillColor=none;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=12;whiteSpace=wrap;html=1;" parent="BdaZgZHvzQFPSytIAgOV-34" vertex="1">
           <mxGeometry y="86" width="160" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="BdaZgZHvzQFPSytIAgOV-38" value="ACQUIRENTI" style="swimlane;fontStyle=1;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;align=center;fontSize=14;" parent="1" vertex="1">
-          <mxGeometry x="600" y="1440" width="160" height="86" as="geometry" />
+        <mxCell id="BdaZgZHvzQFPSytIAgOV-39" value="Indirizzo : String" style="text;strokeColor=none;fillColor=none;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=12;whiteSpace=wrap;html=1;" parent="BdaZgZHvzQFPSytIAgOV-34" vertex="1">
+          <mxGeometry y="116" width="160" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="BdaZgZHvzQFPSytIAgOV-39" value="Indirizzo : String" style="text;strokeColor=none;fillColor=none;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=12;whiteSpace=wrap;html=1;" parent="BdaZgZHvzQFPSytIAgOV-38" vertex="1">
-          <mxGeometry y="26" width="160" height="30" as="geometry" />
+        <mxCell id="BdaZgZHvzQFPSytIAgOV-38" value="ACQUIRENTI" style="swimlane;fontStyle=1;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;align=center;fontSize=14;" parent="1" vertex="1">
+          <mxGeometry x="600" y="1440" width="160" height="56" as="geometry" />
         </mxCell>
         <mxCell id="BdaZgZHvzQFPSytIAgOV-40" value="Email String FK&amp;lt;UTENTI&amp;gt; PK" style="text;strokeColor=none;fillColor=none;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=12;whiteSpace=wrap;html=1;" parent="BdaZgZHvzQFPSytIAgOV-38" vertex="1">
-          <mxGeometry y="56" width="160" height="30" as="geometry" />
+          <mxGeometry y="26" width="160" height="30" as="geometry" />
         </mxCell>
         <mxCell id="BdaZgZHvzQFPSytIAgOV-42" value="VENDITORI" style="swimlane;fontStyle=1;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;align=center;fontSize=14;" parent="1" vertex="1">
-          <mxGeometry x="989.9999999999999" y="1420" width="170" height="100" as="geometry" />
-        </mxCell>
-        <mxCell id="BdaZgZHvzQFPSytIAgOV-43" value="Indirizzo : String" style="text;strokeColor=none;fillColor=none;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=12;whiteSpace=wrap;html=1;" parent="BdaZgZHvzQFPSytIAgOV-42" vertex="1">
-          <mxGeometry y="26" width="170" height="30" as="geometry" />
+          <mxGeometry x="989.9999999999999" y="1420" width="170" height="70" as="geometry" />
         </mxCell>
         <mxCell id="BdaZgZHvzQFPSytIAgOV-44" value="Email : String FK&amp;lt;UTENTI&amp;gt; PK" style="text;strokeColor=none;fillColor=none;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=12;whiteSpace=wrap;html=1;" parent="BdaZgZHvzQFPSytIAgOV-42" vertex="1">
-          <mxGeometry y="56" width="170" height="44" as="geometry" />
+          <mxGeometry y="26" width="170" height="44" as="geometry" />
         </mxCell>
         <mxCell id="BdaZgZHvzQFPSytIAgOV-46" value="ORDINI" style="swimlane;fontStyle=1;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;align=center;fontSize=14;" parent="1" vertex="1">
           <mxGeometry x="590.54" y="1690" width="160" height="190" as="geometry" />
@@ -122,13 +119,13 @@
         <mxCell id="BdaZgZHvzQFPSytIAgOV-56" value="Email String FK&amp;lt;ACQUIRENTI&amp;gt; AND Id: int FK&amp;lt;PRODOTTI&amp;gt; PK" style="text;strokeColor=none;fillColor=none;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=12;whiteSpace=wrap;html=1;" parent="BdaZgZHvzQFPSytIAgOV-54" vertex="1">
           <mxGeometry y="56" width="170" height="54" as="geometry" />
         </mxCell>
-        <mxCell id="BdaZgZHvzQFPSytIAgOV-63" value="" style="endArrow=classic;html=1;rounded=0;exitX=0.858;exitY=0.03;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.305;entryY=1.12;entryDx=0;entryDy=0;entryPerimeter=0;" parent="1" source="BdaZgZHvzQFPSytIAgOV-38" target="BdaZgZHvzQFPSytIAgOV-35" edge="1">
+        <mxCell id="BdaZgZHvzQFPSytIAgOV-63" value="" style="endArrow=classic;html=1;rounded=0;exitX=0.858;exitY=0.03;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.285;entryY=1.06;entryDx=0;entryDy=0;entryPerimeter=0;" parent="1" source="BdaZgZHvzQFPSytIAgOV-38" target="BdaZgZHvzQFPSytIAgOV-39" edge="1">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
             <mxPoint x="860" y="1530" as="sourcePoint" />
             <mxPoint x="770" y="1380" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="BdaZgZHvzQFPSytIAgOV-64" value="" style="endArrow=classic;html=1;rounded=0;exitX=0.125;exitY=0;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.615;entryY=1.013;entryDx=0;entryDy=0;entryPerimeter=0;" parent="1" source="BdaZgZHvzQFPSytIAgOV-42" target="BdaZgZHvzQFPSytIAgOV-35" edge="1">
+        <mxCell id="BdaZgZHvzQFPSytIAgOV-64" value="" style="endArrow=classic;html=1;rounded=0;exitX=0.125;exitY=0;exitDx=0;exitDy=0;exitPerimeter=0;entryX=1.01;entryY=0.087;entryDx=0;entryDy=0;entryPerimeter=0;" parent="1" source="BdaZgZHvzQFPSytIAgOV-42" target="BdaZgZHvzQFPSytIAgOV-35" edge="1">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
             <mxPoint x="860" y="1530" as="sourcePoint" />
             <mxPoint x="1100" y="1340" as="targetPoint" />
