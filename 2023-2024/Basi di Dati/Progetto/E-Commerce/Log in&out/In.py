@@ -10,8 +10,7 @@ import login_required
 def login():
     if request.method == "POST":
          conn = engine.connected()
-         query = select(users.c.pwd).
-         where (users.c.email == request.form[’user ’])
+         query = select(users.c.pwd).where (users.c.email == request.form[’user ’])
 
          rs = conn.execute(query)
          password = rs.fetchone()
