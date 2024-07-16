@@ -19,5 +19,9 @@ def loginAcquirente():
 
          if (password is not None):
             login_required
+         else:
+             return redirect(url_for('home'))
+    else:
+        return redirect(url_for('home'))
 
 
