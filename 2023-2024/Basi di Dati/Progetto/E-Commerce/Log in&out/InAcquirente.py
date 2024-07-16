@@ -8,7 +8,7 @@ import login_required
 import ConfigurazioneAcquirente
 
 @app.route('/login', methods=["GET", "POST"])
-def login():
+def loginAcquirente():
     if request.method == "POST":
          conn = engine.connected()
          query = select(users.c.pwd).where (users.c.email == request.form[’user ’])
