@@ -5,6 +5,7 @@ from flask import redirect
 from flask import url_for
 from sqlalchemy import *
 import login_required
+import ConfigurazioneAcquirente
 
 @app.route('/login', methods=["GET", "POST"])
 def login():
