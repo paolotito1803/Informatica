@@ -3,6 +3,5 @@ from flask_login import *
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'venditore'
-app.config['SECRET_KEY'] = 'development'
 login_manager = LoginManager()
 login_manager.init_app(app)
