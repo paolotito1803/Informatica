@@ -204,4 +204,4 @@ def registrazione():
         user = User(nome, indirizzo, email, password, ruolo)
         db.session.add(user)
         db.session.commit()
-    login()
+    return redirect(url_for('login'))
