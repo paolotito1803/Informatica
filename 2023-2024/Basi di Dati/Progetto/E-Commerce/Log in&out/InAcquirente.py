@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, session
 from flask import render_template
 from flask import request
 from flask import redirect
@@ -11,6 +11,13 @@ from flask import url_for
 import ConfigurazioneAcquirente
 
 app = Flask(__name__)
+@app.get("/me")
+def me():
+    if 'username' in session:
+        username = session['username']
+        return render_template("Home Page acquirente.html", username=username)
+    else:
+       return redirect(url_for("login"))
 @app.route('/login', methods=["GET", "POST"])
 def loginAcquirente():
     ConfigurazioneAcquirente()
