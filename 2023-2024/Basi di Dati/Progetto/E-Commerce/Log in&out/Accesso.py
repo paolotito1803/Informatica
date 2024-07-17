@@ -76,11 +76,24 @@ class User(UserMixin, db.Model):
     email = db.Column(db.Integer, primary_key=True)
     nome = db.Column(db.String(80), unique=True, nullable=False)
     password = db.Column(db.String(120), unique=True, nullable=False)
+    indirizzo = db.Column(db.String(80), unique=True, nullable=False)
+    ruolo = db.Column(db.Boolean, unique=False, nullable=False)
+    def __init__(self, nome, indirizzo, email, password, ruolo):
+        self.nome = nome
+        self.indirizzo = indirizzo
+        self.email = email
+        self.password = password
+        self.ruolo = ruolo
 
 class Product(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80), nullable=False)
     quantity = db.Column(db.Integer, nullable=False)
+
+    def __init__(self, name, quantity, id):
+        self.name = name
+        self.quantity = quantity
+        self.id = id
 @app.route('/')
 def home():
     if 'user_type' in session:
@@ -178,3 +191,17 @@ def dashboard():
 def logout():
     session.pop('user_type', None)
     return 'Sei stato disconnesso!'
+
+@app.route('/registrazione', methods=['GET', 'POST'])
+def registrazione():
+    if request.method == 'POST':
+        nome = request.form['nome']
+        email = request.form['email']
+        password = request.form['pass']
+        indirizzo = request.form['indirizzo']
+        ruolo = request.form['ruolo']
+
+        user = User(nome, indirizzo, email, password, ruolo)
+        db.session.add(user)
+        db.session.commit()
+    login()
