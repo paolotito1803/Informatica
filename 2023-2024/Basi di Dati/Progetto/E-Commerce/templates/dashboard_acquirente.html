@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h1>Dashboard Acquirente</h1>
+
+    <h2>Prodotti</h2>
+    <ul>
+    {% for product in products %}
+        <li>
+            {{ product.name }} - {{ product.quantity }}
+            <form action="{{ url_for('dashboard_acquirente') }}" method="post">
+                <input type="hidden" name="id" value="{{ product.id }}">
+                <input type="submit" value="Acquista prodotto">
+            </form>
+        </li>
+    {% endfor %}
+    </ul>
+</body>
+</html>
