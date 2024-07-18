@@ -182,10 +182,38 @@ def remove_product(id):
     db.session.commit()
     return redirect(url_for('dashboard'))
 
-@app.route('/dashboard')
-def dashboard():
+# @app.route('/dashboard')
+# def dashboard():
+#     products = Product.query.all()
+#     return render_template('dashboard.html', products=products)
+
+@app.route('/dashboard_venditore', methods=['GET', 'POST'])
+def dashboard_venditore():
+    if request.method == 'POST':
+        if 'add' in request.form:
+            name = request.form['name']
+            quantity = request.form['quantity']
+            product = Product(name=name, quantity=quantity)
+            db.session.add(product)
+            db.session.commit()
+        elif 'remove' in request.form:
+            id = request.form['id']
+            product = Product.query.get(id)
+            db.session.delete(product)
+            db.session.commit()
     products = Product.query.all()
-    return render_template('dashboard.html', products=products)
+    return render_template('dashboard_venditore.html', products=products)
+
+@app.route('/dashboard_acquirente', methods=['GET', 'POST'])
+def dashboard_acquirente():
+    if request.method == 'POST':
+        id = request.form['id']
+        product = Product.query.get(id)
+        if product.quantity > 0:
+            product.quantity -= 1
+            db.session.commit()
+    products = Product.query.all()
+    return render_template('dashboard_acquirente.html', products=products)
 
 @app.route('/logout')
 def logout():
