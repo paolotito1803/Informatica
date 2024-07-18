@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Ricerca</title>
+</head>
+<body>
+    <h1>Ricerca</h1>
+    <form method="POST">
+        <label for="parole_chiave">Parole chiave:</label><br>
+        <input type="text" id="parole_chiave" name="parole_chiave"><br>
+        <input type="submit" value="Cerca">
+    </form>
+    {% if prodotti %}
+    <h2>Risultati:</h2>
+    <table>
+        <tr>
+            <th>Nome</th>
+            <th>Descrizione</th>
+            <th>Categoria</th>
+            <th>Prezzo</th>
+            <th>Disponibilità</th>
+        </tr>
+        {% for prodotto in prodotti %}
+        <tr>
+            <td>{{ prodotto.nome }}</td>
+            <td>{{ prodotto.descrizione }}</td>
+            <td>{{ prodotto.categoria }}</td>
+            <td>{{ prodotto.prezzo }}</td>
+            <td>{{ prodotto.disponibilita }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% endif %}
+</body>
+</html>

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Prodotti</title>
+</head>
+<body>
+    <h1>Prodotti</h1>
+    <table>
+        <tr>
+            <th>Nome</th>
+            <th>Descrizione</th>
+            <th>Categoria</th>
+            <th>Prezzo</th>
+            <th>Disponibilità</th>
+        </tr>
+        {% for prodotto in prodotti %}
+        <tr>
+            <td>{{ prodotto.nome }}</td>
+            <td>{{ prodotto.descrizione }}</td>
+            <td>{{ prodotto.categoria }}</td>
+            <td>{{ prodotto.prezzo }}</td>
+            <td>{{ prodotto.disponibilita }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
