@@ -204,6 +204,7 @@ def dashboard_venditore():
     products = Product.query.all()
     return render_template('dashboard_venditore.html', products=products)
 
+
 @app.route('/dashboard_acquirente', methods=['GET', 'POST'])
 def dashboard_acquirente():
     if request.method == 'POST':
