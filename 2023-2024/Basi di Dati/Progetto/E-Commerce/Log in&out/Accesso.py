@@ -77,7 +77,7 @@ class User(UserMixin, db.Model):
     nome = db.Column(db.String(80), unique=True, nullable=False)
     password = db.Column(db.String(120), unique=True, nullable=False)
     indirizzo = db.Column(db.String(80), unique=True, nullable=False)
-    ruolo = db.Column(db.Boolean, unique=False, nullable=False)
+    ruolo = db.Column(db.String, unique=False, nullable=False)
     def __init__(self, nome, indirizzo, email, password, ruolo):
         self.nome = nome
         self.indirizzo = indirizzo
