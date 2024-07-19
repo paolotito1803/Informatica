@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard</title>
+</head>
+<body>
+    <h1>Benvenuto, {{ utente.nome }}!</h1>
+    <h2>Prodotti disponibili:</h2>
+    <table>
+        <tr>
+            <th>Nome</th>
+            <th>Descrizione</th>
+            <th>Categoria</th>
+            <th>Prezzo</th>
+            <th>Disponibilità</th>
+        </tr>
+        {% for prodotto in prodotti %}
+        <tr>
+            <td>{{ prodotto.nome }}</td>
+            <td>{{ prodotto.descrizione }}</td>
+            <td>{{ prodotto.categoria }}</td>
+            <td>{{ prodotto.prezzo }}</td>
+            <td>{{ prodotto.disponibilita }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    <br>
+    <br>
+    <form action="/profilo" method="GET">
+        <input type="submit" value="Vai al profilo">
+    </form>
+</body>
+</html>

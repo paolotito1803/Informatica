@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>I tuoi ordini</title>
+</head>
+<body>
+    <h1>I tuoi ordini</h1>
+    {% if ordini %}
+    <table>
+        <thead>
+            <tr>
+                <th>ID Ordine</th>
+                <th>Data</th>
+                <th>Stato</th>
+                <th>Totale</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for ordine in ordini %}
+            <tr>
+                <td>{{ ordine.id }}</td>
+                <td>{{ ordine.data }}</td>
+                <td>{{ 'Consegnato' if ordine.stato else 'In elaborazione' }}</td>
+                <td>{{ ordine.totale }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p>Non hai ancora effettuato ordini.</p>
+    {% endif %}
+</body>
+</html>
