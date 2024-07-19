@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard</title>
+</head>
+<body>
+    <h1>Benvenuto, {{ utente.nome }}!</h1>
+    <form action="/profilo" method="GET">
+        <input type="submit" value="Vai al profilo">
+    </form>
+    <br>
+    <br>
+    <form action="/carrello" method="GET">
+        <input type="submit" value="Vai al carrello">
+    </form>
+    <h2>Prodotti disponibili:</h2>
+    <table>
+        <tr>
+            <th>Nome</th>
+            <th>Descrizione</th>
+            <th>Categoria</th>
+            <th>Prezzo</th>
+            <th>Disponibilità</th>
+        </tr>
+        {% for prodotto in prodotti %}
+        <tr>
+            <td>{{ prodotto.nome }}</td>
+            <td>{{ prodotto.descrizione }}</td>
+            <td>{{ prodotto.categoria }}</td>
+            <td>{{ prodotto.prezzo }}</td>
+            <td>{{ prodotto.disponibilita }}</td>
+            <td>
+                <form method="POST" action="{{url_for('aggiungi_al_carrello', id_Prodotti = prodotto.id_Prodotti)}}">
+                    <input type="submit" value="aggiungi al carrello">
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

@@ -40,9 +40,9 @@ class Ordini(db.Model):
 
 class Carrelli(db.Model):
     email = db.Column(db.String(80), db.ForeignKey('utenti.email'), primary_key=True)
-    id = db.Column(db.Integer, db.ForeignKey('prodotti.id_Prodotti'), primary_key=True)
+    id_Prodotti = db.Column(db.Integer, db.ForeignKey('prodotti.id_Prodotti'), primary_key=True)
     quantita = db.Column(db.Integer, nullable=False)
-    prezzo = db.Column(db.Float, nullable=False)
+    #prezzo = db.Column(db.Float, nullable=False)
 
 
 class Prodotti_Ordini(db.Model):
@@ -81,7 +81,10 @@ def login():
         if utente and utente.password == request.form['password']:
             session['email'] = utente.email
             session['is_venditore'] = utente.is_venditore
-            return redirect(url_for('dashboard'))
+            if session['is_venditore'] is True:
+                return redirect(url_for('dashboard_venditore'))
+            else:
+                return redirect(url_for('dashboard_acquirente'))
     return render_template('login.html')
 
 
@@ -94,7 +97,7 @@ def aggiungi_prodotto():
                                   disponibilita=request.form['disponibilita'])
         db.session.add(nuovo_prodotto)
         db.session.commit()
-        return redirect(url_for('dashboard'))
+        return redirect(url_for('dashboard_venditore'))
     return render_template('aggiungi_prodotto.html')
 
 
@@ -106,7 +109,7 @@ def crea_ordine():
                               totale=request.form['totale'])
         db.session.add(nuovo_ordine)
         db.session.commit()
-        return redirect(url_for('dashboard'))
+        return redirect(url_for('dashboard_acquirente'))
     return render_template('crea_ordine.html')
 
 
@@ -118,40 +121,50 @@ def rimuovi_prodotto(id):
     if prodotto:
         db.session.delete(prodotto)
         db.session.commit()
-    return redirect(url_for('dashboard'))
+    return redirect(url_for('dashboard_venditore'))
 
 
 # Funzioni per la gestione del carrello
-@app.route('/aggiungi_al_carrello/<int:id>', methods=['POST'])
-def aggiungi_al_carrello(id):
+@app.route('/aggiungi_al_carrello/<int:id_Prodotti>', methods=['POST'])
+def aggiungi_al_carrello(id_Prodotti):
     if 'email' not in session or session['is_venditore']:
         return redirect(url_for('login'))
-    prodotto = Prodotti.query.get(id)
+    prodotto = Prodotti.query.get(id_Prodotti)
     if prodotto and prodotto.disponibilita > 0:
-        carrello = Carrelli.query.get((session['email'], id))
+        carrello = Carrelli.query.get((session['email'], id_Prodotti))
         if carrello:
             carrello.quantita += 1
         else:
-            carrello = Carrelli(email=session['email'], id=id, quantita=1, prezzo=prodotto.prezzo)
+            carrello = Carrelli(email=session['email'], id_Prodotti=id_Prodotti, quantita=1)
             db.session.add(carrello)
         prodotto.disponibilita -= 1
         db.session.commit()
-    return redirect(url_for('dashboard'))
+        return redirect(url_for('dashboard_acquirente'))
+    return redirect(url_for('dashboard_acquirente'))
 
 
-@app.route('/rimuovi_dal_carrello/<int:id>', methods=['POST'])
-def rimuovi_dal_carrello(id):
+@app.route('/rimuovi_dal_carrello/<int:id_Prodotti>', methods=['POST'])
+def rimuovi_dal_carrello(id_Prodotti):
     if 'email' not in session or session['is_venditore']:
         return redirect(url_for('login'))
-    carrello = Carrelli.query.get((session['email'], id))
+    carrello = Carrelli.query.get((session['email'], id_Prodotti))
     if carrello:
-        prodotto = Prodotti.query.get(id)
+        prodotto = Prodotti.query.get(id_Prodotti)
         carrello.quantita -= 1
         if carrello.quantita == 0:
             db.session.delete(carrello)
         prodotto.disponibilita += 1
         db.session.commit()
-    return redirect(url_for('dashboard'))
+    return redirect(url_for('dashboard_acquirente'))
+
+
+@app.route("/carrello")
+def visualizzaCarrello():
+    if 'email' not in session:
+        return redirect(url_for('login'))
+    carrello = db.session.query(Carrelli, Prodotti).join(Prodotti, Carrelli.id_Prodotti == Prodotti.id_Prodotti).filter(
+        Carrelli.email == session['email'].all())
+    return render_template("carrello.html", carrello=carrello)
 
 
 # Funzioni per la visualizzazione dei prodotti e la ricerca
@@ -185,7 +198,7 @@ def profilo():
 
 
 # Funzioni per la visualizzazione e l'aggiornamento dello stato degli ordini
-@app.route('/ordini')
+@app.route('/ordini', methods=['GET'])
 def visualizza_ordini():
     if 'email' not in session:
         return redirect(url_for('login'))
@@ -201,17 +214,25 @@ def aggiorna_stato_ordine(id):
     if ordine:
         ordine.stato = request.form['stato']
         db.session.commit()
-    return redirect(url_for('dashboard'))
+    return redirect(url_for('dashboard_acquirente'))
 
 
-@app.route('/dashboard')
-def dashboard():
+@app.route('/dashboard_acquirente')
+def dashboard_acquirente():
     if 'email' not in session:
         return redirect(url_for('login'))
     utente = Utenti.query.get(session['email'])
     prodotti = Prodotti.query.all()
-    ordini = Ordini.query.filter_by(email=session['email']).all()
-    return render_template('dashboard.html', utente=utente, prodotti=prodotti, ordini=ordini)
+    return render_template('dashboard_acquirente.html', utente=utente, prodotti=prodotti)
+
+
+@app.route('/dashboard_venditore')
+def dashboard_venditore():
+    if 'email' not in session:
+        return redirect(url_for('login'))
+    utente = Utenti.query.get(session['email'])
+    prodotti = Prodotti.query.all()
+    return render_template('dashboard_venditore.html', utente=utente, prodotti=prodotti)
 
 
 @app.route('/logout')
@@ -222,9 +243,14 @@ def logout():
     return redirect(url_for('login'))
 
 
+@app.route('/home')
+def home():
+    return render_template("home.html")
+
+
 @app.route('/')
 def index():
-    return redirect(url_for('registrazione'))
+    return redirect(url_for('home'))
 
 
 if __name__ == '__main__':
