@@ -6,6 +6,7 @@
 </head>
 <body>
     <h1>Benvenuto, {{ utente.nome }}!</h1>
+    <img src="/static/acquirente.jpg">
     <form action="/profilo" method="GET">
         <input type="submit" value="Vai al profilo">
     </form>
@@ -14,12 +15,25 @@
     <form action="/carrello" method="GET">
         <input type="submit" value="Vai al carrello">
     </form>
+    <br>
+    <br>
+    <form action="/ordini" method="GET">
+        <input type="submit" value="Vai agli ordini">
+    </form>
+    <br>
+    <br>
+    <form method="POST" action="/ricerca">
+        <label for="parole_chiave">Parole chiave:</label><br>
+        <input type="search" autocomplete="on" id="parole_chiave" name="parole_chiave" placeholder="descrizione, nome .."><br>
+        <input type="submit" value="Cerca">
+    </form>
     <h2>Prodotti disponibili:</h2>
     <table>
         <tr>
             <th>Nome</th>
             <th>Descrizione</th>
             <th>Categoria</th>
+            <th>Modello</th>
             <th>Prezzo</th>
             <th>Disponibilità</th>
         </tr>
@@ -28,6 +42,7 @@
             <td>{{ prodotto.nome }}</td>
             <td>{{ prodotto.descrizione }}</td>
             <td>{{ prodotto.categoria }}</td>
+            <td>{{ prodotto.modello }}</td>
             <td>{{ prodotto.prezzo }}</td>
             <td>{{ prodotto.disponibilita }}</td>
             <td>

@@ -1,6 +1,6 @@
 # Import delle librerie necessarie
 from datetime import datetime
-
+import psycopg2
 from flask import Flask, render_template, request, redirect, url_for, session
 from flask_sqlalchemy import SQLAlchemy
 
@@ -102,29 +102,12 @@ def aggiungi_prodotto():
     if request.method == 'POST':
         nuovo_prodotto = Prodotti(nome=request.form['nome'], descrizione=request.form['descrizione'],
                                   categoria=request.form['categoria'], prezzo=request.form['prezzo'],
-                                  disponibilita=request.form['disponibilita'])
+                                  disponibilita=request.form['disponibilita'], marca=request.form['marca'],
+                                  modello=request.form['modello'])
         db.session.add(nuovo_prodotto)
         db.session.commit()
         return redirect(url_for('dashboard_venditore'))
     return render_template('aggiungi_prodotto.html')
-
-
-# Funzioni per la gestione degli ordini
-@app.route('/crea_ordine', methods=['GET', 'POST'])
-def crea_ordine():
-    if request.method == 'POST':
-        carrello = (db.session.query(Carrelli.quantita, Prodotti.prezzo).join(Prodotti,Carrelli.id_Prodotti == Prodotti.id_Prodotti)
-                    .filter(Carrelli.email == session['email']).all())
-        totale = sum(item.quantita * item.prezzo for item in carrello) # calcolo il totale dell'ordine
-        nuovo_ordine = Ordini(email=session['email'], stato=True, data=datetime.now(), totale=totale) # creo l'ordine
-        db.session.add(nuovo_ordine) # lo aggiungo alla tabella nel db
-        db.session.commit() # eseguo il commit()
-        elimina_elementi = db.session.query(Carrelli).filter(session['email'] == Carrelli.email).all()
-        for item in elimina_elementi: # elimino tutto ciò che è presente nel carrello con la mail di cui ho fatto il login
-            db.session.delete(item)
-        db.session.commit()
-        return redirect(url_for('dashboard_acquirente'))
-    return render_template('crea_ordine.html')
 
 
 @app.route('/rimuovi_prodotto/<int:id>', methods=['POST'])
@@ -138,16 +121,52 @@ def rimuovi_prodotto(id):
     return redirect(url_for('dashboard_venditore'))
 
 
+@app.route('/aggiorna_prodotti/<int:id>', methods=['GET', 'POST'])
+def aggiorna_prodotto(id):
+    if 'email' not in session or not session['is_venditore']:
+        return redirect(url_for('login'))
+    prodotto = Prodotti.query.get(id)
+    if request.method == 'POST':
+        nuova_disp = request.form.get('nuova_disponibilita')
+        if nuova_disp.isdigit() and int(nuova_disp) >= 0:
+            prodotto.disponibilita = int(nuova_disp)
+            db.session.commit()
+            return redirect(url_for('dashboard_venditore'))
+    return render_template('aggiorna_disponibilita.html', prodotto=prodotto)
+
+
+# Funzioni per la gestione degli ordini
+@app.route('/crea_ordine', methods=['GET', 'POST'])
+def crea_ordine():
+    if request.method == 'POST':
+        carrello = (db.session.query(Carrelli.quantita, Prodotti.prezzo).join(Prodotti,
+                                                                              Carrelli.id_Prodotti == Prodotti.id_Prodotti)
+                    .filter(Carrelli.email == session['email']).all())
+        totale = sum(item.quantita * item.prezzo for item in carrello)  # calcolo il totale dell'ordine
+        nuovo_ordine = Ordini(email=session['email'], stato=True, data=datetime.now(), totale=totale)  # creo l'ordine
+        db.session.add(nuovo_ordine)  # lo aggiungo alla tabella nel db
+        db.session.commit()  # eseguo il commit()
+
+        elimina_elementi = db.session.query(Carrelli).filter(session['email'] == Carrelli.email).all()
+        for item in elimina_elementi:  # elimino tutto ciò che è presente nel carrello con la mail di cui ho fatto il login
+            db.session.delete(item)
+        db.session.commit()
+        return redirect(url_for('dashboard_acquirente'))
+    return render_template('crea_ordine.html')
+
+
 # Funzioni per la gestione del carrello
 @app.route('/carrello')
 def visualizzaCarrello():
     if 'email' not in session:
         return redirect(url_for('login'))
-    carrello = (db.session.query(Prodotti.id_Prodotti, Carrelli.quantita, Prodotti.nome, Prodotti.descrizione, Prodotti.prezzo)
-                .join(Prodotti, Carrelli.id_Prodotti == Prodotti.id_Prodotti).filter(
-                Carrelli.email == session['email']).all())
+    carrello = (
+        db.session.query(Prodotti.id_Prodotti, Carrelli.quantita, Prodotti.nome, Prodotti.descrizione, Prodotti.prezzo)
+        .join(Prodotti, Carrelli.id_Prodotti == Prodotti.id_Prodotti).filter(
+            Carrelli.email == session['email']).all())
     totale = sum(item.quantita * item.prezzo for item in carrello)
     return render_template("carrello.html", carrello=carrello, totale=totale)
+
 
 @app.route('/aggiungi_al_carrello/<int:id_Prodotti>', methods=['POST'])
 def aggiungi_al_carrello(id_Prodotti):
@@ -191,12 +210,16 @@ def visualizza_prodotti():
 
 @app.route('/ricerca', methods=['GET', 'POST'])
 def ricerca():
+    if 'email' not in session:
+        return redirect(url_for('login'))
+    utente = Utenti.query.get(session['email'])
     if request.method == 'POST':
         parole_chiave = request.form['parole_chiave']
         prodotti = Prodotti.query.filter(
-            Prodotti.nome.contains(parole_chiave) | Prodotti.descrizione.contains(parole_chiave)).all()
-        return render_template('ricerca.html', prodotti=prodotti)
-    return render_template('ricerca.html')
+            Prodotti.nome.contains(parole_chiave) | Prodotti.descrizione.contains(parole_chiave)
+            | Prodotti.modello.contains(parole_chiave)).all()
+        return render_template('dashboard_acquirente.html', utente=utente, prodotti=prodotti)
+    return render_template('dashboard_acquirente.html')
 
 
 @app.route('/profilo', methods=['GET', 'POST'])
