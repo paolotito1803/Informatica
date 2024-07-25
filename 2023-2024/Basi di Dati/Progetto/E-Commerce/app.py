@@ -1,17 +1,21 @@
 # Import delle librerie necessarie
-from flask import Flask, render_template, request, redirect, url_for, session
+from datetime import datetime
 import psycopg2
+from flask import Flask, render_template, request, redirect, url_for, session
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'progettoDB'
+
 # Configurazione del database
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql+psycopg2://postgres:postgres@localhost/E-commerce'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
 
 # Definizione dei modelli
 class Utenti(db.Model):
+    __table_name__ = 'utenti'
     email = db.Column(db.String(80), primary_key=True)
     password = db.Column(db.String(120), nullable=False, unique=True)
     nome = db.Column(db.String(120), nullable=False)
@@ -19,7 +23,17 @@ class Utenti(db.Model):
     is_venditore = db.Column(db.Boolean, nullable=False)
 
 
+class Ordini(db.Model):
+    __table_name__ = 'ordini'
+    id_Ordine = db.Column(db.Integer, primary_key=True)
+    email = db.Column(db.String(80), db.ForeignKey('utenti.email'), nullable=False)
+    stato = db.Column(db.Boolean, nullable=False)
+    data = db.Column(db.Date, nullable=False)
+    totale = db.Column(db.Float, nullable=False)
+
+
 class Prodotti(db.Model):
+    __table_name__ = 'prodotti'
     id_Prodotti = db.Column(db.Integer, primary_key=True)
     nome = db.Column(db.String(80), nullable=False)
     descrizione = db.Column(db.String(120), nullable=False)
@@ -30,31 +44,25 @@ class Prodotti(db.Model):
     modello = db.Column(db.String(120), nullable=False)
 
 
-class Ordini(db.Model):
-    id_Ordine = db.Column(db.Integer, primary_key=True)
-    email = db.Column(db.String(80), db.ForeignKey('utenti.email'), nullable=False)
-    stato = db.Column(db.Boolean, nullable=False)
-    data = db.Column(db.Date, nullable=False)
-    totale = db.Column(db.Float, nullable=False)
-
-
 class Carrelli(db.Model):
+    __table_name__ = 'carrelli'
     email = db.Column(db.String(80), db.ForeignKey('utenti.email'), primary_key=True)
     id_Prodotti = db.Column(db.Integer, db.ForeignKey('prodotti.id_Prodotti'), primary_key=True)
     quantita = db.Column(db.Integer, nullable=False)
-    #prezzo = db.Column(db.Float, nullable=False)
+
+
+class Vende(db.Model):
+    __table_name__ = 'vende'
+    email = db.Column(db.String(80), db.ForeignKey('utenti.email'), primary_key=True)
+    id_Prodotti = db.Column(db.Integer, db.ForeignKey('prodotti.id_Prodotti'), primary_key=True)
 
 
 class Prodotti_Ordini(db.Model):
+    __table_name__ = 'prodotti_ordini'
     id_Prodotti = db.Column(db.Integer, db.ForeignKey('prodotti.id_Prodotti'), primary_key=True)
     id_Ordini = db.Column(db.Integer, db.ForeignKey('ordini.id_Ordine'), primary_key=True)
     quantita = db.Column(db.Integer, nullable=False)
     prezzo = db.Column(db.Float, nullable=False)
-
-
-class Vende(db.Model):
-    email = db.Column(db.String(80), db.ForeignKey('utenti.email'), primary_key=True)
-    id_Prodotti = db.Column(db.Integer, db.ForeignKey('prodotti.id_Prodotti'), primary_key=True)
 
 
 # Funzioni per la gestione degli utenti
@@ -94,23 +102,12 @@ def aggiungi_prodotto():
     if request.method == 'POST':
         nuovo_prodotto = Prodotti(nome=request.form['nome'], descrizione=request.form['descrizione'],
                                   categoria=request.form['categoria'], prezzo=request.form['prezzo'],
-                                  disponibilita=request.form['disponibilita'])
+                                  disponibilita=request.form['disponibilita'], marca=request.form['marca'],
+                                  modello=request.form['modello'])
         db.session.add(nuovo_prodotto)
         db.session.commit()
         return redirect(url_for('dashboard_venditore'))
     return render_template('aggiungi_prodotto.html')
-
-
-# Funzioni per la gestione degli ordini
-@app.route('/crea_ordine', methods=['GET', 'POST'])
-def crea_ordine():
-    if request.method == 'POST':
-        nuovo_ordine = Ordini(email=request.form['email'], stato=request.form['stato'], data=request.form['data'],
-                              totale=request.form['totale'])
-        db.session.add(nuovo_ordine)
-        db.session.commit()
-        return redirect(url_for('dashboard_acquirente'))
-    return render_template('crea_ordine.html')
 
 
 @app.route('/rimuovi_prodotto/<int:id>', methods=['POST'])
@@ -124,7 +121,53 @@ def rimuovi_prodotto(id):
     return redirect(url_for('dashboard_venditore'))
 
 
+@app.route('/aggiorna_prodotti/<int:id>', methods=['GET', 'POST'])
+def aggiorna_prodotto(id):
+    if 'email' not in session or not session['is_venditore']:
+        return redirect(url_for('login'))
+    prodotto = Prodotti.query.get(id)
+    if request.method == 'POST':
+        nuova_disp = request.form.get('nuova_disponibilita')
+        if nuova_disp.isdigit() and int(nuova_disp) >= 0:
+            prodotto.disponibilita = int(nuova_disp)
+            db.session.commit()
+            return redirect(url_for('dashboard_venditore'))
+    return render_template('aggiorna_disponibilita.html', prodotto=prodotto)
+
+
+# Funzioni per la gestione degli ordini
+@app.route('/crea_ordine', methods=['GET', 'POST'])
+def crea_ordine():
+    if request.method == 'POST':
+        carrello = (db.session.query(Carrelli.quantita, Prodotti.prezzo).join(Prodotti,
+                                                                              Carrelli.id_Prodotti == Prodotti.id_Prodotti)
+                    .filter(Carrelli.email == session['email']).all())
+        totale = sum(item.quantita * item.prezzo for item in carrello)  # calcolo il totale dell'ordine
+        nuovo_ordine = Ordini(email=session['email'], stato=True, data=datetime.now(), totale=totale)  # creo l'ordine
+        db.session.add(nuovo_ordine)  # lo aggiungo alla tabella nel db
+        db.session.commit()  # eseguo il commit()
+
+        elimina_elementi = db.session.query(Carrelli).filter(session['email'] == Carrelli.email).all()
+        for item in elimina_elementi:  # elimino tutto ciò che è presente nel carrello con la mail di cui ho fatto il login
+            db.session.delete(item)
+        db.session.commit()
+        return redirect(url_for('dashboard_acquirente'))
+    return render_template('crea_ordine.html')
+
+
 # Funzioni per la gestione del carrello
+@app.route('/carrello')
+def visualizzaCarrello():
+    if 'email' not in session:
+        return redirect(url_for('login'))
+    carrello = (
+        db.session.query(Prodotti.id_Prodotti, Carrelli.quantita, Prodotti.nome, Prodotti.descrizione, Prodotti.prezzo)
+        .join(Prodotti, Carrelli.id_Prodotti == Prodotti.id_Prodotti).filter(
+            Carrelli.email == session['email']).all())
+    totale = sum(item.quantita * item.prezzo for item in carrello)
+    return render_template("carrello.html", carrello=carrello, totale=totale)
+
+
 @app.route('/aggiungi_al_carrello/<int:id_Prodotti>', methods=['POST'])
 def aggiungi_al_carrello(id_Prodotti):
     if 'email' not in session or session['is_venditore']:
@@ -158,15 +201,6 @@ def rimuovi_dal_carrello(id_Prodotti):
     return redirect(url_for('dashboard_acquirente'))
 
 
-@app.route("/carrello")
-def visualizzaCarrello():
-    if 'email' not in session:
-        return redirect(url_for('login'))
-    carrello = db.session.query(Carrelli, Prodotti).join(Prodotti, Carrelli.id_Prodotti == Prodotti.id_Prodotti).filter(
-        Carrelli.email == session['email'].all())
-    return render_template("carrello.html", carrello=carrello)
-
-
 # Funzioni per la visualizzazione dei prodotti e la ricerca
 @app.route('/prodotti')
 def visualizza_prodotti():
@@ -176,12 +210,16 @@ def visualizza_prodotti():
 
 @app.route('/ricerca', methods=['GET', 'POST'])
 def ricerca():
+    if 'email' not in session:
+        return redirect(url_for('login'))
+    utente = Utenti.query.get(session['email'])
     if request.method == 'POST':
         parole_chiave = request.form['parole_chiave']
         prodotti = Prodotti.query.filter(
-            Prodotti.nome.contains(parole_chiave) | Prodotti.descrizione.contains(parole_chiave)).all()
-        return render_template('ricerca.html', prodotti=prodotti)
-    return render_template('ricerca.html')
+            Prodotti.nome.contains(parole_chiave) | Prodotti.descrizione.contains(parole_chiave)
+            | Prodotti.modello.contains(parole_chiave)).all()
+        return render_template('dashboard_acquirente.html', utente=utente, prodotti=prodotti)
+    return render_template('dashboard_acquirente.html')
 
 
 @app.route('/profilo', methods=['GET', 'POST'])
@@ -193,7 +231,10 @@ def profilo():
         utente.nome = request.form['nome']
         utente.indirizzo = request.form['indirizzo']
         db.session.commit()
-        return redirect(url_for('dashboard'))
+        if session['is_venditore']:
+            return redirect(url_for('dashboard_venditore'))
+        else:
+            return redirect(url_for('dashboard_acquirente'))
     return render_template('profilo.html', utente=utente)
 
 
@@ -252,6 +293,6 @@ def home():
 def index():
     return redirect(url_for('home'))
 
+
 if __name__ == '__main__':
     app.run(debug=True)
-

@@ -10,7 +10,6 @@
     <table>
         <thead>
             <tr>
-                <th>ID Ordine</th>
                 <th>Data</th>
                 <th>Stato</th>
                 <th>Totale</th>
@@ -19,7 +18,6 @@
         <tbody>
             {% for ordine in ordini %}
             <tr>
-                <td>{{ ordine.id }}</td>
                 <td>{{ ordine.data }}</td>
                 <td>{{ 'Consegnato' if ordine.stato else 'In elaborazione' }}</td>
                 <td>{{ ordine.totale }}</td>
