@@ -3,15 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <title>Aggiorna prodotto</title>
+    <link rel="stylesheet" type="text/css" href="/static/registrazione.css">
 </head>
 <body>
     <h1>Modifica disponibilità</h1>
     <form method="POST">
-        <label for="nuova_disponibilita">Nuova disponibilità:</label>
-        <input type="number" id="nuova_disponibilita" name="nuova_disponibilita" min="0" value="{{ prodotto.disponibilita }}">
-        <input type="submit" value="Aggiorna">
+        <div class="reg">
+            <label for="nuova_disponibilita">Nuova disponibilità:</label>
+            <input type="number" id="nuova_disponibilita" name="nuova_disponibilita" min="0" value="{{ prodotto.disponibilita }}">
+            <input type="submit" class="registrati" value="Aggiorna">
+        </div>
     </form>
-    <form action="/dashboard_venditore" method="post">
+    <form action="/dashboard_venditore" method="get">
         <input type="submit" value="Torna alla home">
     </form>
 </body>
