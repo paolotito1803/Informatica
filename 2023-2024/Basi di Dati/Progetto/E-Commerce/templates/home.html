@@ -3,17 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <title>Home</title>
+    <link rel="stylesheet" type="text/css" href="/static/home.css">
 </head>
 <body>
-    <h1>BENVENUTO NEL NOSTRO E-COMMERCE</h1>
-    <p>Sei un nuovo utente?</p><br>
-    <form action="/registrazione" method="GET">
-        <input type="submit" value="Registrati">
-    </form>
-    <br>
-    <p>Altrimenti</p><br>
-    <form action="/login" method="GET">
-        <input type="submit" value="Accedi">
-    </form>
+    <h1>FERRAMENTA.NET</h1>
+    <div class="reg">
+        <p>Sei un nuovo utente?</p>
+    </div>
+        <form action="/registrazione" method="GET">
+            <div style="display: flex; justify-content: center">
+                <input type="submit" class="registrati" value="Registrati">
+            </div>
+        </form>
+    <div class="reg">
+        <p>Altrimenti</p>
+    </div>
+        <form action="/login" method="GET">
+            <div style="display: flex; justify-content: center">
+                <input type="submit" class="Login" value="Accedi">
+            </div>
+        </form>
 </body>
 </html>

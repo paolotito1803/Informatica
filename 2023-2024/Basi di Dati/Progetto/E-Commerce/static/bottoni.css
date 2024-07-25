@@ -1,0 +1,34 @@
+/* File CSS */
+
+/* Modifica il colore di sfondo e il colore del testo del pulsante */
+.input-rosso {
+    background-color: #f44336; /* Colore di sfondo rosso */
+    color: white; /* Colore del testo bianco */
+    margin: 10px 2px;
+    font-size: 16px;
+}
+
+.input-verde {
+    background-color: #4CAF50; /* Colore di sfondo verde */
+    color: white; /* Colore del testo bianco */
+    margin: 10px 5px;
+    font-size: 16px;
+}
+
+.input-blu {
+    background-color: #008CBA; /* Colore di sfondo blu */
+    color: white; /* Colore del testo bianco */
+    margin: 10px 5px;
+    font-size: 16px;
+}
+
+/* Posiziona i pulsanti in una riga */
+.container {
+    display: flex;
+}
+
+th, td{
+    text-align: center;
+    padding: 15px;
+}
+

@@ -2,15 +2,21 @@
 <html lang="">
 <head>
     <title>Login</title>
+    <link rel="stylesheet" type="text/css" href="/static/login.css">
+    <link rel="stylesheet" type="text/css" href="/static/registrazione.css">
 </head>
 <body>
     <h1>Login</h1>
     <form action="/login" method="POST">
-        <label for="email">Email:</label><br>
-        <input type="email" id="email" name="email"><br>
-        <label for="password">Password:</label><br>
-        <input type="password" id="password" name="password"><br>
-        <input type="submit" value="Accedi">
+        <div class="reg">
+            <label for="email">Email:</label><br>
+            <input type="email" id="email" name="email"><br>
+            <label for="password">Password:</label><br>
+            <input type="password" id="password" name="password"><br>
+        </div>
+        <div style="display: flex; justify-content: center">
+            <input type="submit" class="accesso" value="Accedi">
+        </div>
     </form>
 </body>
 </html>

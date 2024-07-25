@@ -1,0 +1,38 @@
+CREATE OR REPLACE FUNCTION eliminazione_dal_carrello()
+RETURNS TRIGGER AS $$
+BEGIN
+    -- Elimina le righe dalla tabella carrelli che hanno lo stesso id_Prodotti
+    DELETE FROM carrelli WHERE id_Prodotti = OLD.id_Prodotti;
+    RETURN OLD;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER elimina_prodotti_carrello
+BEFORE DELETE ON prodotti
+FOR EACH ROW
+EXECUTE FUNCTION eliminazione_dal_carrello()
+
+
+CREATE OR REPLACE FUNCTION diminuzione_qnt()
+RETURNS TRIGGER AS $$
+BEGIN
+
+    IF((SELECT p.disponibilita
+        FROM prodotti p NATURAL JOIN prodotti_ordini po NATURAL JOIN ordini o
+        WHERE NEW.id_Ordine = po.id_Ordini AND po.id_Prodotti = p.id_Prodotti)) >=
+        (SELECT po.quantita
+         FROM prodotti p NATURAL JOIN prodotti_ordini po NATURAL JOIN ordini o
+         WHERE NEW.id_Ordine = po.id_Ordini AND po.id_Prodotti = p.id_Prodotti)) THEN
+            UPDATE prodotti
+            SET p.disponibilita = p.disponibilita - (SELECT po.quantita
+                                                     FROM prodotti p NATURAL JOIN prodotti_ordini po NATURAL JOIN ordini o
+                                                     WHERE NEW.id_Ordine = po.id_Ordini AND po.id_Prodotti = p.id_Prodotti))
+    END IF;
+        RETURN NULL;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER eliminazione_qnt
+BEFORE INSERT ON ordini
+FOR EACH ROW
+EXECUTE FUNCTION diminuzione_qnt()

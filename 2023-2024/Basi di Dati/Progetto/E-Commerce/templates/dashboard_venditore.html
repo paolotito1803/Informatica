@@ -3,12 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <title>Dashboard</title>
+    <link rel="stylesheet" type="text/css" href="/static/bottoni.css">
 </head>
 <body>
     <h1>Benvenuto, {{ utente.nome }}!</h1>
-    <img src="/static/venditore.jpg">
+    <img src="/static/venditore.jpg" width="150">
     <form action="/aggiungi_prodotto">
-        <input type="submit" value="Aggiungi Prodotto">
+        <input type="submit" class="input-verde" value="Aggiungi Prodotto">
     </form>
     <h2>Prodotti disponibili:</h2>
     <table>
@@ -28,12 +29,12 @@
             <td>{{ prodotto.disponibilita }}</td>
             <td>
                 <form action="{{url_for('rimuovi_prodotto', id = prodotto.id_Prodotti)}}" method="POST">
-                    <input type="submit" value="Rimuovi">
+                    <input type="submit" class="input-rosso" value="Rimuovi">
                 </form>
             </td>
             <td>
                 <form action="{{url_for('aggiorna_prodotto', id = prodotto.id_Prodotti)}}" method="GET">
-                    <input type="submit" value="Aggiorna">
+                    <input type="submit" class="input-blu" value="Aggiorna">
                 </form>
             </td>
         </tr>
