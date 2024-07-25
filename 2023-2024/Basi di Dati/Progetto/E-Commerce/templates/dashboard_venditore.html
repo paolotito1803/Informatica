@@ -6,6 +6,10 @@
 </head>
 <body>
     <h1>Benvenuto, {{ utente.nome }}!</h1>
+    <img src="/static/venditore.jpg">
+    <form action="/aggiungi_prodotto">
+        <input type="submit" value="Aggiungi Prodotto">
+    </form>
     <h2>Prodotti disponibili:</h2>
     <table>
         <tr>
@@ -22,6 +26,16 @@
             <td>{{ prodotto.categoria }}</td>
             <td>{{ prodotto.prezzo }}</td>
             <td>{{ prodotto.disponibilita }}</td>
+            <td>
+                <form action="{{url_for('rimuovi_prodotto', id = prodotto.id_Prodotti)}}" method="POST">
+                    <input type="submit" value="Rimuovi">
+                </form>
+            </td>
+            <td>
+                <form action="{{url_for('aggiorna_prodotto', id = prodotto.id_Prodotti)}}" method="GET">
+                    <input type="submit" value="Aggiorna">
+                </form>
+            </td>
         </tr>
         {% endfor %}
     </table>

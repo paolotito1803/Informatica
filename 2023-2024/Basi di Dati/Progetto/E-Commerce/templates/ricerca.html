@@ -5,9 +5,9 @@
 </head>
 <body>
     <h1>Ricerca</h1>
-    <form method="POST">
+    <form method="POST" action="/ricerca">
         <label for="parole_chiave">Parole chiave:</label><br>
-        <input type="text" id="parole_chiave" name="parole_chiave"><br>
+        <input type="search" autocomplete="on" id="parole_chiave" name="parole_chiave" placeholder="descrizione, nome .."><br>
         <input type="submit" value="Cerca">
     </form>
     {% if prodotti %}
