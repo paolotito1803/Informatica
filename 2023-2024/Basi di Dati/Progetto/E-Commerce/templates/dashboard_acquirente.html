@@ -3,30 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <title>Dashboard</title>
+    <link rel="stylesheet" type="text/css" href="/static/bottoni.css">
+    <link rel="stylesheet" type="text/css" href="/static/ricerca.css">
 </head>
 <body>
     <h1>Benvenuto, {{ utente.nome }}!</h1>
-    <img src="/static/acquirente.jpg">
-    <form action="/profilo" method="GET">
-        <input type="submit" value="Vai al profilo">
-    </form>
-    <br>
-    <br>
-    <form action="/carrello" method="GET">
-        <input type="submit" value="Vai al carrello">
-    </form>
-    <br>
-    <br>
-    <form action="/ordini" method="GET">
-        <input type="submit" value="Vai agli ordini">
-    </form>
-    <br>
-    <br>
-    <form method="POST" action="/ricerca">
-        <label for="parole_chiave">Parole chiave:</label><br>
-        <input type="search" autocomplete="on" id="parole_chiave" name="parole_chiave" placeholder="descrizione, nome .."><br>
-        <input type="submit" value="Cerca">
-    </form>
+    <img src="/static/acquirente.jpg" width="150">
+    <div class="container">
+        <form action="/profilo" method="GET">
+            <input type="submit" class="input-rosso" value="Vai al profilo">
+        </form>
+        <form action="/carrello" method="GET">
+            <input type="submit" class="input-verde" value="Vai al carrello">
+        </form>
+        <form action="/ordini" method="GET">
+            <input type="submit" class="input-blu" value="Vai agli ordini">
+        </form>
+    </div>
+    <div class="ricerca">
+        <form method="POST" action="/ricerca"><br>
+            <input type="search" autocomplete="on" id="parole_chiave" name="parole_chiave" placeholder="descrizione, nome ..">
+            <input type="submit" class="input-blu" value="Cerca">
+        </form>
+    </div>
     <h2>Prodotti disponibili:</h2>
     <table>
         <tr>
@@ -47,7 +46,7 @@
             <td>{{ prodotto.disponibilita }}</td>
             <td>
                 <form method="POST" action="{{url_for('aggiungi_al_carrello', id_Prodotti = prodotto.id_Prodotti)}}">
-                    <input type="submit" value="Aggiungi al carrello">
+                    <input type="submit" class="input-verde" value="Aggiungi al carrello">
                 </form>
             </td>
         </tr>

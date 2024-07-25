@@ -1,0 +1,22 @@
+h1{
+    text-align: center;
+}
+
+.modifica{
+    justify-content: center;
+    text-align: center;
+}
+
+.aggiorna{
+    background-color: #ff00ff;
+    color: black;
+    margin: 10px 2px;
+    font-size: 16px;
+}
+
+.esci{
+    background-color: #000000;
+    color: white;
+    margin: 10px 2px;
+    font-size: 16px;
+}

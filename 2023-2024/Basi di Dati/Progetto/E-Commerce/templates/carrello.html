@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>carrello</title>
+    <link rel="stylesheet" type="text/css" href="/static/bottoni.css">
 </head>
 <body>
     <table>
@@ -20,7 +21,7 @@
             <td>{{ prodotto.quantita }}</td>
             <td>
                 <form method="POST" action="{{url_for('rimuovi_dal_carrello', id_Prodotti = prodotto.id_Prodotti)}}">
-                    <input type="submit" value="Rimuovi prodotto">
+                    <input type="submit" class="input-rosso" value="Rimuovi prodotto">
                 </form>
             </td>
         </tr>
@@ -30,7 +31,7 @@
         TOTALE : € {{ totale }}
     </h5>
     <form action="/crea_ordine" method="POST">
-        <input type="submit" value="Acquista">
+        <input type="submit" class="input-verde" value="Acquista">
     </form>
 </body>
 </html>

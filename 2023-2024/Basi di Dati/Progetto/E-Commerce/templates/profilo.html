@@ -2,20 +2,27 @@
 <html lang="">
 <head>
     <title>Profilo</title>
+    <link rel="stylesheet" type="text/css" href="/static/profilo.css">
 </head>
 <body>
     <h1>Profilo</h1>
     <form method="POST">
-        <label for="nome">Nome:</label><br>
-        <input type="text" id="nome" name="nome" value="{{ utente.nome }}"><br>
-        <label for="indirizzo">Indirizzo:</label><br>
-        <input type="text" id="indirizzo" name="indirizzo" value="{{ utente.indirizzo }}"><br>
-        <input type="submit" value="Aggiorna">
+        <div class="modifica">
+            <label for="nome">Nome:</label><br>
+            <input type="text" id="nome" name="nome" value="{{ utente.nome }}"><br>
+            <label for="indirizzo">Indirizzo:</label><br>
+            <input type="text" id="indirizzo" name="indirizzo" value="{{ utente.indirizzo }}"><br>
+        </div>
+        <div style="display: flex; justify-content: center">
+            <input type="submit" class="aggiorna" value="Aggiorna">
+        </div>
     </form>
     <br>
     <br>
     <form action="/logout" method="GET">
-        <input type="submit" value="Esci">
+        <div style="display: flex; justify-content: center">
+            <input type="submit" class="esci" value="Esci">
+        </div>
     </form>
 </body>
 </html>
