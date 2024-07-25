@@ -1,0 +1,36 @@
+-- vincoli sugli utenti
+
+
+ALTER TABLE utenti
+    ADD CONSTRAINT mail(length(email) >= 6)
+    ADD CONSTRAINT password(length(password) >= 6)
+
+
+-- vincoli sui carrelli
+
+
+ALTER TABLE carrelli
+    ADD CONSTRAINT qnt(quantita >= 0)
+
+
+-- vincoli sugli ordini
+
+
+ALTER TABLE ordini
+    ADD CONSTRAINT tot(totale > 0.00)
+
+-- vincoli sui prodotti
+
+
+ALTER TABLE prodotti
+    ADD CONSTRAINT disp(disponibilita > 0)
+    ADD CONSTRAINT prezzo(prezzo > 0)
+
+
+-- vincoli su prodotti_ordini
+
+
+ALTER TABLE prodotti_ordini
+    ADD CONSTRAINT qnt(quantita > 0)
+    ADD CONSTRAINT prezzo(prezzo > 0)
+

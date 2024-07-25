@@ -1,0 +1,2 @@
+CREATE INDEX indici_prodotti
+ON prodotti(marca,modello)
