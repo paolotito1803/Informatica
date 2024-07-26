@@ -42,6 +42,7 @@ class Prodotti(db.Model):
     disponibilita = db.Column(db.Integer, nullable=False)
     marca = db.Column(db.String(120), nullable=False)
     modello = db.Column(db.String(120), nullable=False)
+    immagine = db.Column(db.String(120))
 
 
 class Carrelli(db.Model):
@@ -100,10 +101,11 @@ def login():
 @app.route('/aggiungi_prodotto', methods=['GET', 'POST'])
 def aggiungi_prodotto():
     if request.method == 'POST':
+        url_immagine = request.form['url_immagine']
         nuovo_prodotto = Prodotti(nome=request.form['nome'], descrizione=request.form['descrizione'],
                                   categoria=request.form['categoria'], prezzo=request.form['prezzo'],
                                   disponibilita=request.form['disponibilita'], marca=request.form['marca'],
-                                  modello=request.form['modello'])
+                                  modello=request.form['modello'], immagine=url_immagine)
         db.session.add(nuovo_prodotto)
         db.session.commit()
         return redirect(url_for('dashboard_venditore'))
@@ -228,6 +230,8 @@ def profilo():
         return redirect(url_for('login'))
     utente = Utenti.query.get(session['email'])
     if request.method == 'POST':
+        utente.email = request.form['email']
+        utente.password = request.form['password']
         utente.nome = request.form['nome']
         utente.indirizzo = request.form['indirizzo']
         db.session.commit()
