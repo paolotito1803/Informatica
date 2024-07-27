@@ -247,7 +247,10 @@ def profilo():
 def visualizza_ordini():
     if 'email' not in session:
         return redirect(url_for('login'))
-    ordini = Ordini.query.filter_by(email=session['email']).all()
+    ordini = db.session.query(Ordini, Prodotti_Ordini, Prodotti).join(Prodotti_Ordini,
+            Ordini.id_Ordine == Prodotti_Ordini.id_Ordini).join(Prodotti,
+            Prodotti_Ordini.id_Prodotti == Prodotti.id_Prodotti).filter(Ordini.email == session['email']).all()
+    #ordini = Ordini.query.filter_by(email=session['email']).all()
     return render_template('ordini.html', ordini=ordini)
 
 
