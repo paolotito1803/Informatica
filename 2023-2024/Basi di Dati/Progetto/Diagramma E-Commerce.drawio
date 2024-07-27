@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36" version="24.7.5">
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36" version="24.7.5">
   <diagram name="Pagina-1" id="gWRhbLyN7HNVdfnk4OtS">
     <mxGraphModel dx="1290" dy="1699" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
@@ -209,9 +209,6 @@
         <mxCell id="xN6BzMpaIS_J5DGDQLka-20" value="" style="shape=stencil(rVfLctswDPwaXXf4AAjynKb/kZk4taaunXHc19+XqkrFRGTYnulNlrkCFsAC4BAf3rZPr5shuLfT8fB183N8Pm2H+GkIYdxvN8fxVJ+G+DjEh5fDcfPlePi+f55/vz5NJ6enb4cf0xd+zbgQITKhgvs9v/GEEv6++TwDduP+HEBwuQOEgkAmoLgOwB45GgBGKh1ACGRY8E4DUoYkw0JE7jlwgTdcigyfNId/YVgFkIC4A5CHGBxSdakHxIzsLgNKQAq9BbEBCVFxCPAWIKP4HlAteCsPDq5PdSJEg3Up4J6E1LgaJoqAe59E4I1yLYTQu5QDnJHqXDTrzAgWoNaGAtRIG7WRHaLTFiJfBgijiOYQxAAEcNFRshQkDux0HiwOqUYp6kyLEaVqoVBfTLlpah0QQar6AmIxAALXk6bcynE9Dx6pJ00MMlyqeSXRAGeVt4dXgNTa7TpgKbWFtAMZpKtGg4oSQyxAaRJeEhdsARXdmGpzzRYgN8kvtcRNg5dIU0+6KoStKHlQ3zUy2YpLrfeeSdTUdJ1QSnHcCv5S8UXFIbZO9X8ANeqxz4MUc4wygbMOqxgWyOnJPgXamuzcutCyO7xPgHXWkF5xtbqS4dKHeXJlE3BtAt64avhm/cZdxrfV6NZlqX1tOe9b2tf3DN0vpHXN9YwhqfaCYsyRhNR7U8eEcTzrqeOaKNZj48FRnbdqoYZO7VRXzlcRh3v8KXB8B92aXBd0NK0lMnzYXcxk1eSqlfBKMdy/ml8H1If3m8DLuNvNF4nz//XNob6abx3x8Q8=);lineShape=1;strokeColor=default;" parent="1" vertex="1">
           <mxGeometry x="550.0037993081212" y="140.0021620193813" width="19.897861834298965" height="14.459677458306487" as="geometry" />
         </mxCell>
-        <mxCell id="xN6BzMpaIS_J5DGDQLka-35" value="è presente" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
-          <mxGeometry x="831.4300000000001" y="280" width="60" height="30" as="geometry" />
-        </mxCell>
         <mxCell id="xN6BzMpaIS_J5DGDQLka-42" value="&lt;b&gt;PRODOTTI_ORDINI&lt;/b&gt;" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="836.64" y="1696" width="140" height="140" as="geometry" />
         </mxCell>
@@ -253,6 +250,18 @@
         </mxCell>
         <mxCell id="Dqk3DvpIrEoPWB9pabaW-21" value="" style="shape=stencil(lVbZctswDPwavWIIgudzmv5HZuLUmrp2xnF6/H2hqlRMSNpp32gZy2N3seQgD2/Hp9fD4N3b7Xr5evgxPt+Og3wavB/Px8N1vOlokMdBHl4u18OX6+X9/Dz/fn2aKqfRt8v3aYafM65GYj+hvPs1f/GOEv/58nkGnMbzHaAIudoDCuW0D8hMnDtAcCRxHxAr1X6F6CnnfUColFIHSEJZ9gFSSPpD50QeHNoz1X6FqoCyD+BCofQAZakCQKDQb6kuNGwDHPkVAOmQSJzd0V/pt0myOqtVPCDVUeW+nikATh25fj8lkwO2cBRiX++hUX1TdNG4UES2I+73kyMJagQqZn6BHmJPte+D7JtJtgHZtqauwMASSlGJ9gjIpapxjiuOEKeRorciRGA6BZhenlR2EGBtxyRoBaXV9EGELLG2iQGUtuY2IFqlp04DTmJuxmwAdg6eOjdn3m2pAB0CuVUcIa9yU3Wp9zArHLHpNfUF7H1brzsEic02HXOlAubX2WSV1+hGILfOd9Rq0qJnuUEwobpC7hmN0vJ4O02FUu/rECgBEwUFhA4gOI9ibJIuF7OQAFL1YjZnUBHAEfTmz71qywTb9al5oNU7GMCTx2w9ahoNBmZTz6heWlR91BewH82R3O/Hw2Cp2bZ9gBea9njt+UxQryl1TJZSgS+E1RWryRRBG+gKyQACeXwEm3SJcoAcOeMhZQGJ9r/v038A6ODjOfwynk7za/r+f/t81k/z01sefwM=);lineShape=1;strokeColor=default;" parent="1" vertex="1">
           <mxGeometry x="1152.0159240234912" y="160.18984175540686" width="21.000427057840625" height="19.79997025370767" as="geometry" />
+        </mxCell>
+        <mxCell id="CQJvKP6LTFg3aq87MLHV-4" value="PRODOTTI_ORDINI" style="swimlane;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="773.5" y="325" width="160" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="CQJvKP6LTFg3aq87MLHV-5" value="Quantità : int&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;Prezzo: real&lt;/div&gt;" style="text;strokeColor=none;fillColor=none;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=12;whiteSpace=wrap;html=1;" vertex="1" parent="CQJvKP6LTFg3aq87MLHV-4">
+          <mxGeometry y="30" width="160" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="CQJvKP6LTFg3aq87MLHV-6" value="" style="endArrow=none;html=1;rounded=0;entryX=0.323;entryY=0.032;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" target="CQJvKP6LTFg3aq87MLHV-4">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="820" y="280" as="sourcePoint" />
+            <mxPoint x="734.5799999999999" y="154.3" as="targetPoint" />
+          </mxGeometry>
         </mxCell>
       </root>
     </mxGraphModel>
