@@ -1,6 +1,5 @@
 # Import delle librerie necessarie
 from datetime import datetime
-import psycopg2
 from flask import Flask, render_template, request, redirect, url_for, session
 from flask_sqlalchemy import SQLAlchemy
 
@@ -141,20 +140,19 @@ def aggiorna_prodotto(id):
 @app.route('/crea_ordine', methods=['GET', 'POST'])
 def crea_ordine():
     if request.method == 'POST':
-        carrello = (db.session.query(Prodotti.id_Prodotti, Carrelli.quantita, Prodotti.prezzo).join(Prodotti,
+        carrello = (db.session.query(Prodotti.id_Prodotti,Carrelli.quantita,Prodotti.prezzo).join(Prodotti,
                                                                               Carrelli.id_Prodotti == Prodotti.id_Prodotti)
                     .filter(Carrelli.email == session['email']).all())
         totale = sum(item.quantita * item.prezzo for item in carrello)  # calcolo il totale dell'ordine
+
         nuovo_ordine = Ordini(email=session['email'], stato=True, data=datetime.now(), totale=totale)  # creo l'ordine
         db.session.add(nuovo_ordine)  # lo aggiungo alla tabella nel db
         db.session.commit()  # eseguo il commit()
 
         for item in carrello:
-            prodOrdinati = ProdottiOrdini(id_Prodotti = item.id_Prodotti, id_Ordini = nuovo_ordine.id_Ordini,
-                                          quantita = item.quantita, prezzo = item.prezzo)
+            prodOrdinati = ProdottiOrdini(id_Ordini=nuovo_ordine.id_Ordine,id_Prodotti=item.id_Prodotti,quantita=item.quantita,prezzo=item.prezzo)
             db.session.add(prodOrdinati)
         db.session.commit()
-
 
         elimina_elementi = db.session.query(Carrelli).filter(session['email'] == Carrelli.email).all()
         for item in elimina_elementi:  # elimino tutto ciò che è presente nel carrello con la mail di cui ho fatto il login
@@ -257,7 +255,6 @@ def visualizza_ordini():
     ordini = db.session.query(Ordini, ProdottiOrdini, Prodotti).join(ProdottiOrdini,
             Ordini.id_Ordine == ProdottiOrdini.id_Ordini).join(Prodotti,
             ProdottiOrdini.id_Prodotti == Prodotti.id_Prodotti).filter(Ordini.email == session['email']).all()
-    #ordini = Ordini.query.filter_by(email=session['email']).all()
     return render_template('ordini.html', ordini=ordini)
 
 
