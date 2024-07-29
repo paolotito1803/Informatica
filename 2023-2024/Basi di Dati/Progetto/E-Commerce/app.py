@@ -290,7 +290,7 @@ def dashboard_venditore(): #home del venditore dove vede i prodotti e dove può 
 
 
 @app.route('/logout')
-def logout(): #effettua il logout 
+def logout(): #effettua il logout
     if 'email' in session:
         session.pop('email', None)
         session.pop('is_venditore', None)
