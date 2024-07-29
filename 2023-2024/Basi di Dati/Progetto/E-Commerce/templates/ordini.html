@@ -27,7 +27,7 @@
                 <td>{{ ordine.data }}</td>
                 <td>{{ 'Consegnato' if ordine.stato else 'In elaborazione' }}</td>
                 <td>{{ ordine.totale }}</td>
-                <td>{{ prodotto.nome }} (Quantità: {{ prodotto_ordine.quantita }}</td>
+                <td>{{ prodotto.nome }} (Quantità: {{ prodotto_ordine.quantita }})</td>
                 <td>{{ prodotto.modello }}</td>
             </tr>
             {% endfor %}
