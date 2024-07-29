@@ -58,7 +58,7 @@ class Vende(db.Model):
     id_Prodotti = db.Column(db.Integer, db.ForeignKey('prodotti.id_Prodotti'), primary_key=True)
 
 
-class Prodotti_Ordini(db.Model):
+class ProdottiOrdini(db.Model):
     __table_name__ = 'prodotti_ordini'
     id_Prodotti = db.Column(db.Integer, db.ForeignKey('prodotti.id_Prodotti'), primary_key=True)
     id_Ordini = db.Column(db.Integer, db.ForeignKey('ordini.id_Ordine'), primary_key=True)
@@ -141,13 +141,20 @@ def aggiorna_prodotto(id):
 @app.route('/crea_ordine', methods=['GET', 'POST'])
 def crea_ordine():
     if request.method == 'POST':
-        carrello = (db.session.query(Carrelli.quantita, Prodotti.prezzo).join(Prodotti,
+        carrello = (db.session.query(Prodotti.id_Prodotti, Carrelli.quantita, Prodotti.prezzo).join(Prodotti,
                                                                               Carrelli.id_Prodotti == Prodotti.id_Prodotti)
                     .filter(Carrelli.email == session['email']).all())
         totale = sum(item.quantita * item.prezzo for item in carrello)  # calcolo il totale dell'ordine
         nuovo_ordine = Ordini(email=session['email'], stato=True, data=datetime.now(), totale=totale)  # creo l'ordine
         db.session.add(nuovo_ordine)  # lo aggiungo alla tabella nel db
         db.session.commit()  # eseguo il commit()
+
+        for item in carrello:
+            prodOrdinati = ProdottiOrdini(id_Prodotti = item.id_Prodotti, id_Ordini = nuovo_ordine.id_Ordini,
+                                          quantita = item.quantita, prezzo = item.prezzo)
+            db.session.add(prodOrdinati)
+        db.session.commit()
+
 
         elimina_elementi = db.session.query(Carrelli).filter(session['email'] == Carrelli.email).all()
         for item in elimina_elementi:  # elimino tutto ciò che è presente nel carrello con la mail di cui ho fatto il login
@@ -247,9 +254,9 @@ def profilo():
 def visualizza_ordini():
     if 'email' not in session:
         return redirect(url_for('login'))
-    ordini = db.session.query(Ordini, Prodotti_Ordini, Prodotti).join(Prodotti_Ordini,
-            Ordini.id_Ordine == Prodotti_Ordini.id_Ordini).join(Prodotti,
-            Prodotti_Ordini.id_Prodotti == Prodotti.id_Prodotti).filter(Ordini.email == session['email']).all()
+    ordini = db.session.query(Ordini, ProdottiOrdini, Prodotti).join(ProdottiOrdini,
+            Ordini.id_Ordine == ProdottiOrdini.id_Ordini).join(Prodotti,
+            ProdottiOrdini.id_Prodotti == Prodotti.id_Prodotti).filter(Ordini.email == session['email']).all()
     #ordini = Ordini.query.filter_by(email=session['email']).all()
     return render_template('ordini.html', ordini=ordini)
 
