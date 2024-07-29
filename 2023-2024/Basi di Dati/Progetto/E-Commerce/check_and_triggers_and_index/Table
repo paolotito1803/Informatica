@@ -1,0 +1,142 @@
+-- Table: public.ordini
+
+-- DROP TABLE IF EXISTS public.ordini;
+
+CREATE TABLE IF NOT EXISTS public.ordini
+(
+    "id_Ordine" integer NOT NULL DEFAULT nextval('"ordini_id_Ordine_seq"'::regclass),
+    email character varying COLLATE pg_catalog."default",
+    data date NOT NULL,
+    totale real NOT NULL,
+    stato boolean NOT NULL,
+    CONSTRAINT ordini_pkey PRIMARY KEY ("id_Ordine"),
+    CONSTRAINT email FOREIGN KEY (email)
+        REFERENCES public.utenti (email) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public.ordini
+    OWNER to postgres;
+
+    -- Table: public.carrelli
+
+-- DROP TABLE IF EXISTS public.carrelli;
+
+CREATE TABLE IF NOT EXISTS public.carrelli
+(
+    "id_Prodotti" integer NOT NULL,
+    email character varying COLLATE pg_catalog."default" NOT NULL,
+    quantita integer NOT NULL,
+    CONSTRAINT carrelli_pkey PRIMARY KEY ("id_Prodotti", email),
+    CONSTRAINT email FOREIGN KEY (email)
+        REFERENCES public.utenti (email) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        NOT VALID,
+    CONSTRAINT "id_Prodotti" FOREIGN KEY ("id_Prodotti")
+        REFERENCES public.prodotti ("id_Prodotti") MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public.carrelli
+    OWNER to postgres;
+
+    -- Table: public.prodotti
+
+-- DROP TABLE IF EXISTS public.prodotti;
+
+CREATE TABLE IF NOT EXISTS public.prodotti
+(
+    "id_Prodotti" integer NOT NULL DEFAULT nextval('"prodotti_id_Prodotti_seq"'::regclass),
+    nome character varying COLLATE pg_catalog."default" NOT NULL,
+    descrizione text COLLATE pg_catalog."default" NOT NULL,
+    categoria character varying COLLATE pg_catalog."default" NOT NULL,
+    prezzo real NOT NULL,
+    marca character varying COLLATE pg_catalog."default" NOT NULL,
+    modello character varying COLLATE pg_catalog."default" NOT NULL,
+    disponibilita integer NOT NULL,
+    immagine text COLLATE pg_catalog."default",
+    CONSTRAINT prodotti_pkey PRIMARY KEY ("id_Prodotti")
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public.prodotti
+    OWNER to postgres;
+
+    -- Table: public.prodotti_ordini
+
+-- DROP TABLE IF EXISTS public.prodotti_ordini;
+
+CREATE TABLE IF NOT EXISTS public.prodotti_ordini
+(
+    "id_Prodotti" integer NOT NULL,
+    "id_Ordine" integer NOT NULL,
+    quantita integer NOT NULL,
+    prezzo real NOT NULL,
+    CONSTRAINT prodotti_ordini_pkey PRIMARY KEY ("id_Prodotti", "id_Ordine"),
+    CONSTRAINT "id_Ordine" FOREIGN KEY ("id_Ordine")
+        REFERENCES public.ordini ("id_Ordine") MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        NOT VALID,
+    CONSTRAINT "id_Prodotti" FOREIGN KEY ("id_Prodotti")
+        REFERENCES public.prodotti ("id_Prodotti") MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public.prodotti_ordini
+    OWNER to postgres;
+
+    -- Table: public.utenti
+
+-- DROP TABLE IF EXISTS public.utenti;
+
+CREATE TABLE IF NOT EXISTS public.utenti
+(
+    email character varying COLLATE pg_catalog."default" NOT NULL,
+    password character varying COLLATE pg_catalog."default" NOT NULL,
+    nome character varying COLLATE pg_catalog."default" NOT NULL,
+    indirizzo character varying COLLATE pg_catalog."default" NOT NULL,
+    is_venditore boolean NOT NULL,
+    CONSTRAINT utenti_pkey PRIMARY KEY (email)
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public.utenti
+    OWNER to postgres;
+
+    -- Table: public.vende
+
+-- DROP TABLE IF EXISTS public.vende;
+
+CREATE TABLE IF NOT EXISTS public.vende
+(
+    "id_Prodotti" integer NOT NULL,
+    email character varying COLLATE pg_catalog."default" NOT NULL,
+    CONSTRAINT vende_pkey PRIMARY KEY ("id_Prodotti", email),
+    CONSTRAINT email FOREIGN KEY (email)
+        REFERENCES public.utenti (email) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        NOT VALID,
+    CONSTRAINT "id_Prodotti" FOREIGN KEY ("id_Prodotti")
+        REFERENCES public.prodotti ("id_Prodotti") MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public.vende
+    OWNER to postgres;
