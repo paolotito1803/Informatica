@@ -182,14 +182,16 @@ def aggiungi_al_carrello(id_Prodotti):#dalla dashboard premendo sul pulsante app
     if 'email' not in session or session['is_venditore']:
         return redirect(url_for('login'))
     prodotto = Prodotti.query.get(id_Prodotti)
-    if prodotto and prodotto.disponibilita > 0:
+    quantita = int(request.form.get('quantita', 1))  # Ottieni la quantità dal form, default a 1 se non specificato
+
+    if prodotto and prodotto.disponibilita >= quantita:
         carrello = Carrelli.query.get((session['email'], id_Prodotti))
         if carrello:
-            carrello.quantita += 1 #incrementa la quantità nel carrello di questo prodotto
+            carrello.quantita += quantita #incrementa la quantità nel carrello di questo prodotto
         else:
-            carrello = Carrelli(email=session['email'], id_Prodotti=id_Prodotti, quantita=1)
+            carrello = Carrelli(email=session['email'], id_Prodotti=id_Prodotti, quantita=quantita)
             db.session.add(carrello)
-        prodotto.disponibilita -= 1 #diminuisce la disponibilità di quest'ultimo
+        prodotto.disponibilita -= quantita #diminuisce la disponibilità di quest'ultimo
         db.session.commit()
         return redirect(url_for('dashboard_acquirente'))
     return redirect(url_for('dashboard_acquirente'))

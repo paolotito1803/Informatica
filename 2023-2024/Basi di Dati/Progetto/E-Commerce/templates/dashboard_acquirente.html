@@ -48,6 +48,8 @@
             <td><img src="{{ prodotto.immagine }}" width="150"></td>
             <td>
                 <form method="POST" action="{{url_for('aggiungi_al_carrello', id_Prodotti = prodotto.id_Prodotti)}}">
+                    <label for = "quantita">Quantità:</label>
+                    <input type="number" id = "quantita" name = "quantita" min = "1" max = "{{ prodotto.diposnibilita }}">
                     <input type="submit" class="input-verde" value="Aggiungi al carrello">
                 </form>
             </td>
