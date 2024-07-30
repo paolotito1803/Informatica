@@ -8,9 +8,14 @@
 <body>
     <h1>Benvenuto, {{ utente.nome }}!</h1>
     <img src="/static/venditore.jpg" width="150">
-    <form action="/aggiungi_prodotto">
-        <input type="submit" class="input-verde" value="Aggiungi Prodotto">
-    </form>
+    <div class="container">
+         <form action="/profilo" method="GET">
+                <input type="submit" class="input-rosso" value="Vai al profilo">
+         </form>
+        <form action="/aggiungi_prodotto">
+            <input type="submit" class="input-verde" value="Aggiungi Prodotto">
+        </form>
+    </div>
     <h2>Prodotti disponibili:</h2>
     <table>
         <tr>
@@ -44,8 +49,5 @@
     </table>
     <br>
     <br>
-    <form action="/profilo" method="GET">
-        <input type="submit" value="Vai al profilo">
-    </form>
 </body>
 </html>
