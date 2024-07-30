@@ -60,7 +60,7 @@ class Vende(db.Model):
 class ProdottiOrdini(db.Model):
     __table_name__ = 'prodotti_ordini'
     id_Prodotti = db.Column(db.Integer, db.ForeignKey('prodotti.id_Prodotti'), primary_key=True)
-    id_Ordini = db.Column(db.Integer, db.ForeignKey('ordini.id_Ordine'), primary_key=True)
+    id_Ordine = db.Column(db.Integer, db.ForeignKey('ordini.id_Ordine'), primary_key=True)
     quantita = db.Column(db.Integer, nullable=False)
     prezzo = db.Column(db.Float, nullable=False)
 
@@ -152,7 +152,7 @@ def crea_ordine(): #viene utilizzata quando viene fatto il pagamento e di conseg
         db.session.commit()  # eseguo il commit()
 
         for item in carrello:
-            prodOrdinati = ProdottiOrdini(id_Ordini=nuovo_ordine.id_Ordine,id_Prodotti=item.id_Prodotti,quantita=item.quantita,prezzo=item.prezzo)
+            prodOrdinati = ProdottiOrdini(id_Ordine=nuovo_ordine.id_Ordine,id_Prodotti=item.id_Prodotti,quantita=item.quantita,prezzo=item.prezzo)
             db.session.add(prodOrdinati)
         db.session.commit()
 
@@ -255,7 +255,7 @@ def visualizza_ordini():#permette all'acquirente di vedere il suo storico degli 
     if 'email' not in session:
         return redirect(url_for('login'))
     ordini = db.session.query(Ordini, ProdottiOrdini, Prodotti).join(ProdottiOrdini,
-            Ordini.id_Ordine == ProdottiOrdini.id_Ordini).join(Prodotti,
+            Ordini.id_Ordine == ProdottiOrdini.id_Ordine).join(Prodotti,
             ProdottiOrdini.id_Prodotti == Prodotti.id_Prodotti).filter(Ordini.email == session['email']).all()
     return render_template('ordini.html', ordini=ordini)
 
