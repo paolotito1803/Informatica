@@ -130,8 +130,10 @@ def aggiorna_prodotto(id): #permette di modificare la disponibilità
     prodotto = Prodotti.query.get(id)
     if request.method == 'POST':
         nuova_disp = request.form.get('nuova_disponibilita')
-        if nuova_disp.isdigit() and int(nuova_disp) >= 0:
+        nuovo_prezzo = request.form.get('nuovo_prezzo')
+        if nuova_disp.isdigit() and int(nuova_disp) >= 0 and float(nuovo_prezzo) >= 0 and nuovo_prezzo.isdigit():
             prodotto.disponibilita = int(nuova_disp)
+            prodotto.prezzo = float(nuovo_prezzo)
             db.session.commit()
             return redirect(url_for('dashboard_venditore'))
     return render_template('aggiorna_disponibilita.html', prodotto=prodotto)
