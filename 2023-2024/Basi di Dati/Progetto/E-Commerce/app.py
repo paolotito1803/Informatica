@@ -5,14 +5,13 @@ from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'progettoDB'
-
 # Configurazione del database
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql+psycopg2://postgres:postgres@localhost/E-commerce'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
 
-# Definizione dei modelli con riferimenti alle tabelle presenti nel database
+# Definizione dei modelli con riferimento alle tabelle presenti nel database
 class Utenti(db.Model):
     __table_name__ = 'utenti'
     email = db.Column(db.String(80), primary_key=True)
@@ -60,30 +59,31 @@ class Vende(db.Model):
 class ProdottiOrdini(db.Model):
     __table_name__ = 'prodotti_ordini'
     id_Prodotti = db.Column(db.Integer, db.ForeignKey('prodotti.id_Prodotti'), primary_key=True)
-    id_Ordine = db.Column(db.Integer, db.ForeignKey('ordini.id_Ordine'), primary_key=True)
+    id_Ordini = db.Column(db.Integer, db.ForeignKey('ordini.id_Ordine'), primary_key=True)
     quantita = db.Column(db.Integer, nullable=False)
     prezzo = db.Column(db.Float, nullable=False)
 
 
-# Funzioni per la gestione degli utenti
+# Consente ai nuovi utenti di registrarsi inserendo gli opportuni dati richiesti
 @app.route('/registrazione', methods=['GET', 'POST'])
-def registrazione(): #consente ai nuovi utenti di registrarsi inserendo gli oppurti dati richiesti
+def registrazione():
     if request.method == 'POST':
         new_password = request.form['password']
-        if request.form.get('is_venditore') is not None: #caso del venditore
+        if request.form.get('is_venditore') is not None:
             nuovo_utente = Utenti(email=request.form['email'], password=new_password, nome=request.form['nome'],
-                                  indirizzo=request.form['indirizzo'], is_venditore=True)
+                                  indirizzo=request.form['indirizzo'], is_venditore=True)  # caso venditore
         else:
             nuovo_utente = Utenti(email=request.form['email'], password=new_password, nome=request.form['nome'],
-                                  indirizzo=request.form['indirizzo'], is_venditore=False) #caso acquirente
+                                  indirizzo=request.form['indirizzo'], is_venditore=False)  # caso acquirente
         db.session.add(nuovo_utente)
         db.session.commit()
         return redirect(url_for('login'))
     return render_template('registrazione.html')
 
 
+# Consente agli utenti di accedere alla propria dashboard qualora siano già registrati
 @app.route('/login', methods=['GET', 'POST'])
-def login(): #consente agli utenti di accedere alla prorpia dashboard qualora siano già registrati
+def login():
     if request.method == 'POST':
         utente = Utenti.query.filter_by(email=request.form['email']).first()
         if utente and utente.password == request.form['password']:
@@ -96,10 +96,10 @@ def login(): #consente agli utenti di accedere alla prorpia dashboard qualora si
     return render_template('login.html')
 
 
-# Funzioni per la gestione dei prodotti
+# Se si è venditore si ha accesso a questa funzionalità.
+# L'aggiunta dei prodotti avviene inserendo determinati dati negli appositi spazi
 @app.route('/aggiungi_prodotto', methods=['GET', 'POST'])
-def aggiungi_prodotto(): #se si è un venditore si ha accesso a questa funzionalità, l'aggiunta dei prosotti avviene inserendo determinati
-    # dati negli appositi spazi
+def aggiungi_prodotto():
     if request.method == 'POST':
         url_immagine = request.form['url_immagine']
         nuovo_prodotto = Prodotti(nome=request.form['nome'], descrizione=request.form['descrizione'],
@@ -115,26 +115,30 @@ def aggiungi_prodotto(): #se si è un venditore si ha accesso a questa funzional
     return render_template('aggiungi_prodotto.html')
 
 
+# In possesso del venditore viene passato l'id del prodotto, in modo da facilitarne l'eliminazione
 @app.route('/rimuovi_prodotto/<int:id>', methods=['POST'])
-def rimuovi_prodotto(id): #in possesso del venditore, viene passato l'id del prodotto in modo da facilitarne l'eliminazione
+def rimuovi_prodotto(id):
     if 'email' not in session or not session['is_venditore']:
         return redirect(url_for('login'))
     prodotto = Prodotti.query.get(id)
+    #prodotto_venduto = Vende.query.get(id)
     if prodotto:
         db.session.delete(prodotto)
+        #db.session.delete(prodotto_venduto)
         db.session.commit()
     return redirect(url_for('dashboard_venditore'))
 
 
+# In possesso del venditore viene passato l'id del prodotto, in modo da facilitarne la modifica della disponibilità
 @app.route('/aggiorna_prodotti/<int:id>', methods=['GET', 'POST'])
-def aggiorna_prodotto(id): #permette di modificare la disponibilità
+def aggiorna_prodotto(id):
     if 'email' not in session or not session['is_venditore']:
         return redirect(url_for('login'))
     prodotto = Prodotti.query.get(id)
     if request.method == 'POST':
         nuova_disp = request.form.get('nuova_disponibilita')
         nuovo_prezzo = request.form.get('nuovo_prezzo')
-        if nuova_disp.isdigit() and int(nuova_disp) >= 0 and float(nuovo_prezzo) >= 0 and nuovo_prezzo.isdigit():
+        if (nuova_disp.isdigit() and int(nuova_disp) >= 0) and (nuovo_prezzo.isdigit() and float(nuovo_prezzo) >= 0):
             prodotto.disponibilita = int(nuova_disp)
             prodotto.prezzo = float(nuovo_prezzo)
             db.session.commit()
@@ -142,13 +146,13 @@ def aggiorna_prodotto(id): #permette di modificare la disponibilità
     return render_template('aggiorna_disponibilita.html', prodotto=prodotto)
 
 
-# Funzioni per la gestione degli ordini
+# Viene utilizzata quando viene fatto il pagamento e di conseguenza i dati vengono aggiunti alla tabella ordini e
+# prodotti_ordini, mentre vengono rimossi dal carrello
 @app.route('/crea_ordine', methods=['GET', 'POST'])
-def crea_ordine(): #viene utilizzata quando viene fatto il pagamento e di conseguenza i dati vengono aggiunti alla tabella Ordini e
-    #ProdottiOrdini mentre vengono rimossi dal carrello
+def crea_ordine():
     if request.method == 'POST':
-        carrello = (db.session.query(Prodotti.id_Prodotti,Carrelli.quantita,Prodotti.prezzo).join(Prodotti,
-                                                                              Carrelli.id_Prodotti == Prodotti.id_Prodotti)
+        carrello = (db.session.query(Prodotti.id_Prodotti, Carrelli.quantita, Prodotti.prezzo).join(Prodotti,
+                                                                                                    Carrelli.id_Prodotti == Prodotti.id_Prodotti)
                     .filter(Carrelli.email == session['email']).all())
         totale = sum(item.quantita * item.prezzo for item in carrello)  # calcolo il totale dell'ordine
 
@@ -157,7 +161,8 @@ def crea_ordine(): #viene utilizzata quando viene fatto il pagamento e di conseg
         db.session.commit()  # eseguo il commit()
 
         for item in carrello:
-            prodOrdinati = ProdottiOrdini(id_Ordine=nuovo_ordine.id_Ordine,id_Prodotti=item.id_Prodotti,quantita=item.quantita,prezzo=item.prezzo)
+            prodOrdinati = ProdottiOrdini(id_Ordini=nuovo_ordine.id_Ordine, id_Prodotti=item.id_Prodotti,
+                                          quantita=item.quantita, prezzo=item.prezzo)
             db.session.add(prodOrdinati)
         db.session.commit()
 
@@ -169,9 +174,9 @@ def crea_ordine(): #viene utilizzata quando viene fatto il pagamento e di conseg
     return render_template('crea_ordine.html')
 
 
-# Funzioni per la gestione del carrello
+# Permette all'acquirente di visualizzare i prodotti che sta per acquistare con la possibilità di rimuovere i prodotti.
 @app.route('/carrello')
-def visualizzaCarrello():#permette all'acquirente di visualizzare tutto ciò che sta per acquistare con la possibilità di rimuovere prodotti
+def visualizzaCarrello():
     if 'email' not in session:
         return redirect(url_for('login'))
     carrello = (
@@ -182,59 +187,52 @@ def visualizzaCarrello():#permette all'acquirente di visualizzare tutto ciò che
     return render_template("carrello.html", carrello=carrello, totale=totale)
 
 
+# Dalla dashboard premendo sul pulsante apposito aggiunge ai prodotti da acquistare quello selezionato
 @app.route('/aggiungi_al_carrello/<int:id_Prodotti>', methods=['POST'])
-def aggiungi_al_carrello(id_Prodotti):#dalla dashboard premendo sul pulsante apposito aggiunge ai prodotti da acquistare quello selezionato
+def aggiungi_al_carrello(id_Prodotti):
     if 'email' not in session or session['is_venditore']:
         return redirect(url_for('login'))
     prodotto = Prodotti.query.get(id_Prodotti)
-    quantita = int(request.form.get('quantita', 1))  # Ottieni la quantità dal form, default a 1 se non specificato
-
-    if prodotto and prodotto.disponibilita >= quantita:
+    quantita = int(request.form.get('quantita', 1))
+    if prodotto and prodotto.disponibilita > quantita:
         carrello = Carrelli.query.get((session['email'], id_Prodotti))
         if carrello:
-            carrello.quantita += quantita #incrementa la quantità nel carrello di questo prodotto
+            carrello.quantita += quantita  #incrementa la quantità di questo prodotto nel carrello
         else:
             carrello = Carrelli(email=session['email'], id_Prodotti=id_Prodotti, quantita=quantita)
             db.session.add(carrello)
-        prodotto.disponibilita -= quantita #diminuisce la disponibilità di quest'ultimo
+        prodotto.disponibilita -= quantita  # diminuisce la disponibilità di quest'ultimo
         db.session.commit()
         return redirect(url_for('dashboard_acquirente'))
     return redirect(url_for('dashboard_acquirente'))
 
 
+# elimina il prodotto dal carrello in modo che non venga acquistato nuovamente
 @app.route('/rimuovi_dal_carrello/<int:id_Prodotti>', methods=['POST'])
-def rimuovi_dal_carrello(id_Prodotti):#elimina il prodotto dal carrello in modo che non venga acquistato
+def rimuovi_dal_carrello(id_Prodotti):
     if 'email' not in session or session['is_venditore']:
         return redirect(url_for('login'))
     carrello = Carrelli.query.get((session['email'], id_Prodotti))
     if carrello:
         prodotto = Prodotti.query.get(id_Prodotti)
-        carrello.quantita -= 1 #diminuisce la quantità del prodotto presente nel carrello
+        carrello.quantita -= 1  # diminuisce la quantità di quel prodotto nel carrello
         if carrello.quantita == 0:
             db.session.delete(carrello)
-        prodotto.disponibilita += 1 #aumenta la disponibilità del prodotto rimosso
+        prodotto.disponibilita += 1  # aumenta la sua disponibilità
         db.session.commit()
     return redirect(url_for('dashboard_acquirente'))
 
 
-# Funzioni per la visualizzazione dei prodotti e la ricerca
+# Mostra tutti i prodotti presenti nel database
 @app.route('/prodotti')
-def visualizza_prodotti():#mostra tutti i prodotti presenti nel database
-    if 'email' not in session:
-        return redirect(url_for('login'))
-    if session['is_venditore']:
-        # Se l'utente è un venditore, mostra solo i prodotti che ha aggiunto
-        prodotti = (db.session.query(Prodotti, Vende)
-                    .join(Vende, Prodotti.id_Prodotti == Vende.id_Prodotti).filter(
-            Vende.email == session['email']).all())
-    else:
-        # Se l'utente è un acquirente, mostra tutti i prodotti
-        prodotti = Prodotti.query.all()
+def visualizza_prodotti():
+    prodotti = Prodotti.query.all()
     return render_template('prodotti.html', prodotti=prodotti)
 
 
+# Permette di trovare i prodotti in modo più efficiente, attraverso l'uso di parole chiavi
 @app.route('/ricerca', methods=['GET', 'POST'])
-def ricerca(): #permette di trovare i prodotti in modo più efficiente attraverso l'uso di parole chiavi
+def ricerca():
     if 'email' not in session:
         return redirect(url_for('login'))
     utente = Utenti.query.get(session['email'])
@@ -247,8 +245,9 @@ def ricerca(): #permette di trovare i prodotti in modo più efficiente attravers
     return render_template('dashboard_acquirente.html')
 
 
+# Sono presente tutti i dati della persona attualmente collegata alla piattaforma
 @app.route('/profilo', methods=['GET', 'POST'])
-def profilo(): #sono presenti tutti i dati della persona attualmente collegata al portale
+def profilo():
     if 'email' not in session:
         return redirect(url_for('login'))
     utente = Utenti.query.get(session['email'])
@@ -265,19 +264,21 @@ def profilo(): #sono presenti tutti i dati della persona attualmente collegata a
     return render_template('profilo.html', utente=utente)
 
 
-# Funzioni per la visualizzazione e l'aggiornamento dello stato degli ordini
+# Permette all'acquirente di vedere il suo storico degli ordini
 @app.route('/ordini', methods=['GET'])
-def visualizza_ordini():#permette all'acquirente di vedere il suo storico degli ordini
+def visualizza_ordini():
     if 'email' not in session:
         return redirect(url_for('login'))
     ordini = db.session.query(Ordini, ProdottiOrdini, Prodotti).join(ProdottiOrdini,
-            Ordini.id_Ordine == ProdottiOrdini.id_Ordine).join(Prodotti,
-            ProdottiOrdini.id_Prodotti == Prodotti.id_Prodotti).filter(Ordini.email == session['email']).all()
+                                                                     Ordini.id_Ordine == ProdottiOrdini.id_Ordini).join(
+        Prodotti,
+        ProdottiOrdini.id_Prodotti == Prodotti.id_Prodotti).filter(Ordini.email == session['email']).all()
     return render_template('ordini.html', ordini=ordini)
 
 
+# Permette di visualizzare a che punto è l'ordine ovvero se è stato consegnato o meno
 @app.route('/aggiorna_stato_ordine/<int:id>', methods=['POST'])
-def aggiorna_stato_ordine(id):#permette di visualizzare a che punto è l'ordine, ovvero se è stato consegnato o meno
+def aggiorna_stato_ordine(id):
     if 'email' not in session or not session['is_venditore']:
         return redirect(url_for('login'))
     ordine = Ordini.query.get(id)
@@ -287,8 +288,9 @@ def aggiorna_stato_ordine(id):#permette di visualizzare a che punto è l'ordine,
     return redirect(url_for('dashboard_acquirente'))
 
 
+# Homepage dell'acquirente dove vede i prodotti e può visualizzare tutto
 @app.route('/dashboard_acquirente')
-def dashboard_acquirente(): #home page dell'acquirente dove vede i prodotti e può visualizzare tutto
+def dashboard_acquirente():
     if 'email' not in session:
         return redirect(url_for('login'))
     utente = Utenti.query.get(session['email'])
@@ -296,17 +298,20 @@ def dashboard_acquirente(): #home page dell'acquirente dove vede i prodotti e pu
     return render_template('dashboard_acquirente.html', utente=utente, prodotti=prodotti)
 
 
+# Homepage del venditore dove vede i prodotti e dove può modificarli
 @app.route('/dashboard_venditore')
-def dashboard_venditore(): #home del venditore dove vede i prodotti e dove può modificarli
+def dashboard_venditore():
     if 'email' not in session:
         return redirect(url_for('login'))
     utente = Utenti.query.get(session['email'])
-    prodotti = Prodotti.query.all()
+    prodotti = (db.session.query(Prodotti).join(Vende, Prodotti.id_Prodotti == Vende.id_Prodotti)
+                .filter(Vende.email == session['email']).all())
     return render_template('dashboard_venditore.html', utente=utente, prodotti=prodotti)
 
 
+#Effettua il logout
 @app.route('/logout')
-def logout(): #effettua il logout
+def logout():
     if 'email' in session:
         session.pop('email', None)
         session.pop('is_venditore', None)
