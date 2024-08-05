@@ -108,6 +108,9 @@ def aggiungi_prodotto(): #se si è un venditore si ha accesso a questa funzional
                                   modello=request.form['modello'], immagine=url_immagine)
         db.session.add(nuovo_prodotto)
         db.session.commit()
+        vende = Vende(email=session['email'], id_Prodotti=nuovo_prodotto.id_Prodotti)
+        db.session.add(vende)
+        db.session.commit()
         return redirect(url_for('dashboard_venditore'))
     return render_template('aggiungi_prodotto.html')
 
@@ -217,7 +220,16 @@ def rimuovi_dal_carrello(id_Prodotti):#elimina il prodotto dal carrello in modo 
 # Funzioni per la visualizzazione dei prodotti e la ricerca
 @app.route('/prodotti')
 def visualizza_prodotti():#mostra tutti i prodotti presenti nel database
-    prodotti = Prodotti.query.all()
+    if 'email' not in session:
+        return redirect(url_for('login'))
+    if session['is_venditore']:
+        # Se l'utente è un venditore, mostra solo i prodotti che ha aggiunto
+        prodotti = (db.session.query(Prodotti, Vende)
+                    .join(Vende, Prodotti.id_Prodotti == Vende.id_Prodotti).filter(
+            Vende.email == session['email']).all())
+    else:
+        # Se l'utente è un acquirente, mostra tutti i prodotti
+        prodotti = Prodotti.query.all()
     return render_template('prodotti.html', prodotti=prodotti)
 
 
