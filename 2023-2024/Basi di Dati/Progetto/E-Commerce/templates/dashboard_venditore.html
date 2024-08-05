@@ -17,36 +17,40 @@
         </form>
     </div>
     <h2>Prodotti disponibili:</h2>
-    <table>
-        <tr>
-            <th>Nome</th>
-            <th>Descrizione</th>
-            <th>Categoria</th>
-            <th>Prezzo</th>
-            <th>Disponibilità</th>
-            <th>Immagine</th>
-        </tr>
-        {% for prodotto in prodotti %}
-        <tr>
-            <td>{{ prodotto.nome }}</td>
-            <td>{{ prodotto.descrizione }}</td>
-            <td>{{ prodotto.categoria }}</td>
-            <td>{{ prodotto.prezzo }}</td>
-            <td>{{ prodotto.disponibilita }}</td>
-            <td><img src="{{ prodotto.immagine }}" width="150"></td>
-            <td>
-                <form action="{{url_for('rimuovi_prodotto', id = prodotto.id_Prodotti)}}" method="POST">
-                    <input type="submit" class="input-rosso" value="Rimuovi">
-                </form>
-            </td>
-            <td>
-                <form action="{{url_for('aggiorna_prodotto', id = prodotto.id_Prodotti)}}" method="GET">
-                    <input type="submit" class="input-blu" value="Aggiorna">
-                </form>
-            </td>
-        </tr>
-        {% endfor %}
-    </table>
+    {% if prodotti %}
+        <table>
+            <tr>
+                <th>Nome</th>
+                <th>Descrizione</th>
+                <th>Categoria</th>
+                <th>Prezzo</th>
+                <th>Disponibilità</th>
+                <th>Immagine</th>
+            </tr>
+            {% for prodotto in prodotti %}
+            <tr>
+                <td>{{ prodotto.nome }}</td>
+                <td>{{ prodotto.descrizione }}</td>
+                <td>{{ prodotto.categoria }}</td>
+                <td>{{ prodotto.prezzo }}</td>
+                <td>{{ prodotto.disponibilita }}</td>
+                <td><img src="{{ prodotto.immagine }}" width="150"></td>
+                <td>
+                    <form action="{{url_for('rimuovi_prodotto', id = prodotto.id_Prodotti)}}" method="POST">
+                        <input type="submit" class="input-rosso" value="Rimuovi">
+                    </form>
+                </td>
+                <td>
+                    <form action="{{url_for('aggiorna_prodotto', id = prodotto.id_Prodotti)}}" method="GET">
+                        <input type="submit" class="input-blu" value="Aggiorna">
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p>Non hai aggiunto nessun prodotto!</p>
+    {% endif %}
     <br>
     <br>
 </body>

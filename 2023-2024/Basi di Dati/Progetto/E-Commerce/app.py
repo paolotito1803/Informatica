@@ -51,7 +51,7 @@ class Carrelli(db.Model):
     quantita = db.Column(db.Integer, nullable=False)
 
 
-class Vende(db.Model):
+class Vende(db.Model): #tabella che identifica cosa vende un venditore
     __table_name__ = 'vende'
     email = db.Column(db.String(80), db.ForeignKey('utenti.email'), primary_key=True)
     id_Prodotti = db.Column(db.Integer, db.ForeignKey('prodotti.id_Prodotti'), primary_key=True)
@@ -222,14 +222,8 @@ def rimuovi_dal_carrello(id_Prodotti):#elimina il prodotto dal carrello in modo 
 def visualizza_prodotti():#mostra tutti i prodotti presenti nel database
     if 'email' not in session:
         return redirect(url_for('login'))
-    if session['is_venditore']:
-        # Se l'utente è un venditore, mostra solo i prodotti che ha aggiunto
-        prodotti = (db.session.query(Prodotti, Vende)
-                    .join(Vende, Prodotti.id_Prodotti == Vende.id_Prodotti).filter(
-            Vende.email == session['email']).all())
-    else:
-        # Se l'utente è un acquirente, mostra tutti i prodotti
-        prodotti = Prodotti.query.all()
+    # Se l'utente è un acquirente, mostra tutti i prodotti
+    prodotti = Prodotti.query.all()
     return render_template('prodotti.html', prodotti=prodotti)
 
 
@@ -301,7 +295,10 @@ def dashboard_venditore(): #home del venditore dove vede i prodotti e dove può 
     if 'email' not in session:
         return redirect(url_for('login'))
     utente = Utenti.query.get(session['email'])
-    prodotti = Prodotti.query.all()
+    # Se l'utente è un venditore, mostra solo i prodotti che ha aggiunto
+    prodotti = (db.session.query(Prodotti)
+                .join(Vende, Prodotti.id_Prodotti == Vende.id_Prodotti).filter(
+        Vende.email == session['email']).all())
     return render_template('dashboard_venditore.html', utente=utente, prodotti=prodotti)
 
 
