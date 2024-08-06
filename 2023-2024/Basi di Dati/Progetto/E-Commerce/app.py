@@ -225,13 +225,9 @@ def rimuovi_dal_carrello(id_Prodotti):
 
 # Mostra tutti i prodotti presenti nel database
 @app.route('/prodotti')
-def visualizza_prodotti():#mostra tutti i prodotti presenti nel database
-    if 'email' not in session:
-        return redirect(url_for('login'))
-    # Se l'utente è un acquirente, mostra tutti i prodotti
 def visualizza_prodotti():
-    prodotti = Prodotti.query.all()
-    return render_template('prodotti.html', prodotti=prodotti)
+     prodotti = Prodotti.query.all()
+     return render_template('prodotti.html', prodotti=prodotti)
 
 
 # Permette di trovare i prodotti in modo più efficiente, attraverso l'uso di parole chiavi
