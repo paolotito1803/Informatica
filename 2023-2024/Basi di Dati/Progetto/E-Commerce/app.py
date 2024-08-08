@@ -121,10 +121,14 @@ def rimuovi_prodotto(id):
     if 'email' not in session or not session['is_venditore']:
         return redirect(url_for('login'))
     prodotto = Prodotti.query.get(id)
-    #prodotto_venduto = Vende.query.get(id)
+
     if prodotto:
+        vende = Vende.query.filter_by(id_Prodotti = id, email = session['email']).all()
+        for v in vende:
+            db.session.delete(v)
+        db.session.commit()
+
         db.session.delete(prodotto)
-        #db.session.delete(prodotto_venduto)
         db.session.commit()
     return redirect(url_for('dashboard_venditore'))
 
