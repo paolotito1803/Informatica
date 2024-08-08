@@ -59,7 +59,7 @@ class Vende(db.Model): #tabella che identifica cosa vende un venditore
 class ProdottiOrdini(db.Model):
     __table_name__ = 'prodotti_ordini'
     id_Prodotti = db.Column(db.Integer, db.ForeignKey('prodotti.id_Prodotti'), primary_key=True)
-    id_Ordini = db.Column(db.Integer, db.ForeignKey('ordini.id_Ordine'), primary_key=True)
+    id_Ordine = db.Column(db.Integer, db.ForeignKey('ordini.id_Ordine'), primary_key=True)
     quantita = db.Column(db.Integer, nullable=False)
     prezzo = db.Column(db.Float, nullable=False)
 
@@ -161,7 +161,7 @@ def crea_ordine():
         db.session.commit()  # eseguo il commit()
 
         for item in carrello:
-            prodOrdinati = ProdottiOrdini(id_Ordini=nuovo_ordine.id_Ordine, id_Prodotti=item.id_Prodotti,
+            prodOrdinati = ProdottiOrdini(id_Ordine=nuovo_ordine.id_Ordine, id_Prodotti=item.id_Prodotti,
                                           quantita=item.quantita, prezzo=item.prezzo)
             db.session.add(prodOrdinati)
         db.session.commit()
@@ -229,7 +229,6 @@ def visualizza_prodotti():
      prodotti = Prodotti.query.all()
      return render_template('prodotti.html', prodotti=prodotti)
 
-
 # Permette di trovare i prodotti in modo più efficiente, attraverso l'uso di parole chiavi
 @app.route('/ricerca', methods=['GET', 'POST'])
 def ricerca():
@@ -270,10 +269,10 @@ def visualizza_ordini():
     if 'email' not in session:
         return redirect(url_for('login'))
     ordini = db.session.query(Ordini, ProdottiOrdini, Prodotti).join(ProdottiOrdini,
-                                                                     Ordini.id_Ordine == ProdottiOrdini.id_Ordini).join(
+                                                                     Ordini.id_Ordine == ProdottiOrdini.id_Ordine).join(
         Prodotti,
         ProdottiOrdini.id_Prodotti == Prodotti.id_Prodotti).filter(Ordini.email == session['email']).all()
-    return render_template('ordini.html', ordini=ordini)
+    return render_template('ordini.html', ordini=ordini, utente = Utenti.query.get(session['email']))
 
 
 # Permette di visualizzare a che punto è l'ordine ovvero se è stato consegnato o meno
@@ -283,10 +282,19 @@ def aggiorna_stato_ordine(id):
         return redirect(url_for('login'))
     ordine = Ordini.query.get(id)
     if ordine:
-        ordine.stato = request.form['stato']
+        ordine.stato = request.form['stato'] == 'True'
         db.session.commit()
-    return redirect(url_for('dashboard_acquirente'))
+    return redirect(url_for('dashboard_venditore'))
 
+
+@app.route('/visualizza_ordini_venditore')
+def visualizza_ordini_venditore():
+    if 'email' not in session or not session['is_venditore']:
+        return redirect(url_for('login'))
+    ordini = db.session.query(Ordini, ProdottiOrdini, Prodotti).join(ProdottiOrdini, Ordini.id_Ordine == ProdottiOrdini.id_Ordine).join(
+        Prodotti, ProdottiOrdini.id_Prodotti == Prodotti.id_Prodotti).join(Vende, Prodotti.id_Prodotti == Vende.id_Prodotti).filter(
+        Vende.email == session['email']).all()
+    return render_template('ordini.html', ordini=ordini, utente = Utenti.query.get(session['email']))
 
 # Homepage dell'acquirente dove vede i prodotti e può visualizzare tutto
 @app.route('/dashboard_acquirente')
@@ -305,11 +313,11 @@ def dashboard_venditore():
         return redirect(url_for('login'))
     utente = Utenti.query.get(session['email'])
     # Se l'utente è un venditore, mostra solo i prodotti che ha aggiunto
-    prodotti = (db.session.query(Prodotti)
-                .join(Vende, Prodotti.id_Prodotti == Vende.id_Prodotti).filter(
-        Vende.email == session['email']).all())
+
     prodotti = (db.session.query(Prodotti).join(Vende, Prodotti.id_Prodotti == Vende.id_Prodotti)
                 .filter(Vende.email == session['email']).all())
+
+
     return render_template('dashboard_venditore.html', utente=utente, prodotti=prodotti)
 
 

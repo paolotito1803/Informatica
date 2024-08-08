@@ -25,10 +25,23 @@
             {% for ordine, prodotto_ordine, prodotto in ordini %}
             <tr>
                 <td>{{ ordine.data }}</td>
-                <td>{{ 'Consegnato' if ordine.stato else 'In elaborazione' }}</td>
+                 {% if utente.is_venditore %}
+                <td>
+                    <form method="POST" action="{{ url_for('aggiorna_stato_ordine', id=ordine.id_Ordine) }}">
+                        <select name="stato">
+                            <option value="True" {% if ordine.stato %}selected{% endif %}>Consegnato</option>
+                            <option value="False" {% if not ordine.stato %}selected{% endif %}>In elaborazione</option>
+                        </select>
+                        <input type="submit" value="Aggiorna">
+                    </form>
+                </td>
+                {% else %}
+                    <td>{{ 'Consegnato' if ordine.stato else 'In elaborazione' }}</td>
+                 {% endif %}
                 <td>{{ ordine.totale }}</td>
                 <td>{{ prodotto.nome }} (Quantità: {{ prodotto_ordine.quantita }})</td>
                 <td>{{ prodotto.modello }}</td>
+
             </tr>
             {% endfor %}
         </tbody>
