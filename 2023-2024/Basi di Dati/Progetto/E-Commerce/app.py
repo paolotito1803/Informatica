@@ -1,68 +1,7 @@
 # Import delle librerie necessarie
 from datetime import datetime
-from flask import Flask, render_template, request, redirect, url_for, session
-from flask_sqlalchemy import SQLAlchemy
-
-app = Flask(__name__)
-app.config['SECRET_KEY'] = 'progettoDB'
-# Configurazione del database
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql+psycopg2://postgres:postgres@localhost/E-commerce'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-db = SQLAlchemy(app)
-
-
-# Definizione dei modelli con riferimento alle tabelle presenti nel database
-class Utenti(db.Model):
-    __table_name__ = 'utenti'
-    email = db.Column(db.String(80), primary_key=True)
-    password = db.Column(db.String(120), nullable=False, unique=True)
-    nome = db.Column(db.String(120), nullable=False)
-    indirizzo = db.Column(db.String(120), nullable=False)
-    is_venditore = db.Column(db.Boolean, nullable=False)
-
-
-class Ordini(db.Model):
-    __table_name__ = 'ordini'
-    id_Ordine = db.Column(db.Integer, primary_key=True)
-    email = db.Column(db.String(80), db.ForeignKey('utenti.email'), nullable=False)
-    stato = db.Column(db.Boolean, nullable=False)
-    data = db.Column(db.Date, nullable=False)
-    totale = db.Column(db.Float, nullable=False)
-
-
-class Prodotti(db.Model):
-    __table_name__ = 'prodotti'
-    id_Prodotti = db.Column(db.Integer, primary_key=True)
-    nome = db.Column(db.String(80), nullable=False)
-    descrizione = db.Column(db.String(120), nullable=False)
-    categoria = db.Column(db.String(120), nullable=False)
-    prezzo = db.Column(db.Float, nullable=False)
-    disponibilita = db.Column(db.Integer, nullable=False)
-    marca = db.Column(db.String(120), nullable=False)
-    modello = db.Column(db.String(120), nullable=False)
-    immagine = db.Column(db.String(120))
-
-
-class Carrelli(db.Model):
-    __table_name__ = 'carrelli'
-    email = db.Column(db.String(80), db.ForeignKey('utenti.email'), primary_key=True)
-    id_Prodotti = db.Column(db.Integer, db.ForeignKey('prodotti.id_Prodotti'), primary_key=True)
-    quantita = db.Column(db.Integer, nullable=False)
-
-
-class Vende(db.Model): #tabella che identifica cosa vende un venditore
-    __table_name__ = 'vende'
-    email = db.Column(db.String(80), db.ForeignKey('utenti.email'), primary_key=True)
-    id_Prodotti = db.Column(db.Integer, db.ForeignKey('prodotti.id_Prodotti'), primary_key=True)
-
-
-class ProdottiOrdini(db.Model):
-    __table_name__ = 'prodotti_ordini'
-    id_Prodotti = db.Column(db.Integer, db.ForeignKey('prodotti.id_Prodotti'), primary_key=True)
-    id_Ordine = db.Column(db.Integer, db.ForeignKey('ordini.id_Ordine'), primary_key=True)
-    quantita = db.Column(db.Integer, nullable=False)
-    prezzo = db.Column(db.Float, nullable=False)
-
+from flask import render_template, request, redirect, url_for, session
+from models import *
 
 # Consente ai nuovi utenti di registrarsi inserendo gli opportuni dati richiesti
 @app.route('/registrazione', methods=['GET', 'POST'])
@@ -121,13 +60,11 @@ def rimuovi_prodotto(id):
     if 'email' not in session or not session['is_venditore']:
         return redirect(url_for('login'))
     prodotto = Prodotti.query.get(id)
-
     if prodotto:
-        vende = Vende.query.filter_by(id_Prodotti = id, email = session['email']).all()
-        for v in vende:
+        venduto = Vende.query.filter_by(id_Prodotti=id, email=session['email']).all()
+        for v in venduto:
             db.session.delete(v)
         db.session.commit()
-
         db.session.delete(prodotto)
         db.session.commit()
     return redirect(url_for('dashboard_venditore'))
@@ -165,7 +102,7 @@ def crea_ordine():
         db.session.commit()  # eseguo il commit()
 
         for item in carrello:
-            prodOrdinati = ProdottiOrdini(id_Ordine=nuovo_ordine.id_Ordine, id_Prodotti=item.id_Prodotti,
+            prodOrdinati = ProdottiOrdini(id_Ordini=nuovo_ordine.id_Ordine, id_Prodotti=item.id_Prodotti,
                                           quantita=item.quantita, prezzo=item.prezzo)
             db.session.add(prodOrdinati)
         db.session.commit()
@@ -230,8 +167,9 @@ def rimuovi_dal_carrello(id_Prodotti):
 # Mostra tutti i prodotti presenti nel database
 @app.route('/prodotti')
 def visualizza_prodotti():
-     prodotti = Prodotti.query.all()
-     return render_template('prodotti.html', prodotti=prodotti)
+    prodotti = Prodotti.query.all()
+    return render_template('prodotti.html', prodotti=prodotti)
+
 
 # Permette di trovare i prodotti in modo più efficiente, attraverso l'uso di parole chiavi
 @app.route('/ricerca', methods=['GET', 'POST'])
@@ -273,10 +211,10 @@ def visualizza_ordini():
     if 'email' not in session:
         return redirect(url_for('login'))
     ordini = db.session.query(Ordini, ProdottiOrdini, Prodotti).join(ProdottiOrdini,
-                                                                     Ordini.id_Ordine == ProdottiOrdini.id_Ordine).join(
+                                                                     Ordini.id_Ordine == ProdottiOrdini.id_Ordini).join(
         Prodotti,
         ProdottiOrdini.id_Prodotti == Prodotti.id_Prodotti).filter(Ordini.email == session['email']).all()
-    return render_template('ordini.html', ordini=ordini, utente = Utenti.query.get(session['email']))
+    return render_template('ordini.html', ordini=ordini, utente=Utenti.query.get(session['email']))
 
 
 # Permette di visualizzare a che punto è l'ordine ovvero se è stato consegnato o meno
@@ -295,10 +233,11 @@ def aggiorna_stato_ordine(id):
 def visualizza_ordini_venditore():
     if 'email' not in session or not session['is_venditore']:
         return redirect(url_for('login'))
-    ordini = db.session.query(Ordini, ProdottiOrdini, Prodotti).join(ProdottiOrdini, Ordini.id_Ordine == ProdottiOrdini.id_Ordine).join(
+    ordini = db.session.query(Ordini, ProdottiOrdini, Prodotti).join(ProdottiOrdini, Ordini.id_Ordine == ProdottiOrdini.id_Ordini).join(
         Prodotti, ProdottiOrdini.id_Prodotti == Prodotti.id_Prodotti).join(Vende, Prodotti.id_Prodotti == Vende.id_Prodotti).filter(
         Vende.email == session['email']).all()
     return render_template('ordini.html', ordini=ordini, utente = Utenti.query.get(session['email']))
+
 
 # Homepage dell'acquirente dove vede i prodotti e può visualizzare tutto
 @app.route('/dashboard_acquirente')
@@ -316,12 +255,8 @@ def dashboard_venditore():
     if 'email' not in session:
         return redirect(url_for('login'))
     utente = Utenti.query.get(session['email'])
-    # Se l'utente è un venditore, mostra solo i prodotti che ha aggiunto
-
     prodotti = (db.session.query(Prodotti).join(Vende, Prodotti.id_Prodotti == Vende.id_Prodotti)
                 .filter(Vende.email == session['email']).all())
-
-
     return render_template('dashboard_venditore.html', utente=utente, prodotti=prodotti)
 
 
