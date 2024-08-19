@@ -1,11 +1,7 @@
 # Import delle librerie necessarie
 from datetime import datetime
 from flask import render_template, request, redirect, url_for, session
-from flask_sqlalchemy import SQLAlchemy
-from flask import Flask
 from models import *
-
-
 
 # Consente ai nuovi utenti di registrarsi inserendo gli opportuni dati richiesti
 @app.route('/registrazione', methods=['GET', 'POST'])
@@ -83,15 +79,12 @@ def aggiorna_prodotto(id):
     if request.method == 'POST':
         nuova_disp = request.form.get('nuova_disponibilita')
         nuovo_prezzo = request.form.get('nuovo_prezzo')
-        if nuova_disp is not None and nuova_disp != '':
-            if int(nuova_disp) >= 0:
-                prodotto.disponibilita = int(nuova_disp)
-
-        if nuovo_prezzo is not None and nuovo_prezzo != '':
-            if float(nuovo_prezzo) >= 0:
+        if nuova_disp.isdigit() and int(nuova_disp) >= 0:
+            prodotto.disponibilita = int(nuova_disp)
+            db.session.commit()
+            if nuovo_prezzo.isdigit() and float(nuovo_prezzo) >= 0:
                 prodotto.prezzo = float(nuovo_prezzo)
-
-        db.session.commit()
+                db.session.commit()
         return redirect(url_for('dashboard_venditore'))
     return render_template('aggiorna_disponibilita.html', prodotto=prodotto)
 
@@ -237,7 +230,8 @@ def aggiorna_stato_ordine(id):
         db.session.commit()
     return redirect(url_for('dashboard_venditore'))
 
-#consente di vedere tutti gli ordini che ha ricevuto il venditore e in caso modificarne lo stato
+
+# Consente di vedere tutti gli ordini che ha ricevuto il venditore e in caso modificarne lo stato
 @app.route('/visualizza_ordini_venditore')
 def visualizza_ordini_venditore():
     if 'email' not in session or not session['is_venditore']:
