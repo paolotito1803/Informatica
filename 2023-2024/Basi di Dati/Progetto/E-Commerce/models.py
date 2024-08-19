@@ -55,3 +55,4 @@ class ProdottiOrdini(db.Model):
     id_Ordini = db.Column(db.Integer, db.ForeignKey('ordini.id_Ordine'), primary_key=True)
     quantita = db.Column(db.Integer, nullable=False)
     prezzo = db.Column(db.Float, nullable=False)
+
