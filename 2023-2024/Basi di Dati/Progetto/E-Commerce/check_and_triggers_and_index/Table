@@ -1,45 +1,24 @@
--- Table: public.ordini
-
--- DROP TABLE IF EXISTS public.ordini;
-
-CREATE TABLE IF NOT EXISTS public.ordini
-(
-    "id_Ordine" integer NOT NULL DEFAULT nextval('"ordini_id_Ordine_seq"'::regclass),
-    email character varying COLLATE pg_catalog."default",
-    data date NOT NULL,
-    totale real NOT NULL,
-    stato boolean NOT NULL,
-    CONSTRAINT ordini_pkey PRIMARY KEY ("id_Ordine"),
-    CONSTRAINT email FOREIGN KEY (email)
-        REFERENCES public.utenti (email) MATCH SIMPLE
-        ON UPDATE NO ACTION
-        ON DELETE NO ACTION
-)
-
-TABLESPACE pg_default;
-
-ALTER TABLE IF EXISTS public.ordini
-    OWNER to postgres;
-
-    -- Table: public.carrelli
+-- Table: public.carrelli
 
 -- DROP TABLE IF EXISTS public.carrelli;
 
 CREATE TABLE IF NOT EXISTS public.carrelli
 (
-    "id_Prodotti" integer NOT NULL,
-    email character varying COLLATE pg_catalog."default" NOT NULL,
     quantita integer NOT NULL,
-    CONSTRAINT carrelli_pkey PRIMARY KEY ("id_Prodotti", email),
-    CONSTRAINT email FOREIGN KEY (email)
+    email character varying COLLATE pg_catalog."default" NOT NULL,
+    "id_Prodotti" integer NOT NULL,
+    CONSTRAINT carrelli_pkey PRIMARY KEY (email, "id_Prodotti"),
+    CONSTRAINT "Email" FOREIGN KEY (email)
         REFERENCES public.utenti (email) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE NO ACTION
         NOT VALID,
-    CONSTRAINT "id_Prodotti" FOREIGN KEY ("id_Prodotti")
+    CONSTRAINT "Id_Prodotti" FOREIGN KEY ("id_Prodotti")
         REFERENCES public.prodotti ("id_Prodotti") MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE NO ACTION
+        NOT VALID,
+    CONSTRAINT carrelli_quantita_check CHECK (quantita >= 0)
 )
 
 TABLESPACE pg_default;
@@ -47,49 +26,96 @@ TABLESPACE pg_default;
 ALTER TABLE IF EXISTS public.carrelli
     OWNER to postgres;
 
-    -- Table: public.prodotti
+
+
+
+-- Table: public.ordini
+
+-- DROP TABLE IF EXISTS public.ordini;
+
+CREATE TABLE IF NOT EXISTS public.ordini
+(
+    stato boolean NOT NULL,
+    data date NOT NULL,
+    totale real NOT NULL,
+    email character varying COLLATE pg_catalog."default",
+    "id_Ordine" integer NOT NULL DEFAULT nextval('"ordini_Id_Ordine_seq"'::regclass),
+    CONSTRAINT ordini_pkey PRIMARY KEY ("id_Ordine"),
+    CONSTRAINT "Email" FOREIGN KEY (email)
+        REFERENCES public.utenti (email) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        NOT VALID,
+    CONSTRAINT ordini_totale_check CHECK (totale > 0.00::double precision)
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public.ordini
+    OWNER to postgres;
+
+
+
+
+-- Table: public.prodotti
 
 -- DROP TABLE IF EXISTS public.prodotti;
 
 CREATE TABLE IF NOT EXISTS public.prodotti
 (
-    "id_Prodotti" integer NOT NULL DEFAULT nextval('"prodotti_id_Prodotti_seq"'::regclass),
+    "id_Prodotti" integer NOT NULL DEFAULT nextval('"prodotti_Id_seq"'::regclass),
     nome character varying COLLATE pg_catalog."default" NOT NULL,
     descrizione text COLLATE pg_catalog."default" NOT NULL,
     categoria character varying COLLATE pg_catalog."default" NOT NULL,
     prezzo real NOT NULL,
+    disponibilita integer NOT NULL,
     marca character varying COLLATE pg_catalog."default" NOT NULL,
     modello character varying COLLATE pg_catalog."default" NOT NULL,
-    disponibilita integer NOT NULL,
     immagine text COLLATE pg_catalog."default",
-    CONSTRAINT prodotti_pkey PRIMARY KEY ("id_Prodotti")
+    CONSTRAINT prodotti_pkey PRIMARY KEY ("id_Prodotti"),
+    CONSTRAINT prodotti_disponibilita_check CHECK (disponibilita >= 0),
+    CONSTRAINT prodotti_prezzo_check CHECK (prezzo > 0::double precision)
 )
 
 TABLESPACE pg_default;
 
 ALTER TABLE IF EXISTS public.prodotti
     OWNER to postgres;
+-- Index: indici_prodotti
 
-    -- Table: public.prodotti_ordini
+-- DROP INDEX IF EXISTS public.indici_prodotti;
+
+CREATE INDEX IF NOT EXISTS indici_prodotti
+    ON public.prodotti USING btree
+    (marca COLLATE pg_catalog."default" ASC NULLS LAST, modello COLLATE pg_catalog."default" ASC NULLS LAST)
+    TABLESPACE pg_default;
+
+
+
+
+-- Table: public.prodotti_ordini
 
 -- DROP TABLE IF EXISTS public.prodotti_ordini;
 
 CREATE TABLE IF NOT EXISTS public.prodotti_ordini
 (
-    "id_Prodotti" integer NOT NULL,
-    "id_Ordine" integer NOT NULL,
     quantita integer NOT NULL,
     prezzo real NOT NULL,
-    CONSTRAINT prodotti_ordini_pkey PRIMARY KEY ("id_Prodotti", "id_Ordine"),
-    CONSTRAINT "id_Ordine" FOREIGN KEY ("id_Ordine")
+    "id_Prodotti" integer NOT NULL,
+    "id_Ordini" integer NOT NULL,
+    CONSTRAINT "Prodotti_Ordini_pkey" PRIMARY KEY ("id_Prodotti", "id_Ordini"),
+    CONSTRAINT "Id_Ordini" FOREIGN KEY ("id_Ordini")
         REFERENCES public.ordini ("id_Ordine") MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE NO ACTION
         NOT VALID,
-    CONSTRAINT "id_Prodotti" FOREIGN KEY ("id_Prodotti")
+    CONSTRAINT "Id_Prodotti" FOREIGN KEY ("id_Prodotti")
         REFERENCES public.prodotti ("id_Prodotti") MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE NO ACTION
+        NOT VALID,
+    CONSTRAINT prodotti_ordini_prezzo_check CHECK (prezzo > 0::double precision),
+    CONSTRAINT prodotti_ordini_quantita_check CHECK (quantita > 0)
 )
 
 TABLESPACE pg_default;
@@ -97,7 +123,9 @@ TABLESPACE pg_default;
 ALTER TABLE IF EXISTS public.prodotti_ordini
     OWNER to postgres;
 
-    -- Table: public.utenti
+
+
+-- Table: public.utenti
 
 -- DROP TABLE IF EXISTS public.utenti;
 
@@ -108,7 +136,9 @@ CREATE TABLE IF NOT EXISTS public.utenti
     nome character varying COLLATE pg_catalog."default" NOT NULL,
     indirizzo character varying COLLATE pg_catalog."default" NOT NULL,
     is_venditore boolean NOT NULL,
-    CONSTRAINT utenti_pkey PRIMARY KEY (email)
+    CONSTRAINT "Utenti_pkey" PRIMARY KEY (email),
+    CONSTRAINT utenti_email_check CHECK (length(email::text) >= 6),
+    CONSTRAINT utenti_password_check CHECK (length(password::text) >= 6)
 )
 
 TABLESPACE pg_default;
@@ -116,24 +146,28 @@ TABLESPACE pg_default;
 ALTER TABLE IF EXISTS public.utenti
     OWNER to postgres;
 
-    -- Table: public.vende
+
+
+
+-- Table: public.vende
 
 -- DROP TABLE IF EXISTS public.vende;
 
 CREATE TABLE IF NOT EXISTS public.vende
 (
-    "id_Prodotti" integer NOT NULL,
     email character varying COLLATE pg_catalog."default" NOT NULL,
-    CONSTRAINT vende_pkey PRIMARY KEY ("id_Prodotti", email),
-    CONSTRAINT email FOREIGN KEY (email)
+    "id_Prodotti" integer NOT NULL,
+    CONSTRAINT vende_pkey PRIMARY KEY (email, "id_Prodotti"),
+    CONSTRAINT "Email" FOREIGN KEY (email)
         REFERENCES public.utenti (email) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE NO ACTION
         NOT VALID,
-    CONSTRAINT "id_Prodotti" FOREIGN KEY ("id_Prodotti")
+    CONSTRAINT "Id_Prodotti" FOREIGN KEY ("id_Prodotti")
         REFERENCES public.prodotti ("id_Prodotti") MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE NO ACTION
+        NOT VALID
 )
 
 TABLESPACE pg_default;

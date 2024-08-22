@@ -23,7 +23,7 @@ ALTER TABLE ordini
 
 
 ALTER TABLE prodotti
-    ADD CONSTRAINT disp(disponibilita > 0)
+    ADD CONSTRAINT disp(disponibilita >= 0)
     ADD CONSTRAINT prezzo(prezzo > 0)
 
 
