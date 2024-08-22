@@ -1,6 +1,7 @@
 # Import delle librerie necessarie
 from datetime import datetime
 from flask import render_template, request, redirect, url_for, session
+
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 
@@ -64,6 +65,8 @@ class ProdottiOrdini(db.Model):
     id_Ordini = db.Column(db.Integer, db.ForeignKey('ordini.id_Ordine'), primary_key=True)
     quantita = db.Column(db.Integer, nullable=False)
     prezzo = db.Column(db.Float, nullable=False)
+
+
 
 # Consente ai nuovi utenti di registrarsi inserendo gli opportuni dati richiesti
 @app.route('/registrazione', methods=['GET', 'POST'])
