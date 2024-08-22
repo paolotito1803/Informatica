@@ -21,8 +21,7 @@
                 <th>Modello</th>
             </tr>
         </thead>
-        <tbody>
-            {% for ordine, prodotto_ordine, prodotto in ordini %}
+        {% for ordine, prodotto_ordine, prodotto in ordini %}
             <tr>
                 <td>{{ ordine.data }}</td>
                  {% if utente.is_venditore %}

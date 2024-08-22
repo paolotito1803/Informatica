@@ -1,11 +1,69 @@
 # Import delle librerie necessarie
 from datetime import datetime
 from flask import render_template, request, redirect, url_for, session
-from flask_sqlalchemy import SQLAlchemy
 from flask import Flask
-from models import *
+from flask_sqlalchemy import SQLAlchemy
+
+app = Flask(__name__)
+app.config['SECRET_KEY'] = 'progettoDB'
+# Configurazione del database
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql+psycopg2://postgres:postgres@localhost/E-commerce'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+db = SQLAlchemy(app)
 
 
+# Definizione dei modelli con riferimento alle tabelle presenti nel database
+class Utenti(db.Model):
+    __table_name__ = 'utenti'
+    email = db.Column(db.String(80), primary_key=True)
+    password = db.Column(db.String(120), nullable=False, unique=True)
+    nome = db.Column(db.String(120), nullable=False)
+    indirizzo = db.Column(db.String(120), nullable=False)
+    is_venditore = db.Column(db.Boolean, nullable=False)
+
+
+class Ordini(db.Model):
+    __table_name__ = 'ordini'
+    id_Ordine = db.Column(db.Integer, primary_key=True)
+    email = db.Column(db.String(80), db.ForeignKey('utenti.email'), nullable=False)
+    stato = db.Column(db.Boolean, nullable=False)
+    data = db.Column(db.Date, nullable=False)
+    totale = db.Column(db.Float, nullable=False)
+
+
+class Prodotti(db.Model):
+    __table_name__ = 'prodotti'
+    id_Prodotti = db.Column(db.Integer, primary_key=True)
+    nome = db.Column(db.String(80), nullable=False)
+    descrizione = db.Column(db.String(120), nullable=False)
+    categoria = db.Column(db.String(120), nullable=False)
+    prezzo = db.Column(db.Float, nullable=False)
+    disponibilita = db.Column(db.Integer, nullable=False)
+    marca = db.Column(db.String(120), nullable=False)
+    modello = db.Column(db.String(120), nullable=False)
+    immagine = db.Column(db.String(120))
+
+
+class Carrelli(db.Model):
+    __table_name__ = 'carrelli'
+    email = db.Column(db.String(80), db.ForeignKey('utenti.email'), primary_key=True)
+    id_Prodotti = db.Column(db.Integer, db.ForeignKey('prodotti.id_Prodotti'), primary_key=True)
+    quantita = db.Column(db.Integer, nullable=False)
+
+
+class Vende(db.Model):
+    __table_name__ = 'vende'
+    email = db.Column(db.String(80), db.ForeignKey('utenti.email'), primary_key=True)
+    id_Prodotti = db.Column(db.Integer, db.ForeignKey('prodotti.id_Prodotti'), primary_key=True)
+
+
+class ProdottiOrdini(db.Model):
+    __table_name__ = 'prodotti_ordini'
+    id_Prodotti = db.Column(db.Integer, db.ForeignKey('prodotti.id_Prodotti'), primary_key=True)
+    id_Ordini = db.Column(db.Integer, db.ForeignKey('ordini.id_Ordine'), primary_key=True)
+    quantita = db.Column(db.Integer, nullable=False)
+    prezzo = db.Column(db.Float, nullable=False)
 
 # Consente ai nuovi utenti di registrarsi inserendo gli opportuni dati richiesti
 @app.route('/registrazione', methods=['GET', 'POST'])
@@ -83,15 +141,12 @@ def aggiorna_prodotto(id):
     if request.method == 'POST':
         nuova_disp = request.form.get('nuova_disponibilita')
         nuovo_prezzo = request.form.get('nuovo_prezzo')
-        if nuova_disp is not None and nuova_disp != '':
-            if int(nuova_disp) >= 0:
-                prodotto.disponibilita = int(nuova_disp)
-
-        if nuovo_prezzo is not None and nuovo_prezzo != '':
-            if float(nuovo_prezzo) >= 0:
+        if nuova_disp.isdigit() and int(nuova_disp) >= 0:
+            prodotto.disponibilita = int(nuova_disp)
+            db.session.commit()
+            if nuovo_prezzo.isdigit() and float(nuovo_prezzo) >= 0:
                 prodotto.prezzo = float(nuovo_prezzo)
-
-        db.session.commit()
+                db.session.commit()
         return redirect(url_for('dashboard_venditore'))
     return render_template('aggiorna_disponibilita.html', prodotto=prodotto)
 
@@ -144,7 +199,7 @@ def aggiungi_al_carrello(id_Prodotti):
         return redirect(url_for('login'))
     prodotto = Prodotti.query.get(id_Prodotti)
     quantita = int(request.form.get('quantita', 1))
-    if prodotto and prodotto.disponibilita > quantita:
+    if prodotto and prodotto.disponibilita >= quantita:
         carrello = Carrelli.query.get((session['email'], id_Prodotti))
         if carrello:
             carrello.quantita += quantita  #incrementa la quantità di questo prodotto nel carrello
@@ -177,7 +232,8 @@ def rimuovi_dal_carrello(id_Prodotti):
 @app.route('/prodotti')
 def visualizza_prodotti():
     prodotti = Prodotti.query.all()
-    return render_template('prodotti.html', prodotti=prodotti)
+    return prodotti
+    #return render_template('prodotti.html', prodotti=prodotti)
 
 
 # Permette di trovare i prodotti in modo più efficiente, attraverso l'uso di parole chiavi
@@ -237,7 +293,8 @@ def aggiorna_stato_ordine(id):
         db.session.commit()
     return redirect(url_for('dashboard_venditore'))
 
-#consente di vedere tutti gli ordini che ha ricevuto il venditore e in caso modificarne lo stato
+
+# Consente di vedere tutti gli ordini che ha ricevuto il venditore e in caso modificarne lo stato
 @app.route('/visualizza_ordini_venditore')
 def visualizza_ordini_venditore():
     if 'email' not in session or not session['is_venditore']:
@@ -254,7 +311,8 @@ def dashboard_acquirente():
     if 'email' not in session:
         return redirect(url_for('login'))
     utente = Utenti.query.get(session['email'])
-    prodotti = Prodotti.query.all()
+    #prodotti = Prodotti.query.all()
+    prodotti = visualizza_prodotti()
     return render_template('dashboard_acquirente.html', utente=utente, prodotti=prodotti)
 
 

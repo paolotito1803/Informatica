@@ -5,7 +5,6 @@
 </head>
 <body>
     <h1>Prodotti</h1>
-    {% if prodotti %}
     <table>
         <tr>
             <th>Nome</th>
@@ -13,6 +12,7 @@
             <th>Categoria</th>
             <th>Prezzo</th>
             <th>Disponibilità</th>
+            <th>Immagine</th>
         </tr>
         {% for prodotto in prodotti %}
         <tr>
@@ -21,11 +21,9 @@
             <td>{{ prodotto.categoria }}</td>
             <td>{{ prodotto.prezzo }}</td>
             <td>{{ prodotto.disponibilita }}</td>
+            <td><img src="{{ prodotto.immagine }}" width="150"></td>
         </tr>
         {% endfor %}
     </table>
-    {% else %}
-    <p>Non hai ancora aggiunto prodotti.</p>
-    {% endif %}
 </body>
 </html>
