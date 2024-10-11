@@ -20,7 +20,6 @@ public class ProfileActivity extends AppCompatActivity {
     private ImageView backArrow;
     private ImageView logoutIcon;
 
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
