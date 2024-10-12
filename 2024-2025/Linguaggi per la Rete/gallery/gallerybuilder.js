@@ -1,5 +1,5 @@
 function button(text, func){ // funzione d'appoggio per creare i bottoni
-    let button = document.createComment("input");
+    let button = document.createElement("input");
     button.setAttribute("type","button");
     button.setAttribute("value", text);
     button.onclick = func; // associo la funzione voluta a onclick
@@ -16,7 +16,7 @@ function createGallery(g){ // g corrisponde al div dell'html
         g.removeChild(images[0]); // rimuove l'immagine da images e lo ritorna
     }
 
-    let img = document.createComment("img"); // crea l'elemento img nel proxy
+    let img = document.createElement("img"); // crea l'elemento img nel proxy
     let i = 0;
     img.setAttribute("src",s[i]); // imposto l'src al primo elemento delle immgini precedentemente tolte
 
