@@ -68,5 +68,5 @@ console.log("" + r1);
 console.log("" + r2);
 
 let test = r1 instanceof Range;
-let r3 = Range.parse("(1...10");
+let r3 = Range.parse("(1...10)");
 let r4 = new Range("(1...10)");
