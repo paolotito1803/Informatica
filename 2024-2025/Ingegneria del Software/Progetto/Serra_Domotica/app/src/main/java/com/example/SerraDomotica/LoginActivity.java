@@ -1,5 +1,6 @@
 package com.example.SerraDomotica;
 
+//import librerie
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -31,7 +32,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        // Initialize Firebase Autho
+        // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
 
         // Check if user is already signed in
