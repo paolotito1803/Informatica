@@ -1,6 +1,6 @@
 package com.example.SerraDomotica;
 
-//import librerie
+//import librerie usate
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
