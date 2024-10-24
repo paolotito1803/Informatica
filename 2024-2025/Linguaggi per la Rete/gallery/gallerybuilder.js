@@ -3,6 +3,7 @@ function button(text, func){ // funzione d'appoggio per creare i bottoni
     button.setAttribute("type","button");
     button.setAttribute("value", text);
     button.onclick = func; // associo la funzione voluta a onclick
+    //button.addEventListener("click",func); analogo a sopra
     return button;
 }
 
