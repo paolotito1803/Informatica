@@ -56,7 +56,7 @@ class Range{
         let matches = s.match(/^\((\d+)\.\.\.(\d+)\)$/);
         if(!matches)
             throw new TypeError("Cannot parse " + s);
-        return new Range(parseInt(matches[1],matches[2])); // prende i gruppi e le inserisce nel nuovo oggetto
+        return new Range(parseInt(matches[1]),parseInt(matches[2])); // prende i gruppi e le inserisce nel nuovo oggetto
     }
 }
 
@@ -68,5 +68,5 @@ console.log("" + r1);
 console.log("" + r2);
 
 let test = r1 instanceof Range;
-let r3 = Range.parse("(1...10");
+let r3 = Range.parse("(1...10)");
 let r4 = new Range("(1...10)");
