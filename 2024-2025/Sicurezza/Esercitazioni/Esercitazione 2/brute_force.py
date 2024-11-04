@@ -14,7 +14,8 @@ def test_password(password):
 
 # Function to generate password combinations
 def generate_passwords():
-    characters = string.ascii_letters + string.digits + string.punctuation
+    characters = string.printable.strip()
+    #characters = string.ascii_letters + string.digits + string.punctuation
     for password in itertools.product(characters, repeat=16):  # Fixed length of 16
         yield ''.join(password)
 
