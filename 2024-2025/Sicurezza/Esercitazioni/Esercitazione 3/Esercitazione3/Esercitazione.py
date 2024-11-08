@@ -14,7 +14,7 @@ def otp(pin):
   otp = ''
   pin1 = ''
   otp1 = ''
-  dict = {}
+  #dict = {}
   # timestamp changes every minute to allow for synchronization
   t = time.localtime(time.time())
   timestamp = '{}-{}-{}-{}:{}'.format(t.tm_year,t.tm_mon,t.tm_mday,t.tm_hour,t.tm_min)
@@ -36,9 +36,10 @@ def otp(pin):
       digit1 = h1[i] % 10
       otp1 += str(digit1)
     if otp1 == otp:
-      if timestamp1 == timestamp:
+      if timestamp == timestamp1:
         print(f"il pin è {pin1}")
-        return pin1
+        return
+    otp1 = ''
     #dict.update({otp1: (pin1,  timestamp)})
 
   # for key, value in dict.items():
