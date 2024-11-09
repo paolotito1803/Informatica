@@ -66,6 +66,8 @@ def generate_otp(pin, timestamp):
   return otp
 
 if __name__ == '__main__':
+  print(generate_otp('41131337', '2020-4-8-21:45'))
+  print(generate_otp('41131337', '2020-4-8-21:46'))
   print(generate_otp('41131337', '2020-4-8-21:47'))
 
 
