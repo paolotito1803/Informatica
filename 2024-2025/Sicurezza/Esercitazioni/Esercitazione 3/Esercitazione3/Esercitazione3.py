@@ -1,4 +1,5 @@
 import hashlib
+import itertools
 
 
 def generate_otp(pin, timestamp):
@@ -12,7 +13,10 @@ def generate_otp(pin, timestamp):
 
 
 def find_pin(otp_dict):
+    digit = '0123456789'
     for pin in range(100000000):
+    #for pin in itertools.product(digit, repeat=8):
+        #pin_str = ''.join(pin)
         pin_str = str(pin).zfill(8)  # Ensure it's 8 digits long
         # Generate OTPs for current PIN and put them in a dictionary with the timestap key
         generated_otps = {timestamp: generate_otp(pin_str, timestamp) for timestamp in otp_dict}
