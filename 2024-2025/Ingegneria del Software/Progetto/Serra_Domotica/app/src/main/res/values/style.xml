@@ -1,0 +1,27 @@
+<resources>
+    <style name="Theme.Serra_Domotica" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowBackground">@color/backgroundColor</item>
+    </style>
+
+    <style name="ToolbarStyle" parent="Widget.AppCompat.Toolbar">
+        <item name="android:background">@color/colorPrimary</item> <!-- Sfondo -->
+        <item name="titleTextAppearance">@style/ToolbarTitleText</item> <!-- Stile del testo -->
+    </style>
+
+    <style name="ToolbarTitleText" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
+        <item name="android:textColor">@color/black</item> <!-- Colore del titolo -->
+        <item name="android:textSize">20sp</item> <!-- Dimensione del titolo -->
+        <item name="android:singleLine">true</item> <!-- Forza il titolo su una riga -->
+    </style>
+
+    <style name="NoWifiDialog" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:windowMinWidthMajor">200dp</item> <!-- Dimensione del dialog -->
+        <item name="android:windowMinWidthMinor">200dp</item>
+        <item name="android:windowBackground">@drawable/background_rounded</item>
+        <item name="android:elevation">8dp</item> <!-- Ombra per il popup -->
+    </style>
+</resources>
