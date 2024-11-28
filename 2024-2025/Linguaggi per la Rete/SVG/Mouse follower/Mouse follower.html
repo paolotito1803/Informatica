@@ -1,0 +1,45 @@
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <div>TODO write content<p/>TODO write content<p/>TODO write content<p/></div>
+        <script>
+            function createFollower(offsetx,min,max)
+            {
+                var circleDiv = document.createElement("div");
+                circleDiv.innerHTML = "<svg><circle cx=\"50\" cy=\"50\" r=\"20\" stroke=\"black\" fill=\"white\" /></svg>";
+                document.getElementsByTagName("body")[0].appendChild(circleDiv);                
+
+//                window.onmousemove = function(event)
+				window.addEventListener("mousemove",
+                function(event)
+                {
+                     circleDiv.style.position = "absolute";
+                     circleDiv.style.left = (event.x-50+offsetx)+'px';
+                     circleDiv.style.top  = (event.y-50)+'px';
+                }
+				);
+                
+                var direction = 2;
+                var radius = 20;
+
+                window.setInterval(function()
+                {
+                    radius = radius + direction;
+                    if(radius<min) direction = 2;
+                    if(radius>max) direction = -2;
+                    circleDiv.firstChild.firstChild.setAttribute("r",radius);
+                },50);
+            }
+			
+            window.onload = function(){
+				createFollower(10,20,40);
+				createFollower(100,5,30);
+			}
+            
+        </script>
+    </body>
+</html>
