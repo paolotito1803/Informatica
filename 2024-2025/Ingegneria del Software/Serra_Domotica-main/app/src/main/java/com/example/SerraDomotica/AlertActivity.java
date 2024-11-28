@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class AlertActivity extends BaseActivity {
-
+    //variabili
     private RecyclerView recyclerView;
     private AlertAdapter alertAdapter;
     private List<String> alertList;
