@@ -1,4 +1,4 @@
-function dividiFrase(){
+/*function dividiFrase(){
     const  frase = document.getElementById("paragrafo");
      // Otteniamo il contenuto del paragrafo come testo const testo
     let parole = frase.textContent.split(" "); 
@@ -14,5 +14,22 @@ function dividiFrase(){
     }
 }
 
-dividiFrase();
+dividiFrase();*/
+
+function link(){
+    let frase = document.getElementById("paragrafo");
+    let parole_sinngole = frase.textContent.split(" ");
+    frase.innerHTML= "";
+
+    for(parola of parole_sinngole){
+        let link = document.createElement("a"); //creo link
+        link.setAttribute("href", 'https://it.wikipedia.org/wiki/${parola}');
+        link.setAttribute("target", '_blank');
+        link.textContent = parola;
+        frase.appendChild(link);
+        frase.appendChild(document.createTextNode(" "));
+    }
+}
+
+link();
 
