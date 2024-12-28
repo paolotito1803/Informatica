@@ -28,7 +28,7 @@ for(let i = 0; i < N; i++){
 let display = document.createElement("div");
 document.body.appendChild(display);*/
 
-
+/*
 let N = 5; //dimensione terreno gioco
 let score = 0; //punteggio
 let figure = {"head.png": 100, "grass.png" : 0, "rear.png" : -200};
@@ -59,3 +59,34 @@ for(let i = 0; i < N; i++){
 let display = document.createElement("div");
 document.body.appendChild(display);
 
+*/
+
+let N = 5;
+let talpa  = {"head.png" : 100, "rear.png" : -200, "grass.png" : 0};
+let score = 0;
+
+
+function gioco(){
+    let immagini = document.createElement("img"); //inserisco le immagini nel DOM
+    immagini.setAttribute("src", Object.keys(talpa)[0]);  //assegno a ongi immagine del DOM quella del dizionario con il suo valore
+    immagini.addEventListener("click", function(){
+        score += talpa[immagini.getAttribute("src")]; //prendo dal dizionario talpe il valore dell'immagine clickata nel DOM tramite immagini e l'attributo src
+        schermo.innerHTML = score; //mostro a schermo il punteggio
+
+        if(score < 0)
+            schermo.innerHTML = "hai perso";
+        if(score > 1000)
+            schermo.innerHTML = "hai vinto";
+    });
+    setInterval(function(){immagini.setAttribute("src", Object.keys(talpa)[Math.floor(Math.random() * 3)]);}, 1000);
+    document.body.appendChild(immagini);
+}
+
+for(let i = 0; i < N; i++){
+    for(let j = 0; j < N; j++){
+        gioco();
+    }
+    document.body.appendChild(document.createElement("br"));
+}
+let schermo = document.createElement("div");
+document.body.appendChild(schermo); //metto nel body il valore di schermo
