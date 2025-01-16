@@ -68,37 +68,70 @@ while(menu.length > 0){
   }
 }*/
 
-function createTabel(nome, ingrediente, prezzo, totale){
-  let riga = document.createElement("td");
+/*
+function createRow(nome, ingrediente, costo, totale){
+  let colonna = document.createElement("td");
+  colonna.innerHTML = nome;
+  colonna.addEventListener("mouseover", function(){colonna.innerHTML = ingrediente;});
+  colonna.addEventListener("mouseleave", function(){colonna.innerHTML = nome;});
   let price = document.createElement("td");
-  riga.innerHTML = nome;
-  price.innerHTML = prezzo;
-  riga.addEventListener("mouseover", function(){riga.innerHTML = ingrediente;});
-  riga.addEventListener("mouseout", function(){riga.innerHTML = nome;});
-  price.addEventListener("click", function(){totale.innerHTML = parseFloat(totale.innerHTML) + parseFloat(prezzo);});
-  let colonna = document.createElement("tr");
-  colonna.appendChild(riga);
-  colonna.appendChild(price);
+  price.innerHTML = costo;
+  price.addEventListener("click", function(){totale.innerHTML = parseFloat(totale.innerHTML) + parseFloat(costo);});
 
-  return colonna;
+  let riga = document.createElement("tr");
+  riga.appendChild(colonna);
+  riga.appendChild(price);
+  return riga;
 }
-
 
 let menu = document.getElementsByClassName("menu");
 while(menu.length > 0){
   let tabella = document.createElement("table");
-  let total = document.createElement("div");
-  total.innerHTML = "0";
-  let menus = menu[0]; //prendo il primo menu
-  menus.parentNode.insertBefore(tabella, menus);
-  menus.parentNode.insertBefore(total, menus);
+  let tot = document.createElement("div");
+  //let elem = menu[0];
+  console.log(menu[0]);
+  tot.innerHTML = 0;
+  document.body.insertBefore(tabella, menu[0]);
+  document.body.insertBefore(tot, menu[0]);
+  
 
-  menus.parentNode.removeChild(menus);
-
-  let ingredienti = menus.getElementsByTagName("div");
-  while(ingredienti.length > 0){
-    let pizza = ingredienti[0].textContent.split(";");
-    tabella.appendChild(createTabel(pizza[0], pizza[1], pizza[2], total));
-    menus.removeChild(ingredienti[0]);
+  let inggredienti = menu[0].getElementsByTagName("div");
+  console.log(inggredienti);
+  while(inggredienti.length > 0){
+    let pizze = inggredienti[0].textContent.split(";");
+    console.log(pizze);
+    tabella.appendChild(createRow(pizze[0], pizze[1], pizze[2], tot));
+    menu[0].removeChild(inggredienti[0]);
   }
+  document.body.removeChild(menu[0]);
+}*/
+
+function creaTabella(nome, ingrediente, costo, totale){
+  let riga = document.createElement("tr");
+  let colonna_pizza = document.createElement("td");
+  let colonna_prezzo = document.createElement("td");
+  colonna_pizza.innerHTML = nome;
+  colonna_prezzo.innerHTML = costo;
+  colonna_pizza.addEventListener("mouseover", function(){colonna_pizza.innerHTML = ingrediente;});
+  colonna_pizza.addEventListener("mouseleave", function(){colonna_pizza.innerHTML = nome;});
+  colonna_prezzo.addEventListener("click", function(){totale.innerHTML = parseFloat(costo) + parseFloat(totale.innerHTML);});
+  riga.appendChild(colonna_pizza);
+  riga.appendChild(colonna_prezzo);
+  return riga;
+}
+
+let menu = document.getElementsByClassName("menu");
+while(menu.length > 0){
+  let tabella = document.createElement("table");
+  let totale = document.createElement("div");
+  totale.innerHTML = 0;
+  document.body.appendChild(tabella);
+  document.body.appendChild(totale);
+  let pizze = menu[0].getElementsByTagName("div");
+  while(pizze.length > 0){
+    let ingredienti = pizze[0].textContent.split(";");
+    tabella.appendChild(creaTabella(ingredienti[0], ingredienti[1], ingredienti[2], totale));
+    menu[0].removeChild(pizze[0]);
+  }
+  document.body.removeChild(menu[0]);
 }
