@@ -1,0 +1,1 @@
+/usr/bin/c++ -g CMakeFiles/ruzzle.dir/main.cpp.o -o ruzzle 

@@ -1,0 +1,3 @@
+/mnt/c/Users/Paolo/Desktop/Coding_Secondo_semestre/ruzzle/cmake-build-debug/CMakeFiles/ruzzle.dir
+/mnt/c/Users/Paolo/Desktop/Coding_Secondo_semestre/ruzzle/cmake-build-debug/CMakeFiles/edit_cache.dir
+/mnt/c/Users/Paolo/Desktop/Coding_Secondo_semestre/ruzzle/cmake-build-debug/CMakeFiles/rebuild_cache.dir
