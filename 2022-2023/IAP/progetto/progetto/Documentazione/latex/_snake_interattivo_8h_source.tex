@@ -1,0 +1,49 @@
+\hypertarget{_snake_interattivo_8h_source}{}\doxysection{Snake\+Interattivo.\+h}
+\label{_snake_interattivo_8h_source}\index{C:/Users/Paolo/Desktop/programmi Visual Studio/progetto/progetto/SnakeInterattivo.h@{C:/Users/Paolo/Desktop/programmi Visual Studio/progetto/progetto/SnakeInterattivo.h}}
+\mbox{\hyperlink{_snake_interattivo_8h}{Vai alla documentazione di questo file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#define\ \_CRT\_SECURE\_NO\_WARNINGS}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#include\ <stdio.h>}}
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#include\ <stdlib.h>}}
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ <time.h>}}
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ <string.h>}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ <stdbool.h>}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{_list_coordinate_8h}{ListCoordinate.h}}"{}}}
+\DoxyCodeLine{00017\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structlabirinto}{labirinto}}}
+\DoxyCodeLine{00018\ \{}
+\DoxyCodeLine{00019\ \ \ \ \ \textcolor{comment}{//Dati\ (*l).labirinto\ (matrice)}}
+\DoxyCodeLine{00020\ \ \ \ \ \textcolor{keywordtype}{char}*\ \mbox{\hyperlink{structlabirinto}{labirinto}};}
+\DoxyCodeLine{00021\ \ \ \ \ \textcolor{keywordtype}{int}\ nR;}
+\DoxyCodeLine{00022\ \ \ \ \ \textcolor{keywordtype}{int}\ nC;}
+\DoxyCodeLine{00023\ }
+\DoxyCodeLine{00024\ }
+\DoxyCodeLine{00025\ \ \ \ \ \textcolor{comment}{//Punteggi}}
+\DoxyCodeLine{00026\ \ \ \ \ \textcolor{keywordtype}{int}\ punteggio;}
+\DoxyCodeLine{00027\ \ \ \ \ \textcolor{keywordtype}{int}\ vittoria;\ \textcolor{comment}{//Variabile\ che\ viene\ modificata\ quando\ lo\ snake\ e'\ arrivato\ al\ traguardo}}
+\DoxyCodeLine{00028\ \ \ \ \ \textcolor{keywordtype}{int}\ mosse;}
+\DoxyCodeLine{00029\ \ \ \ \ \textcolor{keywordtype}{int}\ sommaMonete;}
+\DoxyCodeLine{00030\ \ \ \ \ \textcolor{keywordtype}{int}\ trapano;}
+\DoxyCodeLine{00031\ }
+\DoxyCodeLine{00032\ \ \ \ \ \textcolor{comment}{//Carattere\ "{}speciale"{}\ di\ arrivo}}
+\DoxyCodeLine{00033\ \ \ \ \ \textcolor{keywordtype}{char}\ carattereDiArrivo;}
+\DoxyCodeLine{00034\ \ \ \ \ \textcolor{comment}{//Carattere\ "{}speciale"{}\ per\ indicare\ lo\ snake}}
+\DoxyCodeLine{00035\ \ \ \ \ \textcolor{keywordtype}{char}\ carattereSnake;}
+\DoxyCodeLine{00036\ }
+\DoxyCodeLine{00037\ \ \ \ \ \textcolor{keywordtype}{int}\ lunghezzaSerpente;}
+\DoxyCodeLine{00038\ }
+\DoxyCodeLine{00039\ \ \ \ \ \mbox{\hyperlink{structlist}{list\_coordinate}}*\ list\_coordinateSerpente;}
+\DoxyCodeLine{00040\ \};}
+\DoxyCodeLine{00041\ }
+\DoxyCodeLine{00047\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{_snake_interattivo_8h_a3b7e899cb1cafb285de3a9d3a5b74556}{muoviSnakeTotale}}(\textcolor{keyword}{struct}\ \mbox{\hyperlink{structlabirinto}{labirinto}}*\ l,\ \textcolor{keywordtype}{int}\ riga,\ \textcolor{keywordtype}{int}\ colonna);}
+\DoxyCodeLine{00052\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{_snake_interattivo_8h_a8c6fc61f5decf96fffdcef3416b30269}{tagliaSnake}}(\textcolor{keyword}{struct}\ \mbox{\hyperlink{structlabirinto}{labirinto}}*\ l,\ \textcolor{keywordtype}{int}\ riga,\ \textcolor{keywordtype}{int}\ colonna);}
+\DoxyCodeLine{00058\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{_snake_interattivo_8h_a3de0478829e2de4373a7f4092f5601a8}{dimezzaSnake}}(\textcolor{keyword}{struct}\ \mbox{\hyperlink{structlabirinto}{labirinto}}*\ l,\ \textcolor{keywordtype}{int}\ riga,\ \textcolor{keywordtype}{int}\ colonna);}
+\DoxyCodeLine{00064\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{_snake_interattivo_8h_a3ee6b373c0a87238311ad652392eccd8}{allungaSnake}}(\textcolor{keyword}{struct}\ \mbox{\hyperlink{structlabirinto}{labirinto}}\ *l,\ \textcolor{keywordtype}{int}\ riga,\ \textcolor{keywordtype}{int}\ colonna);}
+\DoxyCodeLine{00068\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{_snake_interattivo_8h_af790449353cc40b4e515962d32b0cd53}{verificaCoordinataSerpente}}(\textcolor{keyword}{struct}\ \mbox{\hyperlink{structlabirinto}{labirinto}}*\ l,\ \textcolor{keywordtype}{int}\ riga,\ \textcolor{keywordtype}{int}\ colonna);}
+\DoxyCodeLine{00072\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{_snake_interattivo_8h_a4e7570066d1940d6ca77dc614ddaadb0}{verificaTestaSerpente}}(\textcolor{keyword}{struct}\ \mbox{\hyperlink{structlabirinto}{labirinto}}*\ l,\ \textcolor{keywordtype}{int}\ riga,\ \textcolor{keywordtype}{int}\ colonna);}
+\DoxyCodeLine{00077\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{_snake_interattivo_8h_a7d5be8417cb13f8f101789a6a374b036}{StampaLabirinto}}(\textcolor{keyword}{struct}\ \mbox{\hyperlink{structlabirinto}{labirinto}}*\ l);}
+\DoxyCodeLine{00083\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{_snake_interattivo_8h_a32d5440291712eeaa06e593437bfb0ae}{AggiornaPunteggio}}(\textcolor{keyword}{struct}\ \mbox{\hyperlink{structlabirinto}{labirinto}}*\ l,\ \textcolor{keywordtype}{int}\ posRiga,\ \textcolor{keywordtype}{int}\ posColonna);}
+\DoxyCodeLine{00088\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{_snake_interattivo_8h_ad270faa0ad0c25044433c3e9845d8531}{muoviSerpente}}(\textcolor{keywordtype}{char}\ letteraCoordinate,\ \textcolor{keyword}{struct}\ \mbox{\hyperlink{structlabirinto}{labirinto}}*\ l);}
+\DoxyCodeLine{00095\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{_snake_interattivo_8h_ade6b90e32a9cdbfad6f008e4670a702a}{printVittoria}}(\textcolor{keyword}{struct}\ \mbox{\hyperlink{structlabirinto}{labirinto}}*\ l);}
+\DoxyCodeLine{00102\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{_snake_interattivo_8h_ab5b898af1ec7da1e497b0c8cc3a40455}{loopCoordinate}}(\textcolor{keyword}{struct}\ \mbox{\hyperlink{structlabirinto}{labirinto}}*\ l);}
+
+\end{DoxyCode}

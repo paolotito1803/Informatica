@@ -1,0 +1,147 @@
+\hypertarget{_list_coordinate_8h}{}\doxysection{Riferimenti per il file C\+:/\+Users/\+Paolo/\+Desktop/programmi Visual Studio/progetto/progetto/\+List\+Coordinate.h}
+\label{_list_coordinate_8h}\index{C:/Users/Paolo/Desktop/programmi Visual Studio/progetto/progetto/ListCoordinate.h@{C:/Users/Paolo/Desktop/programmi Visual Studio/progetto/progetto/ListCoordinate.h}}
+
+
+in questo file sono presenti le funzioni necessarie per il funzionamento di una lista, che viene utilizzata per le coordinate del serpente  
+
+
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include $<$stdbool.\+h$>$}\newline
+\doxysubsection*{Ridefinizioni di tipo (typedef)}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{_list_coordinate_8h_aae69e0c8fae148fecae686641d4ed2c5}\label{_list_coordinate_8h_aae69e0c8fae148fecae686641d4ed2c5}} 
+typedef struct \mbox{\hyperlink{structlist}{list}} {\bfseries list\+\_\+coordinate}
+\end{DoxyCompactItemize}
+\doxysubsection*{Funzioni}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{structlist}{list\+\_\+coordinate}} $\ast$ \mbox{\hyperlink{_list_coordinate_8h_ace15937feebabf757239d41e48d6cc5b}{l\+\_\+create}} (int riga, int colonna)
+\item 
+void \mbox{\hyperlink{_list_coordinate_8h_a917597cf661bd405af1ba731521e164c}{l\+\_\+enqueue}} (\mbox{\hyperlink{structlist}{list\+\_\+coordinate}} $\ast$$\ast$l\+\_\+orig, int riga, int colonna)
+\item 
+void \mbox{\hyperlink{_list_coordinate_8h_a7d3741586dc9da49fa5f7ac1ac7396d5}{l\+\_\+dequeue}} (\mbox{\hyperlink{structlist}{list\+\_\+coordinate}} $\ast$$\ast$l\+\_\+coordinate)
+\item 
+bool \mbox{\hyperlink{_list_coordinate_8h_a818115c724655f76bfab5290a0e220ad}{l\+\_\+contains}} (\mbox{\hyperlink{structlist}{list\+\_\+coordinate}} $\ast$l\+\_\+coordinate, int riga, int colonna)
+\item 
+bool \mbox{\hyperlink{_list_coordinate_8h_ab4a2f77a8a06fc69dd26bb11497a3e1d}{l\+\_\+is\+Last}} (\mbox{\hyperlink{structlist}{list\+\_\+coordinate}} $\ast$l\+\_\+coordinate, int riga, int colonna)
+\item 
+int \mbox{\hyperlink{_list_coordinate_8h_a9916c9f62ccc8d1a3cd8faf774a78a0a}{l\+\_\+get\+Last\+\_\+riga}} (\mbox{\hyperlink{structlist}{list\+\_\+coordinate}} $\ast$l\+\_\+coordinate)
+\item 
+int \mbox{\hyperlink{_list_coordinate_8h_acfcbd1de32d925a81a351eafed8b7c6b}{l\+\_\+get\+Last\+\_\+colonna}} (\mbox{\hyperlink{structlist}{list\+\_\+coordinate}} $\ast$l\+\_\+coordinate)
+\item 
+int \mbox{\hyperlink{_list_coordinate_8h_a8a1d498330d4347389d5b05974c7bd87}{l\+\_\+get\+\_\+riga}} (\mbox{\hyperlink{structlist}{list\+\_\+coordinate}} $\ast$l\+\_\+coordinate)
+\item 
+int \mbox{\hyperlink{_list_coordinate_8h_a2b06f25f3194f5047a3987d4778165d3}{l\+\_\+get\+\_\+colonna}} (\mbox{\hyperlink{structlist}{list\+\_\+coordinate}} $\ast$l\+\_\+coordinate)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Descrizione dettagliata}
+in questo file sono presenti le funzioni necessarie per il funzionamento di una lista, che viene utilizzata per le coordinate del serpente 
+
+\begin{DoxyAuthor}{Autore}
+Paolo, Leonardo, Giacomo  
+\end{DoxyAuthor}
+
+
+\doxysubsection{Documentazione delle funzioni}
+\mbox{\Hypertarget{_list_coordinate_8h_a818115c724655f76bfab5290a0e220ad}\label{_list_coordinate_8h_a818115c724655f76bfab5290a0e220ad}} 
+\index{ListCoordinate.h@{ListCoordinate.h}!l\_contains@{l\_contains}}
+\index{l\_contains@{l\_contains}!ListCoordinate.h@{ListCoordinate.h}}
+\doxysubsubsection{\texorpdfstring{l\_contains()}{l\_contains()}}
+{\footnotesize\ttfamily bool l\+\_\+contains (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structlist}{list\+\_\+coordinate}} $\ast$}]{l\+\_\+coordinate,  }\item[{int}]{riga,  }\item[{int}]{colonna }\end{DoxyParamCaption})}
+
+
+\begin{DoxyParams}{Parametri}
+{\em l\+\_\+coordinate} & è la lista dove sono inserite le coordinate Verifica se in quella coordinata è già passato il serpente \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{_list_coordinate_8h_ace15937feebabf757239d41e48d6cc5b}\label{_list_coordinate_8h_ace15937feebabf757239d41e48d6cc5b}} 
+\index{ListCoordinate.h@{ListCoordinate.h}!l\_create@{l\_create}}
+\index{l\_create@{l\_create}!ListCoordinate.h@{ListCoordinate.h}}
+\doxysubsubsection{\texorpdfstring{l\_create()}{l\_create()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structlist}{list\+\_\+coordinate}} $\ast$ l\+\_\+create (\begin{DoxyParamCaption}\item[{int}]{riga,  }\item[{int}]{colonna }\end{DoxyParamCaption})}
+
+
+\begin{DoxyParams}{Parametri}
+{\em l\+\_\+orig} & è la lista dove sono inserite le coordinate già percorse è presente l\textquotesingle{}algoritmo che fa mantenere la destra del labirinto al serpente La funzione serve per creare il nodo con le coordinate attraversate dal serpente \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{_list_coordinate_8h_a7d3741586dc9da49fa5f7ac1ac7396d5}\label{_list_coordinate_8h_a7d3741586dc9da49fa5f7ac1ac7396d5}} 
+\index{ListCoordinate.h@{ListCoordinate.h}!l\_dequeue@{l\_dequeue}}
+\index{l\_dequeue@{l\_dequeue}!ListCoordinate.h@{ListCoordinate.h}}
+\doxysubsubsection{\texorpdfstring{l\_dequeue()}{l\_dequeue()}}
+{\footnotesize\ttfamily void l\+\_\+dequeue (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structlist}{list\+\_\+coordinate}} $\ast$$\ast$}]{l\+\_\+coordinate }\end{DoxyParamCaption})}
+
+
+\begin{DoxyParams}{Parametri}
+{\em l\+\_\+coordinate} & è la lista dove sono inserite le coordinate è presente l\textquotesingle{}algoritmo che fa mantenere la destra del labirinto al serpente La funzione serve per cancellare i nodi precedentemente creati \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{_list_coordinate_8h_a917597cf661bd405af1ba731521e164c}\label{_list_coordinate_8h_a917597cf661bd405af1ba731521e164c}} 
+\index{ListCoordinate.h@{ListCoordinate.h}!l\_enqueue@{l\_enqueue}}
+\index{l\_enqueue@{l\_enqueue}!ListCoordinate.h@{ListCoordinate.h}}
+\doxysubsubsection{\texorpdfstring{l\_enqueue()}{l\_enqueue()}}
+{\footnotesize\ttfamily void l\+\_\+enqueue (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structlist}{list\+\_\+coordinate}} $\ast$$\ast$}]{l\+\_\+orig,  }\item[{int}]{riga,  }\item[{int}]{colonna }\end{DoxyParamCaption})}
+
+
+\begin{DoxyParams}{Parametri}
+{\em l\+\_\+orig} & è la lista dove sono inserite le coordinate già percorse è presente l\textquotesingle{}algoritmo che fa mantenere la destra del labirinto al serpente La funzione serve per creare i nuovi nodi alla lista \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{_list_coordinate_8h_a2b06f25f3194f5047a3987d4778165d3}\label{_list_coordinate_8h_a2b06f25f3194f5047a3987d4778165d3}} 
+\index{ListCoordinate.h@{ListCoordinate.h}!l\_get\_colonna@{l\_get\_colonna}}
+\index{l\_get\_colonna@{l\_get\_colonna}!ListCoordinate.h@{ListCoordinate.h}}
+\doxysubsubsection{\texorpdfstring{l\_get\_colonna()}{l\_get\_colonna()}}
+{\footnotesize\ttfamily int l\+\_\+get\+\_\+colonna (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structlist}{list\+\_\+coordinate}} $\ast$}]{l\+\_\+coordinate }\end{DoxyParamCaption})}
+
+
+\begin{DoxyParams}{Parametri}
+{\em l\+\_\+coordinate} & è la lista dove sono inserite le coordinate \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{_list_coordinate_8h_a8a1d498330d4347389d5b05974c7bd87}\label{_list_coordinate_8h_a8a1d498330d4347389d5b05974c7bd87}} 
+\index{ListCoordinate.h@{ListCoordinate.h}!l\_get\_riga@{l\_get\_riga}}
+\index{l\_get\_riga@{l\_get\_riga}!ListCoordinate.h@{ListCoordinate.h}}
+\doxysubsubsection{\texorpdfstring{l\_get\_riga()}{l\_get\_riga()}}
+{\footnotesize\ttfamily int l\+\_\+get\+\_\+riga (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structlist}{list\+\_\+coordinate}} $\ast$}]{l\+\_\+coordinate }\end{DoxyParamCaption})}
+
+
+\begin{DoxyParams}{Parametri}
+{\em l\+\_\+coordinate} & è la lista dove sono inserite le coordinate \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{_list_coordinate_8h_acfcbd1de32d925a81a351eafed8b7c6b}\label{_list_coordinate_8h_acfcbd1de32d925a81a351eafed8b7c6b}} 
+\index{ListCoordinate.h@{ListCoordinate.h}!l\_getLast\_colonna@{l\_getLast\_colonna}}
+\index{l\_getLast\_colonna@{l\_getLast\_colonna}!ListCoordinate.h@{ListCoordinate.h}}
+\doxysubsubsection{\texorpdfstring{l\_getLast\_colonna()}{l\_getLast\_colonna()}}
+{\footnotesize\ttfamily int l\+\_\+get\+Last\+\_\+colonna (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structlist}{list\+\_\+coordinate}} $\ast$}]{l\+\_\+coordinate }\end{DoxyParamCaption})}
+
+
+\begin{DoxyParams}{Parametri}
+{\em l\+\_\+coordinate} & è la lista dove sono inserite le coordinate Funzioni che servono per ottenere la colonna dell\textquotesingle{}ultima coordinata \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{_list_coordinate_8h_a9916c9f62ccc8d1a3cd8faf774a78a0a}\label{_list_coordinate_8h_a9916c9f62ccc8d1a3cd8faf774a78a0a}} 
+\index{ListCoordinate.h@{ListCoordinate.h}!l\_getLast\_riga@{l\_getLast\_riga}}
+\index{l\_getLast\_riga@{l\_getLast\_riga}!ListCoordinate.h@{ListCoordinate.h}}
+\doxysubsubsection{\texorpdfstring{l\_getLast\_riga()}{l\_getLast\_riga()}}
+{\footnotesize\ttfamily int l\+\_\+get\+Last\+\_\+riga (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structlist}{list\+\_\+coordinate}} $\ast$}]{l\+\_\+coordinate }\end{DoxyParamCaption})}
+
+
+\begin{DoxyParams}{Parametri}
+{\em l\+\_\+coordinate} & è la lista dove sono inserite le coordinate Funzioni che servono per ottenere la riga dell\textquotesingle{}ultima coordinata \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{_list_coordinate_8h_ab4a2f77a8a06fc69dd26bb11497a3e1d}\label{_list_coordinate_8h_ab4a2f77a8a06fc69dd26bb11497a3e1d}} 
+\index{ListCoordinate.h@{ListCoordinate.h}!l\_isLast@{l\_isLast}}
+\index{l\_isLast@{l\_isLast}!ListCoordinate.h@{ListCoordinate.h}}
+\doxysubsubsection{\texorpdfstring{l\_isLast()}{l\_isLast()}}
+{\footnotesize\ttfamily bool l\+\_\+is\+Last (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structlist}{list\+\_\+coordinate}} $\ast$}]{l\+\_\+coordinate,  }\item[{int}]{riga,  }\item[{int}]{colonna }\end{DoxyParamCaption})}
+
+
+\begin{DoxyParams}{Parametri}
+{\em l\+\_\+coordinate} & è la lista dove sono inserite le coordinate Verifica quale è stata l\textquotesingle{}ultima coordinata del serpente \\
+\hline
+\end{DoxyParams}

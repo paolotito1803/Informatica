@@ -1,0 +1,176 @@
+\hypertarget{_snake_interattivo_8h}{}\doxysection{Riferimenti per il file C\+:/\+Users/\+Paolo/\+Desktop/programmi Visual Studio/progetto/progetto/\+Snake\+Interattivo.h}
+\label{_snake_interattivo_8h}\index{C:/Users/Paolo/Desktop/programmi Visual Studio/progetto/progetto/SnakeInterattivo.h@{C:/Users/Paolo/Desktop/programmi Visual Studio/progetto/progetto/SnakeInterattivo.h}}
+
+
+In questa sezione sono presenti tutte le funzioni che riguardano la parte interativa del progetto come il movimento,calcolo del punteggio, mosse eseguibili, imprevisti e monete e gli effetti sullo Snake.  
+
+
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include $<$time.\+h$>$}\newline
+{\ttfamily \#include $<$string.\+h$>$}\newline
+{\ttfamily \#include $<$stdbool.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}List\+Coordinate.\+h\char`\"{}}\newline
+\doxysubsection*{Strutture dati}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structlabirinto}{labirinto}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Funzioni}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{_snake_interattivo_8h_a3b7e899cb1cafb285de3a9d3a5b74556}{muovi\+Snake\+Totale}} (struct \mbox{\hyperlink{structlabirinto}{labirinto}} $\ast$l, int riga, int colonna)
+\item 
+void \mbox{\hyperlink{_snake_interattivo_8h_a8c6fc61f5decf96fffdcef3416b30269}{taglia\+Snake}} (struct \mbox{\hyperlink{structlabirinto}{labirinto}} $\ast$l, int riga, int colonna)
+\item 
+void \mbox{\hyperlink{_snake_interattivo_8h_a3de0478829e2de4373a7f4092f5601a8}{dimezza\+Snake}} (struct \mbox{\hyperlink{structlabirinto}{labirinto}} $\ast$l, int riga, int colonna)
+\item 
+void \mbox{\hyperlink{_snake_interattivo_8h_a3ee6b373c0a87238311ad652392eccd8}{allunga\+Snake}} (struct \mbox{\hyperlink{structlabirinto}{labirinto}} $\ast$l, int riga, int colonna)
+\item 
+bool \mbox{\hyperlink{_snake_interattivo_8h_af790449353cc40b4e515962d32b0cd53}{verifica\+Coordinata\+Serpente}} (struct \mbox{\hyperlink{structlabirinto}{labirinto}} $\ast$l, int riga, int colonna)
+\item 
+bool \mbox{\hyperlink{_snake_interattivo_8h_a4e7570066d1940d6ca77dc614ddaadb0}{verifica\+Testa\+Serpente}} (struct \mbox{\hyperlink{structlabirinto}{labirinto}} $\ast$l, int riga, int colonna)
+\item 
+void \mbox{\hyperlink{_snake_interattivo_8h_a7d5be8417cb13f8f101789a6a374b036}{Stampa\+Labirinto}} (struct \mbox{\hyperlink{structlabirinto}{labirinto}} $\ast$l)
+\item 
+void \mbox{\hyperlink{_snake_interattivo_8h_a32d5440291712eeaa06e593437bfb0ae}{Aggiorna\+Punteggio}} (struct \mbox{\hyperlink{structlabirinto}{labirinto}} $\ast$l, int pos\+Riga, int pos\+Colonna)
+\item 
+int \mbox{\hyperlink{_snake_interattivo_8h_ad270faa0ad0c25044433c3e9845d8531}{muovi\+Serpente}} (char lettera\+Coordinate, struct \mbox{\hyperlink{structlabirinto}{labirinto}} $\ast$l)
+\item 
+void \mbox{\hyperlink{_snake_interattivo_8h_ade6b90e32a9cdbfad6f008e4670a702a}{print\+Vittoria}} (struct \mbox{\hyperlink{structlabirinto}{labirinto}} $\ast$l)
+\item 
+void \mbox{\hyperlink{_snake_interattivo_8h_ab5b898af1ec7da1e497b0c8cc3a40455}{loop\+Coordinate}} (struct \mbox{\hyperlink{structlabirinto}{labirinto}} $\ast$l)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Descrizione dettagliata}
+In questa sezione sono presenti tutte le funzioni che riguardano la parte interativa del progetto come il movimento,calcolo del punteggio, mosse eseguibili, imprevisti e monete e gli effetti sullo Snake. 
+
+\begin{DoxyAuthor}{Autore}
+Paolo, Leonardo, Giacomo  
+\end{DoxyAuthor}
+
+
+\doxysubsection{Documentazione delle funzioni}
+\mbox{\Hypertarget{_snake_interattivo_8h_a32d5440291712eeaa06e593437bfb0ae}\label{_snake_interattivo_8h_a32d5440291712eeaa06e593437bfb0ae}} 
+\index{SnakeInterattivo.h@{SnakeInterattivo.h}!AggiornaPunteggio@{AggiornaPunteggio}}
+\index{AggiornaPunteggio@{AggiornaPunteggio}!SnakeInterattivo.h@{SnakeInterattivo.h}}
+\doxysubsubsection{\texorpdfstring{AggiornaPunteggio()}{AggiornaPunteggio()}}
+{\footnotesize\ttfamily void Aggiorna\+Punteggio (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structlabirinto}{labirinto}} $\ast$}]{l,  }\item[{int}]{pos\+Riga,  }\item[{int}]{pos\+Colonna }\end{DoxyParamCaption})}
+
+
+\begin{DoxyParams}{Parametri}
+{\em l} & è la struct dove sono inseriti i dati del labirinto, pos\+Riga e pos\+Colonna sono le coordinate della posizione del serpente funzione che aggiorna il punteggio ogni votla che viene eseguita una mossa (-\/1), presa una moneta \textquotesingle{}\$\textquotesingle{} (+10) oppure un imprevisto \textquotesingle{}!\textquotesingle{} (dimezza) \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{_snake_interattivo_8h_a3ee6b373c0a87238311ad652392eccd8}\label{_snake_interattivo_8h_a3ee6b373c0a87238311ad652392eccd8}} 
+\index{SnakeInterattivo.h@{SnakeInterattivo.h}!allungaSnake@{allungaSnake}}
+\index{allungaSnake@{allungaSnake}!SnakeInterattivo.h@{SnakeInterattivo.h}}
+\doxysubsubsection{\texorpdfstring{allungaSnake()}{allungaSnake()}}
+{\footnotesize\ttfamily void allunga\+Snake (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structlabirinto}{labirinto}} $\ast$}]{l,  }\item[{int}]{riga,  }\item[{int}]{colonna }\end{DoxyParamCaption})}
+
+
+\begin{DoxyParams}{Parametri}
+{\em l} & è la struct dove sono inseriti i dati del labirinto, riga e colonna rappresentano le coordinate aggiuntivi del serpente funzione allunga serpente viene eseguita quanto il giocatore fa prendere al serpente la moneta \textquotesingle{}\$\textquotesingle{} allungando di conseguenza il serpente \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{_snake_interattivo_8h_a3de0478829e2de4373a7f4092f5601a8}\label{_snake_interattivo_8h_a3de0478829e2de4373a7f4092f5601a8}} 
+\index{SnakeInterattivo.h@{SnakeInterattivo.h}!dimezzaSnake@{dimezzaSnake}}
+\index{dimezzaSnake@{dimezzaSnake}!SnakeInterattivo.h@{SnakeInterattivo.h}}
+\doxysubsubsection{\texorpdfstring{dimezzaSnake()}{dimezzaSnake()}}
+{\footnotesize\ttfamily void dimezza\+Snake (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structlabirinto}{labirinto}} $\ast$}]{l,  }\item[{int}]{riga,  }\item[{int}]{colonna }\end{DoxyParamCaption})}
+
+
+\begin{DoxyParams}{Parametri}
+{\em l} & è la struct dove sono inseriti i dati del labirinto, riga e colonna rappresentano le coordinate aggiuntivi del serpente funzione dimezza serpente questa funzione entra in azione quando il serpente va a contatto con l\textquotesingle{}imprevisto \textquotesingle{}!\textquotesingle{}, dimezzandone la lunghezza \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{_snake_interattivo_8h_ab5b898af1ec7da1e497b0c8cc3a40455}\label{_snake_interattivo_8h_ab5b898af1ec7da1e497b0c8cc3a40455}} 
+\index{SnakeInterattivo.h@{SnakeInterattivo.h}!loopCoordinate@{loopCoordinate}}
+\index{loopCoordinate@{loopCoordinate}!SnakeInterattivo.h@{SnakeInterattivo.h}}
+\doxysubsubsection{\texorpdfstring{loopCoordinate()}{loopCoordinate()}}
+{\footnotesize\ttfamily void loop\+Coordinate (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structlabirinto}{labirinto}} $\ast$}]{l }\end{DoxyParamCaption})}
+
+
+\begin{DoxyParams}{Parametri}
+{\em l} & è la struct dove sono inseriti i dati del labirinto funzione serve per la modalità interattiva \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{_snake_interattivo_8h_ad270faa0ad0c25044433c3e9845d8531}\label{_snake_interattivo_8h_ad270faa0ad0c25044433c3e9845d8531}} 
+\index{SnakeInterattivo.h@{SnakeInterattivo.h}!muoviSerpente@{muoviSerpente}}
+\index{muoviSerpente@{muoviSerpente}!SnakeInterattivo.h@{SnakeInterattivo.h}}
+\doxysubsubsection{\texorpdfstring{muoviSerpente()}{muoviSerpente()}}
+{\footnotesize\ttfamily int muovi\+Serpente (\begin{DoxyParamCaption}\item[{char}]{lettera\+Coordinate,  }\item[{struct \mbox{\hyperlink{structlabirinto}{labirinto}} $\ast$}]{l }\end{DoxyParamCaption})}
+
+
+\begin{DoxyParams}{Parametri}
+{\em l} & è la struct dove sono inseriti i dati del labirinto, lettera\+Coordinate è la mossa che prova a fare l\textquotesingle{}utente o l\textquotesingle{}AI \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{_snake_interattivo_8h_a3b7e899cb1cafb285de3a9d3a5b74556}\label{_snake_interattivo_8h_a3b7e899cb1cafb285de3a9d3a5b74556}} 
+\index{SnakeInterattivo.h@{SnakeInterattivo.h}!muoviSnakeTotale@{muoviSnakeTotale}}
+\index{muoviSnakeTotale@{muoviSnakeTotale}!SnakeInterattivo.h@{SnakeInterattivo.h}}
+\doxysubsubsection{\texorpdfstring{muoviSnakeTotale()}{muoviSnakeTotale()}}
+{\footnotesize\ttfamily void muovi\+Snake\+Totale (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structlabirinto}{labirinto}} $\ast$}]{l,  }\item[{int}]{riga,  }\item[{int}]{colonna }\end{DoxyParamCaption})}
+
+
+\begin{DoxyParams}{Parametri}
+{\em l} & è la struct dove sono inseriti i dati del labirinto, riga e colonna rappresentano le coordinate aggiuntivi del serpente funzione muovi serpente totale va da aggiungere alla fine e il primo scompare \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{_snake_interattivo_8h_ade6b90e32a9cdbfad6f008e4670a702a}\label{_snake_interattivo_8h_ade6b90e32a9cdbfad6f008e4670a702a}} 
+\index{SnakeInterattivo.h@{SnakeInterattivo.h}!printVittoria@{printVittoria}}
+\index{printVittoria@{printVittoria}!SnakeInterattivo.h@{SnakeInterattivo.h}}
+\doxysubsubsection{\texorpdfstring{printVittoria()}{printVittoria()}}
+{\footnotesize\ttfamily void print\+Vittoria (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structlabirinto}{labirinto}} $\ast$}]{l }\end{DoxyParamCaption})}
+
+
+\begin{DoxyParams}{Parametri}
+{\em l} & è la struct dove sono inseriti i dati del labirinto funzione serve per stamapare il risultato e i punteggi. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{_snake_interattivo_8h_a7d5be8417cb13f8f101789a6a374b036}\label{_snake_interattivo_8h_a7d5be8417cb13f8f101789a6a374b036}} 
+\index{SnakeInterattivo.h@{SnakeInterattivo.h}!StampaLabirinto@{StampaLabirinto}}
+\index{StampaLabirinto@{StampaLabirinto}!SnakeInterattivo.h@{SnakeInterattivo.h}}
+\doxysubsubsection{\texorpdfstring{StampaLabirinto()}{StampaLabirinto()}}
+{\footnotesize\ttfamily void Stampa\+Labirinto (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structlabirinto}{labirinto}} $\ast$}]{l }\end{DoxyParamCaption})}
+
+
+\begin{DoxyParams}{Parametri}
+{\em l} & è la struct dove sono inseriti i dati del labirinto funzione che stampa il labirinto ogni volta che viene chiamata \\
+\hline
+\end{DoxyParams}
+Colonne\mbox{\Hypertarget{_snake_interattivo_8h_a8c6fc61f5decf96fffdcef3416b30269}\label{_snake_interattivo_8h_a8c6fc61f5decf96fffdcef3416b30269}} 
+\index{SnakeInterattivo.h@{SnakeInterattivo.h}!tagliaSnake@{tagliaSnake}}
+\index{tagliaSnake@{tagliaSnake}!SnakeInterattivo.h@{SnakeInterattivo.h}}
+\doxysubsubsection{\texorpdfstring{tagliaSnake()}{tagliaSnake()}}
+{\footnotesize\ttfamily void taglia\+Snake (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structlabirinto}{labirinto}} $\ast$}]{l,  }\item[{int}]{riga,  }\item[{int}]{colonna }\end{DoxyParamCaption})}
+
+
+\begin{DoxyParams}{Parametri}
+{\em l} & è la struct dove sono inseriti i dati del labirinto, riga e colonna rappresentano le coordinate aggiuntivi del serpente funzione taglia serpente viene utilizzata quando , tornando indietro, si passa su una coordinata già occupata da sè stesso ~\newline
+ \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{_snake_interattivo_8h_af790449353cc40b4e515962d32b0cd53}\label{_snake_interattivo_8h_af790449353cc40b4e515962d32b0cd53}} 
+\index{SnakeInterattivo.h@{SnakeInterattivo.h}!verificaCoordinataSerpente@{verificaCoordinataSerpente}}
+\index{verificaCoordinataSerpente@{verificaCoordinataSerpente}!SnakeInterattivo.h@{SnakeInterattivo.h}}
+\doxysubsubsection{\texorpdfstring{verificaCoordinataSerpente()}{verificaCoordinataSerpente()}}
+{\footnotesize\ttfamily bool verifica\+Coordinata\+Serpente (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structlabirinto}{labirinto}} $\ast$}]{l,  }\item[{int}]{riga,  }\item[{int}]{colonna }\end{DoxyParamCaption})}
+
+
+\begin{DoxyParams}{Parametri}
+{\em l} & è la struct dove sono inseriti i dati del labirinto, riga e colonna rappresentano le coordinate aggiuntivi del serpente \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{_snake_interattivo_8h_a4e7570066d1940d6ca77dc614ddaadb0}\label{_snake_interattivo_8h_a4e7570066d1940d6ca77dc614ddaadb0}} 
+\index{SnakeInterattivo.h@{SnakeInterattivo.h}!verificaTestaSerpente@{verificaTestaSerpente}}
+\index{verificaTestaSerpente@{verificaTestaSerpente}!SnakeInterattivo.h@{SnakeInterattivo.h}}
+\doxysubsubsection{\texorpdfstring{verificaTestaSerpente()}{verificaTestaSerpente()}}
+{\footnotesize\ttfamily bool verifica\+Testa\+Serpente (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structlabirinto}{labirinto}} $\ast$}]{l,  }\item[{int}]{riga,  }\item[{int}]{colonna }\end{DoxyParamCaption})}
+
+
+\begin{DoxyParams}{Parametri}
+{\em l} & è la struct dove sono inseriti i dati del labirinto, riga e colonna rappresentano le coordinate aggiuntivi del serpente \\
+\hline
+\end{DoxyParams}

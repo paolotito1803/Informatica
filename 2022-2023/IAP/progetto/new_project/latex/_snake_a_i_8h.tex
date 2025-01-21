@@ -1,0 +1,75 @@
+\hypertarget{_snake_a_i_8h}{}\doxysection{Riferimenti per il file C\+:/\+Users/\+Paolo/\+Desktop/programmi Visual Studio/progetto/progetto/\+Snake\+AI.h}
+\label{_snake_a_i_8h}\index{C:/Users/Paolo/Desktop/programmi Visual Studio/progetto/progetto/SnakeAI.h@{C:/Users/Paolo/Desktop/programmi Visual Studio/progetto/progetto/SnakeAI.h}}
+
+
+In questa sezione l\textquotesingle{}algoritmo della parte di intelligenza artigiciale del progetto.  
+
+
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+\doxysubsection*{Funzioni}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{_snake_a_i_8h_af1773c927cbdb0580d12106b7cff6838}{trova\+Percorso\+Destra}} (struct \mbox{\hyperlink{structlabirinto}{labirinto}} $\ast$l)
+\item 
+void \mbox{\hyperlink{_snake_a_i_8h_ad66f8ee45b615a110cd6a901cdcdfa33}{trova\+Percorso\+Sinistra}} (struct \mbox{\hyperlink{structlabirinto}{labirinto}} $\ast$l)
+\item 
+void \mbox{\hyperlink{_snake_a_i_8h_a1e4e77fecf80af9941413f130b8860e5}{trova\+Percorso\+Random}} (struct \mbox{\hyperlink{structlabirinto}{labirinto}} $\ast$l)
+\item 
+void \mbox{\hyperlink{_snake_a_i_8h_ad84be70f02f68d7e0d7316d39115457d}{trova\+Percorso\+Ricorsivo}} (struct \mbox{\hyperlink{structlabirinto}{labirinto}} $\ast$l)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Descrizione dettagliata}
+In questa sezione l\textquotesingle{}algoritmo della parte di intelligenza artigiciale del progetto. 
+
+\begin{DoxyAuthor}{Autore}
+Paolo, Leonardo, Giacomo  
+\end{DoxyAuthor}
+
+
+\doxysubsection{Documentazione delle funzioni}
+\mbox{\Hypertarget{_snake_a_i_8h_af1773c927cbdb0580d12106b7cff6838}\label{_snake_a_i_8h_af1773c927cbdb0580d12106b7cff6838}} 
+\index{SnakeAI.h@{SnakeAI.h}!trovaPercorsoDestra@{trovaPercorsoDestra}}
+\index{trovaPercorsoDestra@{trovaPercorsoDestra}!SnakeAI.h@{SnakeAI.h}}
+\doxysubsubsection{\texorpdfstring{trovaPercorsoDestra()}{trovaPercorsoDestra()}}
+{\footnotesize\ttfamily void trova\+Percorso\+Destra (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structlabirinto}{labirinto}} $\ast$}]{l }\end{DoxyParamCaption})}
+
+
+\begin{DoxyParams}{Parametri}
+{\em l} & è la struct dove sono inseriti i dati del labirinto In questa funzione è presente l\textquotesingle{}algoritmo che fa mantenere la destra del labirinto al serpente \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{_snake_a_i_8h_a1e4e77fecf80af9941413f130b8860e5}\label{_snake_a_i_8h_a1e4e77fecf80af9941413f130b8860e5}} 
+\index{SnakeAI.h@{SnakeAI.h}!trovaPercorsoRandom@{trovaPercorsoRandom}}
+\index{trovaPercorsoRandom@{trovaPercorsoRandom}!SnakeAI.h@{SnakeAI.h}}
+\doxysubsubsection{\texorpdfstring{trovaPercorsoRandom()}{trovaPercorsoRandom()}}
+{\footnotesize\ttfamily void trova\+Percorso\+Random (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structlabirinto}{labirinto}} $\ast$}]{l }\end{DoxyParamCaption})}
+
+
+\begin{DoxyParams}{Parametri}
+{\em l} & è la struct dove sono inseriti i dati del labirinto In questa funzione è presente l\textquotesingle{}algoritmo che fa fare casualmente il percorso al serpente \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{_snake_a_i_8h_ad84be70f02f68d7e0d7316d39115457d}\label{_snake_a_i_8h_ad84be70f02f68d7e0d7316d39115457d}} 
+\index{SnakeAI.h@{SnakeAI.h}!trovaPercorsoRicorsivo@{trovaPercorsoRicorsivo}}
+\index{trovaPercorsoRicorsivo@{trovaPercorsoRicorsivo}!SnakeAI.h@{SnakeAI.h}}
+\doxysubsubsection{\texorpdfstring{trovaPercorsoRicorsivo()}{trovaPercorsoRicorsivo()}}
+{\footnotesize\ttfamily void trova\+Percorso\+Ricorsivo (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structlabirinto}{labirinto}} $\ast$}]{l }\end{DoxyParamCaption})}
+
+
+\begin{DoxyParams}{Parametri}
+{\em l} & è la struct dove sono inseriti i dati del labirinto In questa funzione è presente l\textquotesingle{}algoritmo ricorsivo che in base i punteggi attribuiti ad ogni movimento stabilisce il percorso migliore \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{_snake_a_i_8h_ad66f8ee45b615a110cd6a901cdcdfa33}\label{_snake_a_i_8h_ad66f8ee45b615a110cd6a901cdcdfa33}} 
+\index{SnakeAI.h@{SnakeAI.h}!trovaPercorsoSinistra@{trovaPercorsoSinistra}}
+\index{trovaPercorsoSinistra@{trovaPercorsoSinistra}!SnakeAI.h@{SnakeAI.h}}
+\doxysubsubsection{\texorpdfstring{trovaPercorsoSinistra()}{trovaPercorsoSinistra()}}
+{\footnotesize\ttfamily void trova\+Percorso\+Sinistra (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structlabirinto}{labirinto}} $\ast$}]{l }\end{DoxyParamCaption})}
+
+
+\begin{DoxyParams}{Parametri}
+{\em l} & è la struct dove sono inseriti i dati del labirinto In questa funzione è presente l\textquotesingle{}algoritmo che fa mantenere la sinistra del labirinto al serpente \\
+\hline
+\end{DoxyParams}
