@@ -1,0 +1,20 @@
+{
+    "name": "postmessages",
+    "main": "postmessages",
+    "version": "0.0.1",
+    "author": "Filippo Bergamasco",
+    "dependencies": {
+        "colors": "^1.4.0",
+        "mongodb": "^6.15.0",
+        "mongoose": "^8.13.2"
+    },
+    "devDependencies": {
+        "@types/node": "^22.0.0",
+        "typescript": "^5.8.0"
+    },
+    "scripts": {
+        "compile": "tsc",
+        "start": "node postmessages"
+    },
+    "private": true
+}
