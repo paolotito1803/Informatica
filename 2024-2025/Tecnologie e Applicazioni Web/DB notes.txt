@@ -1,0 +1,62 @@
+Utenti:
+- variabile "ADMIN"
+- generalità varie
+
+Rotta:
+- id
+- destinazione
+- partenza
+
+Airline:
+- id
+- nome
+- Aircrafts
+- flights
+- routes
+- fatturato
+
+
+Voli:
+- id
+- Airline
+- Aircraft
+- Rotta
+- Biglietto
+
+Aeromobile:
+- id
+- modello
+- Posto
+
+Posto:
+- num
+- Classe
+- Spazio gambe (opzionale) [bool]
+
+Biglietto:
+- id
+- Utente
+- Volo
+- Posto
+- Bagagli a mano [integer>=0]
+- bagagli in stiva [integer>=0]
+- prezzo [double>=0]
+
+Metodi HTTP/HTTPS
+-> route (GET)
+-> login (GET)
+-> registration (POST)
+    -> update (PUT)
+    -> delete (DEL)
+-> search (GET)
+-> insert routes (POST)
+    -> update (PUT)
+    -> delete (DEL)
+-> insert flights (POST)
+    -> update (PUT)
+    -> delete (DEL)
+-> insert Airline (POST)
+    -> update (PUT)
+    -> delete (DEL)
+-> purchase (POST)
+    -> delete (DEL)
