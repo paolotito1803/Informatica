@@ -72,7 +72,9 @@ if (!process.env.JWT_SECRET) {
     console.log("\".env\" file loaded but JWT_SECRET=<secret> key-value pair was not found");
     process.exit(-1);
 }
+const fs = require("fs");
 const http = require("http"); // HTTP module
+const https = require("https"); // HTTPS module
 const colors = require("colors");
 colors.enabled = true;
 const mongoose = require("mongoose");
@@ -311,17 +313,15 @@ mongoose.connect('mongodb://mymongo:27017/postmessages')
     ios.on('connection', function (client) {
         console.log("Socket.io client connected".green);
     });
-    server.listen(8080, () => console.log("HTTP Server started on port 8080".green));
+    //server.listen(8080, () => console.log("HTTP Server started on port 8080".green));
     // To start an HTTPS server we create an https.Server instance 
     // passing the express application middleware. Then, we start listening
     // on port 8443
     //
-    /*
     https.createServer({
-      key: fs.readFileSync('keys/key.pem'),
-      cert: fs.readFileSync('keys/cert.pem')
+        key: fs.readFileSync('/keys/key.pem'),
+        cert: fs.readFileSync('/keys/cert.pem')
     }, app).listen(8443);
-    */
 }).catch((err) => {
     console.log("Error Occurred during initialization".red);
     console.log(err);

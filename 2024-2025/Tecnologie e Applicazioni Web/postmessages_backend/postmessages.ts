@@ -439,18 +439,17 @@ mongoose.connect( 'mongodb://mymongo:27017/postmessages' )
       console.log("Socket.io client connected".green);
     });
 
-    server.listen(8080, () => console.log("HTTP Server started on port 8080".green));
+    //server.listen(8080, () => console.log("HTTP Server started on port 8080".green));
 
       // To start an HTTPS server we create an https.Server instance 
       // passing the express application middleware. Then, we start listening
       // on port 8443
       //
-    /*
+    
     https.createServer({
-      key: fs.readFileSync('keys/key.pem'),
-      cert: fs.readFileSync('keys/cert.pem')
+      key: fs.readFileSync('/keys/key.pem'),
+      cert: fs.readFileSync('/keys/cert.pem')
     }, app).listen(8443);
-    */
   }
 ).catch(
   (err) => {
