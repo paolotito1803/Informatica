@@ -3,7 +3,6 @@ import {Routes} from './Routes'
 import {Aircrafts} from './Aircrafts'
 import {Flights} from './Flights'
 
-
 export interface Airlines extends mongoose.Document{
     readonly _id: mongoose.Schema.Types.ObjectId,
     name: String,
@@ -88,4 +87,19 @@ airlineSchema.methods.setFlight = function(flights: Array<Flights>){
     this.flights = flights;
 }
 
+export function getSchema() { return airlineSchema; }
 
+// Mongoose Model
+let airlineModel;  // This is not exposed outside the model
+export function getModel() : mongoose.Model< Airlines>  { // Return Model as singleton
+    if( !airlineModel ) {
+        airlineModel = mongoose.model('Airline', getSchema() )
+    }
+    return airlineModel;
+}
+
+export function newAirline( data ): Airlines {
+    let _airlineModel = getModel();
+    let airLine = new _airlineModel( data );
+    return airLine;
+}

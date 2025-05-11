@@ -1,5 +1,4 @@
 import mongoose = require('mongoose')
-import {Users} from "./Users";
 
 export interface Routes extends mongoose.Document{
     readonly _id: mongoose.Schema.Types.ObjectId,
@@ -68,4 +67,22 @@ routeSchema.methods.getLength = function(){
 
 routeSchema.methods.getLayoverFuel = function(){
     return this.layoverFuel;
+}
+
+export function getSchema() { return routeSchema; }
+
+// Mongoose Model
+let routeModel;  // This is not exposed outside the model
+export function getModel() : mongoose.Model< Routes>  { // Return Model as singleton
+    if( !routeModel ) {
+        routeModel = mongoose.model('Route', getSchema() )
+    }
+    return routeModel;
+}
+
+export function newRoute( data ): Routes {
+    let _routemodel = getModel();
+    let route = new _routemodel( data );
+
+    return route;
 }
