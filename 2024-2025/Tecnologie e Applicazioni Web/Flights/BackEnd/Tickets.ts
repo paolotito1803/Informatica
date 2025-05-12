@@ -52,6 +52,10 @@ const ticketSchema = new mongoose.Schema<Tickets>({
     numCheckedLuggages: {
         type: mongoose.SchemaTypes.Number,
         required: true
+    },
+    price: {
+        type: mongoose.SchemaTypes.Number,
+        required: true
     }
 })
 

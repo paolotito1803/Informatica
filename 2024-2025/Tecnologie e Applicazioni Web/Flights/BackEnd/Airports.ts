@@ -1,4 +1,5 @@
 import mongoose = require('mongoose')
+import {Flights} from "./Flights";
 
 export interface Airports extends mongoose.Document {
     readonly _id: mongoose.Schema.Types.ObjectId,
@@ -70,4 +71,21 @@ airportSchema.methods.setState = function (state: string){
 
 airportSchema.methods.setPosition = function (position: [number, number]) {
     this.position = position;
+}
+
+export function getSchema() { return airportSchema; }
+
+// Mongoose Model
+let airportModel;  // This is not exposed outside the model
+export function getModel() : mongoose.Model<Airports>  { // Return Model as singleton
+    if( !airportModel) {
+        airportModel = mongoose.model('Airport', getSchema() )
+    }
+    return airportModel;
+}
+
+export function newFlight( data ): Airports {
+    let _airportModel = getModel();
+    let airports = new _airportModel( data );
+    return airports;
 }
