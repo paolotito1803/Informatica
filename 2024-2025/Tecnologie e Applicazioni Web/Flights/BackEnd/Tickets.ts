@@ -2,7 +2,6 @@ import mongoose = require('mongoose')
 import {Users} from './Users';
 import {Flights} from './Flights';
 import {Seats} from "./Seats";
-import {Double} from "mongoose";
 
 export interface Tickets extends mongoose.Document{
     readonly _id: mongoose.Schema.Types.ObjectId,
@@ -11,19 +10,19 @@ export interface Tickets extends mongoose.Document{
     flight: Flights,
     numCabinBag: Number,
     numCheckedLuggages: Number,
-    price: Double,
+    price: Number,
     getUser: () => Users,
     getFlight: () => Flights,
     getSeat: () => Seats,
     getNumCabinBag: () => Number,
     getNumCheckedLuggages: () => Number,
-    getPrice: () => Double
+    getPrice: () => Number
     setUser: (user: Users) => void,
     setFlight: (flight: Flights) => void,
     setSeat: (seat: Seats) => void,
     setNumCabinBag: (numCabinBag: Number) => void,
     setNumCheckedLuggages: (numCheckedLuggages: Number) => void,
-    setPrice: (price: Double) => void
+    setPrice: (price: Number) => void
 }
 
 //Defining Schema
@@ -47,11 +46,11 @@ const ticketSchema = new mongoose.Schema<Tickets>({
         unique: true
     },
     numCabinBag: {
-        type: Number,
+        type: mongoose.SchemaTypes.Number,
         required: true
     },
     numCheckedLuggages: {
-        type: Number,
+        type: mongoose.SchemaTypes.Number,
         required: true
     }
 })
@@ -101,6 +100,23 @@ ticketSchema.methods.setNumCheckedLuggages = function(numCheckedLuggages: Number
     this.numCheckedLuggages = numCheckedLuggages;
 }
 
-ticketSchema.methods.setPrice = function(price: Double){
+ticketSchema.methods.setPrice = function(price: Number){
     this.price = price;
+}
+
+export function getSchema() { return ticketSchema; }
+
+// Mongoose Model
+let ticketModel;  // This is not exposed outside the model
+export function getModel() : mongoose.Model<Tickets>  { // Return Model as singleton
+    if( !ticketModel ) {
+        ticketModel = mongoose.model('Ticket', getSchema() )
+    }
+    return ticketModel;
+}
+
+export function newSeat( data ): Tickets {
+    let _seatModel = getModel();
+    let tickets = new _seatModel( data );
+    return tickets;
 }

@@ -16,17 +16,17 @@ export interface Seats extends mongoose.Document{
 //Defining Schema
 const seatSchema = new mongoose.Schema<Seats>({
     numberSeat: {
-        type: String,
+        type: mongoose.SchemaTypes.String,
         required: true,
         unique: true
     },
     classes: {
-        type: String,
+        type: mongoose.SchemaTypes.String,
         required: true,
         unique: true
     },
     legroom: {
-        type: Boolean,
+        type: mongoose.SchemaTypes.Boolean,
         required: true
     }
 })
@@ -62,7 +62,7 @@ export function getSchema() { return seatSchema; }
 let seatModel;  // This is not exposed outside the model
 export function getModel() : mongoose.Model<Seats>  { // Return Model as singleton
     if( !seatModel ) {
-        seatModel = mongoose.model('Aircraft', getSchema() )
+        seatModel = mongoose.model('Seat', getSchema() )
     }
     return seatModel;
 }

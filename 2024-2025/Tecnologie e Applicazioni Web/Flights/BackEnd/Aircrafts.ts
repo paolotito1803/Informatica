@@ -14,7 +14,7 @@ export interface Aircrafts extends mongoose.Document{
 //Defining Schema
 const aircraftSchema = new mongoose.Schema<Aircrafts>({
     modell: {
-        type: String,
+        type: mongoose.SchemaTypes.String,
         required: true,
         unique: true
     },
