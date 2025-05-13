@@ -2,10 +2,10 @@ import mongoose = require('mongoose')
 
 export interface Routes extends mongoose.Document{
     readonly _id: mongoose.Schema.Types.ObjectId,
-    destination: String,
-    depart: String,
-    length: Number,
-    layoverFuel: Number,
+    destination: string,
+    depart: string,
+    length: number,
+    layoverFuel: number,
     setDestination: (dst:string) => void,
     setDepartment: (dep:string) => void,
     setLength: (len:number) => void,

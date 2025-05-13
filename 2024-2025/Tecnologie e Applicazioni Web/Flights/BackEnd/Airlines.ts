@@ -5,11 +5,11 @@ import {Flights} from './Flights'
 
 export interface Airlines extends mongoose.Document{
     readonly _id: mongoose.Schema.Types.ObjectId,
-    name: String,
+    name: string,
     aircrafts: Aircrafts[],
     flights: Flights[],
     routes: Routes[],
-    revenue: Number,
+    revenue: number,
     getName: () => string,
     getRevenue: () => Number,
     getFlight: () => Array<Flights>,
