@@ -11,7 +11,8 @@ export interface Users extends mongoose.Document {
     digest: string,  // this is the hashed password (digest of the password)
     setPassword: (pwd:string)=>void,
     validatePassword: (pwd:string)=>boolean,
-    hasAdminRole: ()=>boolean
+    hasAdminRole: ()=>boolean,
+    setAdmin: ()=> void
 }
 
 //Definig the schema
@@ -57,6 +58,10 @@ userSchema.methods.validatePassword = function( pwd:string ):boolean {
 
 userSchema.methods.hasAdminRole = function(){
     return this.admin;
+}
+
+userSchema.methods.setAdmin = function(){
+    this.admin = true;
 }
 
 export function getSchema() { return userSchema; }
