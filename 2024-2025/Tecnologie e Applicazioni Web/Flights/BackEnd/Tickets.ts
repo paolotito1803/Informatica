@@ -10,19 +10,19 @@ export interface Tickets extends mongoose.Document{
     flight: Flights,
     numCabinBag: number,
     numCheckedLuggages: number,
-    price: Number,
+    price: number,
     getUser: () => Users,
     getFlight: () => Flights,
     getSeat: () => Seats,
-    getNumCabinBag: () => Number,
-    getNumCheckedLuggages: () => Number,
-    getPrice: () => Number
+    getNumCabinBag: () => number,
+    getNumCheckedLuggages: () => number,
+    getPrice: () => number
     setUser: (user: Users) => void,
     setFlight: (flight: Flights) => void,
     setSeat: (seat: Seats) => void,
-    setNumCabinBag: (numCabinBag: Number) => void,
-    setNumCheckedLuggages: (numCheckedLuggages: Number) => void,
-    setPrice: (price: Number) => void
+    setNumCabinBag: (numCabinBag: number) => void,
+    setNumCheckedLuggages: (numCheckedLuggages: number) => void,
+    setPrice: (price: number) => void
 }
 
 //Defining Schema
@@ -96,15 +96,15 @@ ticketSchema.methods.setSeat = function(seat: Seats){
     this.seat = seat;
 }
 
-ticketSchema.methods.setNumCabinBag = function(numCabinBag: Number){
+ticketSchema.methods.setNumCabinBag = function(numCabinBag: number){
     this.numCabinBag = numCabinBag;
 }
 
-ticketSchema.methods.setNumCheckedLuggages = function(numCheckedLuggages: Number){
+ticketSchema.methods.setNumCheckedLuggages = function(numCheckedLuggages: number){
     this.numCheckedLuggages = numCheckedLuggages;
 }
 
-ticketSchema.methods.setPrice = function(price: Number){
+ticketSchema.methods.setPrice = function(price: number){
     this.price = price;
 }
 

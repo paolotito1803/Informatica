@@ -11,7 +11,7 @@ export interface Airlines extends mongoose.Document{
     routes: Routes[],
     revenue: number,
     getName: () => string,
-    getRevenue: () => Number,
+    getRevenue: () => number,
     getFlight: () => Array<Flights>,
     getAircraft: () => Array<Aircrafts>
     getRoute: () => Array<Routes>,

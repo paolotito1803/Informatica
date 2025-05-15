@@ -44,11 +44,11 @@ seatSchema.methods.getLegroom = function(){
     return this.legroom;
 }
 
-seatSchema.methods.setNumberSeat = function(numberSeat: String){
+seatSchema.methods.setNumberSeat = function(numberSeat: string){
     this.numberSeat = numberSeat;
 }
 
-seatSchema.methods.setClasses = function(classes: String){
+seatSchema.methods.setClasses = function(classes: string){
     this.classes = classes;
 }
 
