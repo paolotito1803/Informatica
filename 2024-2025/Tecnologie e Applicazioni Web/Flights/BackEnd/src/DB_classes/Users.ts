@@ -12,7 +12,7 @@ export interface Users extends mongoose.Document {
     setPassword: (pwd:string)=>void,
     validatePassword: (pwd:string)=>boolean,
     hasAdminRole: ()=>boolean,
-    setAdmin: ()=> void
+    setAdmin: () => void
 }
 
 //Definig the schema
