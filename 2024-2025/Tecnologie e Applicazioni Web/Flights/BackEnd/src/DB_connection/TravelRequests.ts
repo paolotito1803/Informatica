@@ -47,7 +47,7 @@ import passportHTTP = require('passport-http');  // implements Basic and Digest 
 
 import jsonwebtoken = require('jsonwebtoken');  // JWT generation
 const { expressjwt: jwt } = require('express-jwt');            // JWT parsing middleware for express
-import { DB_initialization } from "./DB_initialization";
+import { DB_initialization } from "./DB_inizialization";
 
 import cors = require('cors');                  // Enable CORS middleware
 const io = require('socket.io');               // Socket.io websocket library
@@ -168,7 +168,7 @@ Into the profile page, the user may alter its data such as:
 - password
 - username
  */
-app.put("/users/:id", auth, async (req, res, next) => {
+app.put('/users/:id', auth, async (req, res, next) => {
     try {
         const userId = req.params.id;
         const updateData: any = {};
@@ -177,11 +177,7 @@ app.put("/users/:id", auth, async (req, res, next) => {
             !req.body.username &&
             !req.body.mail &&
             !req.body.passportID) {
-            return next(
-                { statusCode: 400,
-                    error: true,
-                    errormessage: "At least one field must be provided"
-                });
+            return next({ statusCode: 400, error: true, errormessage: "At least one field must be provided"});
         }
         //If the user wants to update password
         if (req.body.password) {
@@ -215,27 +211,9 @@ app.put("/users/:id", auth, async (req, res, next) => {
                         });
                 }
             );
-        /*
-        if (!updatedUser) {
-            return next(
-                { statusCode: 404,
-                    error: true,
-                    errormessage: "User not found."
-                });
-        }
-        return res.status(200).json(
-            { error: false,
-                errormessage: "",
-                id: updatedUser._id });
-
-         */
     } catch (error) {
         console.error("Error updating user:", error);
-        return next(
-            { statusCode: 500,
-                error: true,
-                errormessage: "DB error: " + error.message
-            });
+        return next({ statusCode: 500, error: true, errormessage: "DB error: " + error.message });
     }
 });
 
@@ -243,33 +221,200 @@ app.put("/users/:id", auth, async (req, res, next) => {
     Routes
     In this section we have to insert/update/delete the routes.
     Note: only an airline may insert a route!
-
     Steps:
-    - insert ->
-    - update ->
-    - delete ->
+    - insert -> POST    FATTO
+    - update -> PUT     FATTO
+    - delete -> DEL     FATTO
  */
+app.post('/routes', auth, (req,res,next) => {
+    let r = routes.newRoute(req.body);
+    let a = airlines.newAirline(req.auth).hasAirlineRole();
+    if(a){
+        r.save().then((data) => {
+            return res.status(200).json({error: false, errormessage: "", id: data._id});
+        }).catch( (reason) => {
+            if (reason.code === 11000)
+                return next({statusCode: 404, error: true, errormessage: "Route already exists"});
+            return next({statusCode: 404, error: true, errormessage: "DB error: " + reason.errmsg});
+        })
+    }
+    else
+        console.error("Not admin, impossible insert");
+});
 
+app.put('/roots:id', async (req,res,next) => {
+    try {
+        const userId_routes = req.params.id;
+        const updateData_routes: any = {};
+        if (!req.body.depart &&
+            !req.body.destination &&
+            !req.body.length&&
+            !req.body.layoverFuel) {
+            return next({ statusCode: 400, error: true, errormessage: "At least one field must be provided"});
+        }
+
+        if(req.body.destination){
+            updateData_routes.destination = req.body.destination;
+        }
+        if(req.body.depart){
+            updateData_routes.department = req.body.depart;
+        }
+        if(req.body.layoverFuel){
+            updateData_routes.layoverFuel = req.body.layoverFuel;
+        }
+        //Finds the routes we want to update and do it
+        const updatedAirline = await airlines.getModel().findByIdAndUpdate(userId_routes, updateData_routes, { new: true })
+            .then(
+                () => {
+                    return res.status(200).json(
+                        { error: false,
+                            errormessage: "",
+                            id: updatedAirline._id });
+                }
+            )
+            .catch(() => {
+                    return next(
+                        { statusCode: 404,
+                            error: true,
+                            errormessage: "Route not found."
+                        });
+                }
+            );
+    } catch (error) {
+        console.error("Error updating user:", error);
+        return next({ statusCode: 500, error: true, errormessage: "DB error: " + error.message });
+    }
+});
+
+app.delete('/routes:id', (req,res,next) => {
+    if( !airlines.newAirline(req.auth).hasAirlineRole() ) {
+        return next({ statusCode:404, error: true, errormessage: "Unauthorized: user is not an administrator."} );
+    }
+    routes.getModel().deleteOne( {_id: req.params.id } )
+        .then(
+            ( q )=> {
+                if( q.deletedCount > 0 )
+                    return res.status(200).json( {error:false, errormessage:""} );
+                else
+                    return res.status(404).json( {error:true, errormessage:"Invalid route ID"} );
+            }).catch( (reason)=> {
+        return next({ statusCode:404, error: true, errormessage: "DB error: "+reason });
+    })
+})
 /*
     Airlines
-
     Steps:
-    - insert -> POST
-    - update -> PUT
-    - delete -> DEL
+    - insert -> POST    FATTO
+    - update -> PUT     FATTO
+    - delete -> DEL     FATTO
  */
-app.post('/airlines', (req,res,next) => {
-    let a = airlines.newAirlines( req.body );
+app.post('/airlines',auth, (req,res,next) => {
+    let a = airlines.newAirline( req.body );
+    let u = users.newUser(req.auth).hasAdminRole();
+
     if( !req.body.password ) {
         return next({ statusCode:404, error: true, errormessage: "Password field missing"} );
     }
     //a.setPassword( req.body.password );
+    if(u == true) {
+        a.save().then((data) => {
+            return res.status(200).json({error: false, errormessage: "", id: data._id});
+        }).catch((reason) => {
+            if (reason.code === 11000)
+                return next({statusCode: 404, error: true, errormessage: "Airline already exists"});
+            return next({statusCode: 404, error: true, errormessage: "DB error: " + reason.errmsg});
+        })
+    }
+    else
+        console.error("Not admin, impossible insert");
+});
 
-    a.save().then( (data) => {
-        return res.status(200).json({ error: false, errormessage: "", id: data._id });
-    }).catch( (reason) => {
-        if( reason.code === 11000 )
-            return next({statusCode:404, error:true, errormessage: "User already exists"} );
-        return next({ statusCode:404, error: true, errormessage: "DB error: "+reason.errmsg });
+app.put('/airlines:id', async (req, res, next) => {
+    try {
+        const userId_airlines = req.params.id;
+        const updateData_airlines: any = {};
+        //Checks if both password and username are not empty fields
+        if (!req.body.password &&
+            !req.body.username &&
+            !req.body.mail) {
+            return next({ statusCode: 400, error: true, errormessage: "At least one field must be provided"});
+        }
+        //If the airline wants to update password
+        if (req.body.password) {
+            updateData_airlines.setPassword(req.body.password); // Dovresti hashare la password prima di salvarla
+        }
+        //If the airline wants to update username
+        if (req.body.username) {
+            updateData_airlines.username = req.body.username;
+        }
+        if(req.body.mail){
+            updateData_airlines.mail=req.body.mail;
+        }
+        //Finds the airline we want to update and do it
+        const updatedAirline = await airlines.getModel().findByIdAndUpdate(userId_airlines, updateData_airlines, { new: true })
+            .then(
+                () => {
+                    return res.status(200).json(
+                        { error: false,
+                            errormessage: "",
+                            id: updatedAirline._id });
+                }
+            )
+            .catch(() => {
+                    return next(
+                        { statusCode: 404,
+                            error: true,
+                            errormessage: "Airline not found."
+                        });
+                }
+            );
+    } catch (error) {
+        console.error("Error updating user:", error);
+        return next({ statusCode: 500, error: true, errormessage: "DB error: " + error.message });
+    }
+});
+
+app.delete('/airlines:id', auth, (req,res,next) => {
+    if( !users.newUser(req.auth).hasAdminRole() ) {
+        return next({ statusCode:404, error: true, errormessage: "Unauthorized: user is not an administrator."} );
+    }
+    airlines.getModel().deleteOne( {_id: req.params.id } )
+        .then(
+            ( q )=> {
+                if( q.deletedCount > 0 )
+                    return res.status(200).json( {error:false, errormessage:""} );
+                else
+                    return res.status(404).json( {error:true, errormessage:"Invalid airline ID"} );
+            }).catch( (reason)=> {
+        return next({ statusCode:404, error: true, errormessage: "DB error: "+reason });
     })
 });
+
+/*
+    Aircrafts
+    Steps:
+    - insert -> POST    FATTO
+    - update -> PUT
+ */
+app.post('/aircrafts', auth, (req, res, next) => {
+    let a = airlines.newAirline(req.auth).hasAdminRole();
+    let aircraft = aircrafts.newAircraft(req.body);
+    if(a){
+        aircraft.save().then((data) => {
+            return res.status(200).json({error: false, errormessage: "", id: data._id});
+        }).catch((reason) => {
+            if (reason.code === 11000)
+                return next({statusCode: 404, error: true, errormessage: "Aircraft already exists"});
+            return next({statusCode: 404, error: true, errormessage: "DB error: " + reason.errmsg});
+        })
+    }
+    else
+        console.error("Not airline, impossible insert")
+});
+
+/*
+Flights
+    Steps:
+    - insert -> POST
+    - update -> PUT
+ */

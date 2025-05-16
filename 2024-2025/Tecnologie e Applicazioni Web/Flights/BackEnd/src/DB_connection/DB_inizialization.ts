@@ -23,7 +23,7 @@ export function DB_initialization(app) {
                     username: "admin",
                     mail: "admin@project_flight.it"
                 });
-                u.setAdmin();
+                u.setRole("admin");
                 u.setPassword("admin");
                 return u.save()
             } else {

@@ -2,8 +2,9 @@ import mongoose = require('mongoose')
 import {Routes} from './Routes'
 import {Aircrafts} from './Aircrafts'
 import {Flights} from './Flights'
+import * as users from "./Users";
 
-export interface Airlines extends mongoose.Document{
+export interface Airlines extends users.Users{
     readonly _id: mongoose.Schema.Types.ObjectId,
     name: string,
     aircrafts: Aircrafts[],
@@ -19,7 +20,8 @@ export interface Airlines extends mongoose.Document{
     setRevenue: (revenue: number) => void,
     setFlight: (flights: Array<Flights>) => void,
     setAircraft: (aircrafts: Array<Aircrafts>) => void,
-    setRoute: (routes: Array<Routes>) => void
+    setRoute: (routes: Array<Routes>) => void,
+    hasAirlineRole: () => boolean
 }
 
 //Defining schema
@@ -45,6 +47,8 @@ const airlineSchema = new mongoose.Schema<Airlines>({
         required: true
     }
 })
+
+airlineSchema.add(users.getSchema())
 
 //Defining functions
 airlineSchema.methods.getName = function(){
@@ -87,6 +91,13 @@ airlineSchema.methods.setFlight = function(flights: Array<Flights>){
     this.flights = flights;
 }
 
+airlineSchema.methods.hasAirlineRole = function(){
+    for( let roleidx in this.roles ) {
+        if( this.roles[roleidx] === 'airline' )
+            return true;
+    }
+    return false;
+}
 export function getSchema() { return airlineSchema; }
 
 // Mongoose Model

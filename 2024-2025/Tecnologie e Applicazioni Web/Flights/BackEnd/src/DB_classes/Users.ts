@@ -6,13 +6,14 @@ export interface Users extends mongoose.Document {
     readonly _id: mongoose.Schema.Types.ObjectId,
     username: string,
     mail: string,
-    admin: boolean,
+    roles: string[],
     salt: string,    // salt is a random string that will be mixed with the actual password before hashing
     digest: string,  // this is the hashed password (digest of the password)
     setPassword: (pwd:string)=>void,
     validatePassword: (pwd:string)=>boolean,
     hasAdminRole: ()=>boolean,
-    setAdmin: () => void
+    setRole: (role: string) => void
+
 }
 
 //Definig the schema
@@ -26,9 +27,8 @@ const userSchema = new mongoose.Schema<Users>({
         required: true,
         unique: true
     },
-    admin: {
-        type: mongoose.SchemaTypes.Boolean,
-        default: false,
+    roles: {
+        type: [mongoose.SchemaTypes.String],
         required: true
     },
     salt:  {
@@ -57,11 +57,18 @@ userSchema.methods.validatePassword = function( pwd:string ):boolean {
 }
 
 userSchema.methods.hasAdminRole = function(){
-    return this.admin;
+    for( let roleidx in this.roles ) {
+        if( this.roles[roleidx] === 'admin' )
+            return true;
+    }
+    return false;
 }
 
-userSchema.methods.setAdmin = function(){
-    this.admin = true;
+userSchema.methods.setRole = function(role: string){
+    if(role != 'admin' && role != 'passenger' && role != 'airline'){
+        console.error("Inexistent role");
+    }
+    else this.role.push(role)
 }
 
 export function getSchema() { return userSchema; }
