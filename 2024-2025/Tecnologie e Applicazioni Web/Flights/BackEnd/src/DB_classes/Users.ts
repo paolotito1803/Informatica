@@ -1,5 +1,5 @@
-import mongoose = require('mongoose')
-import crypto = require('crypto')
+import mongoose = require('mongoose');
+import crypto = require('crypto');
 
 
 export interface Users extends mongoose.Document {
@@ -9,13 +9,13 @@ export interface Users extends mongoose.Document {
     roles: string[],
     salt: string,    // salt is a random string that will be mixed with the actual password before hashing
     digest: string,  // this is the hashed password (digest of the password)
+
     setPassword: (pwd:string)=>void,
     validatePassword: (pwd:string)=>boolean,
     hasAdminRole: ()=>boolean,
     hasAirlineRole: () => boolean,
     hasPassangerRole: () => boolean,
-    setRole: (role: string) => void
-
+    setRole: (role: string) => void,
 }
 
 //Definig the schema
@@ -31,7 +31,7 @@ const userSchema = new mongoose.Schema<Users>({
     },
     roles: {
         type: [mongoose.SchemaTypes.String],
-        required: true
+        required: true,
     },
     salt:  {
         type: mongoose.SchemaTypes.String,
@@ -58,15 +58,14 @@ userSchema.methods.validatePassword = function( pwd:string ):boolean {
     return (this.digest === digest);
 }
 
-userSchema.methods.hasAdminRole = function(){
-    for( let roleidx in this.roles ) {
-        if( this.roles[roleidx] === 'admin' )
-            return true;
-    }
-    return false;
+userSchema.methods.hasAdminRole = function(): boolean{
+    for(let i in this.roles){
+        if(this.roles[i]==="admin")
+            return true
+    }return false;
 }
 
-airlineSchema.methods.hasAirlineRole = function(){
+userSchema.methods.hasAirlineRole = function(){
     for( let roleidx in this.roles ) {
         if( this.roles[roleidx] === 'airline' )
             return true;
@@ -83,16 +82,18 @@ userSchema.methods.hasPassangerRole = function(){
 }
 
 userSchema.methods.setRole = function(role: string){
-    if(role != 'admin' && role != 'passenger' && role != 'airline'){
-        console.error("Inexistent role");
-    }
-    else this.role.push(role)
+    if(
+        role!= "admin" &&
+        role!= "airline" &&
+        role!= "passenger"
+    ) console.error("Inexistent role.");
+    else this.roles.push(role);
 }
 
 export function getSchema() { return userSchema; }
 
 // Mongoose Model
-let userModel;  // This is not exposed outside the model
+let userModel: any;  // This is not exposed outside the model
 export function getModel() : mongoose.Model< Users>  { // Return Model as singleton
     if( !userModel ) {
         userModel = mongoose.model('User', getSchema() )
@@ -102,9 +103,7 @@ export function getModel() : mongoose.Model< Users>  { // Return Model as single
 
 export function newUser( data ): Users {
     let _usermodel = getModel();
-    let user = new _usermodel( data );
-
-    return user;
+    return new _usermodel(data);
 }
 
 
