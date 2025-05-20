@@ -1,29 +1,33 @@
-import mongoose = require('mongoose')
+import mongoose = require('mongoose');
+import {Airports} from "./Airports"
 
 export interface Routes extends mongoose.Document{
     readonly _id: mongoose.Schema.Types.ObjectId,
-    destination: string,
-    depart: string,
+    destination: Airports,
+    depart: Airports,
     length: number,
-    layoverFuel: number,
-    setDestination: (dst:string) => void,
-    setDepartment: (dep:string) => void,
-    setLength: (len:number) => void,
-    setLayoverFuel: (lf:number) => void,
-    getDestination: () => string,
-    getDepartment: () => string,
+    layoverFuel: Airports,
+
+    setDestination: (dst:Airports) => void,
+    setDepartment: (dep:Airports) => void,
+    setLayoverFuel: (lf:Airports) => void,
+
+    getDestination: () => Airports,
+    getDepart: () => Airports,
     getLength: () => number,
-    getLayoverFuel: () => number
+    getLayoverFuel: () => Airports
 }
 
 //Defining the schema
 const routeSchema = new mongoose.Schema<Routes>({
     destination: {
-        type: mongoose.SchemaTypes.String,
+        type: mongoose.SchemaTypes.ObjectId,
+        ref: "Airports",
         required: true
     },
     depart: {
-        type: mongoose.SchemaTypes.String,
+        type: mongoose.SchemaTypes.ObjectId,
+        ref: "Airports",
         required: true
     },
     length: {
@@ -31,25 +35,22 @@ const routeSchema = new mongoose.Schema<Routes>({
         required: false
     },
     layoverFuel: {
-        type: mongoose.SchemaTypes.Number,
-        required: true
+        type: mongoose.SchemaTypes.ObjectId,
+        ref: "Airports",
+        required: false
     }
 })
 
 //Defining functions
-routeSchema.methods.setDestination = function(dst:string){
+routeSchema.methods.setDestination = function(dst:Airports){
     this.destination = dst;
 }
 
-routeSchema.methods.setDepartment = function(dep:string){
+routeSchema.methods.setDepartment = function(dep:Airports){
     this.depart = dep;
 }
 
-routeSchema.methods.setLength = function(len:number){
-    this.length = len;
-}
-
-routeSchema.methods.setLayoverFuel = function(lp:string){
+routeSchema.methods.setLayoverFuel = function(lp:Airports){
     this.layoverFuel = lp;
 }
 
@@ -63,10 +64,17 @@ routeSchema.methods.getDepartment = function(){
 
 routeSchema.methods.getLength = function(){
     if(!this.length){
-        this.length = Math.abs(Math.sqrt((this.layoverFuel.position[0] - this.depart.position[0])^2 + (this.layoverFuel.position[1] - this.depart.position[1])^2)
-            + Math.sqrt((this.destination.position[0] - this.layoverFuel.position[0])^2 + (this.destination.position[1] - this.layoverFuel.position[1])^2));
-        return this.length
+        this.length = Math.abs(
+            Math.sqrt(
+                (this.layoverFuel.position[0] - this.depart.position[0])^2 +
+                (this.layoverFuel.position[1] - this.depart.position[1])^2)
+            +
+            Math.sqrt(
+                (this.destination.position[0] - this.layoverFuel.position[0])^2 +
+                (this.destination.position[1] - this.layoverFuel.position[1])^2)
+        );
     }
+    return this.length;
 }
 
 routeSchema.methods.getLayoverFuel = function(){
@@ -86,7 +94,5 @@ export function getModel() : mongoose.Model< Routes>  { // Return Model as singl
 
 export function newRoute( data ): Routes {
     let _routemodel = getModel();
-    let route = new _routemodel( data );
-
-    return route;
+    return new _routemodel(data);
 }
