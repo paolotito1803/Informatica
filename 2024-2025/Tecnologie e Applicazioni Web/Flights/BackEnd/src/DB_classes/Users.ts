@@ -12,6 +12,8 @@ export interface Users extends mongoose.Document {
     setPassword: (pwd:string)=>void,
     validatePassword: (pwd:string)=>boolean,
     hasAdminRole: ()=>boolean,
+    hasAirlineRole: () => boolean,
+    hasPassangerRole: () => boolean,
     setRole: (role: string) => void
 
 }
@@ -59,6 +61,22 @@ userSchema.methods.validatePassword = function( pwd:string ):boolean {
 userSchema.methods.hasAdminRole = function(){
     for( let roleidx in this.roles ) {
         if( this.roles[roleidx] === 'admin' )
+            return true;
+    }
+    return false;
+}
+
+airlineSchema.methods.hasAirlineRole = function(){
+    for( let roleidx in this.roles ) {
+        if( this.roles[roleidx] === 'airline' )
+            return true;
+    }
+    return false;
+}
+
+userSchema.methods.hasPassangerRole = function(){
+    for( let roleidx in this.roles ) {
+        if( this.roles[roleidx] === 'passanger' )
             return true;
     }
     return false;

@@ -28,7 +28,7 @@ const routeSchema = new mongoose.Schema<Routes>({
     },
     length: {
         type: mongoose.SchemaTypes.Number,
-        required: true
+        required: false
     },
     layoverFuel: {
         type: mongoose.SchemaTypes.Number,
@@ -62,7 +62,11 @@ routeSchema.methods.getDepartment = function(){
 }
 
 routeSchema.methods.getLength = function(){
-    return this.length;
+    if(!this.length){
+        this.length = Math.abs(Math.sqrt((this.layoverFuel.position[0] - this.depart.position[0])^2 + (this.layoverFuel.position[1] - this.depart.position[1])^2)
+            + Math.sqrt((this.destination.position[0] - this.layoverFuel.position[0])^2 + (this.destination.position[1] - this.layoverFuel.position[1])^2));
+        return this.length
+    }
 }
 
 routeSchema.methods.getLayoverFuel = function(){

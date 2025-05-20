@@ -21,7 +21,6 @@ export interface Airlines extends users.Users{
     setFlight: (flights: Array<Flights>) => void,
     setAircraft: (aircrafts: Array<Aircrafts>) => void,
     setRoute: (routes: Array<Routes>) => void,
-    hasAirlineRole: () => boolean
 }
 
 //Defining schema
@@ -89,14 +88,6 @@ airlineSchema.methods.setRoute = function(routes: Array<Routes>){
 
 airlineSchema.methods.setFlight = function(flights: Array<Flights>){
     this.flights = flights;
-}
-
-airlineSchema.methods.hasAirlineRole = function(){
-    for( let roleidx in this.roles ) {
-        if( this.roles[roleidx] === 'airline' )
-            return true;
-    }
-    return false;
 }
 export function getSchema() { return airlineSchema; }
 

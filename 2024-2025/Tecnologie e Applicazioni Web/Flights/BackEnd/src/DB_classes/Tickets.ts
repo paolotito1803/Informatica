@@ -119,8 +119,8 @@ export function getModel() : mongoose.Model<Tickets>  { // Return Model as singl
     return ticketModel;
 }
 
-export function newSeat( data ): Tickets {
-    let _seatModel = getModel();
-    let tickets = new _seatModel( data );
+export function newTicket( data ): Tickets {
+    let _ticketModel = getModel();
+    let tickets = new _ticketModel( data );
     return tickets;
 }
