@@ -922,3 +922,169 @@ app.get("/airports", auth, (req, res, next) => {
                 });
             });
 })
+
+/*
+    Seats
+
+    Insert -> POST      -> FATTO
+    Update -> PUT       -> FATTO
+    Delete -> DEL       -> FATTO
+    Search -> GET       -> FATTO
+ */
+app.post("/seats", auth, (req, res, next) => {
+    if( !req.user.hasAirlineRole() &&
+        !airlines.newAirline(req.auth).hasAirlineRole())
+        return next(
+            {
+                statuscode: 403,
+                error: true,
+                errormessage: "Unauthorized"
+            });
+    let s: Seats = seats.newSeat(req.body);
+    s.save().then(
+        (data) => {
+            return res.status(200).json({
+                error: false,
+                errormessage: "",
+                id: data._id
+            })
+        }
+    ).catch(
+        (reason) => {
+            if(reason.code === 11000){
+                return next({
+                    statuscode: 409,
+                    error: true,
+                    errormessage: "Seat already exists"
+                });
+            }else{
+                return next({
+                    statudcode: 404,
+                    errir: true,
+                    errormessage: "DB error" + reason.errmsg
+                });
+            }
+        }
+    )
+})
+app.put("/seats:id", auth, async (req, res, next) => {
+    try {
+        if (!req.user.hasAirlineRole() &&
+            !airlines.newAirline(req.auth).hasAirlineRole())
+            return next(
+                {
+                    statuscode: 403,
+                    error: true,
+                    errormessage: "Access denied! Unauthorized to alter the airport " + req.params.id
+                }
+            )
+        if (
+            !req.body.numberSeat &&
+            !req.body.classes &&
+            !req.body.legroom
+        )
+            return next(
+                {
+                    statuscode: 400,
+                    error: true,
+                    errormessage: "At least one field must be provided"
+                }
+            )
+        const seatID = req.params.id;
+        const updateData_seat: any = {
+            numberSeat:     req.body.numberSeat,
+            classes:        req.body.classes,
+            legroom:        req.body.legroom
+        };
+        const updatedSeat = seats.getModel().findByIdAndUpdate(seatID, updateData_seat, {new: true})
+            .then(
+                () => {
+                    return res.status(200).json(
+                        {
+                            error: false,
+                            errormessage: "",
+                            id: updatedSeat._id,
+                        });
+                }
+            )
+            .catch(() => {
+                    return next(
+                        {
+                            statusCode: 404,
+                            error: true,
+                            errormessage: "Airport not found."
+                        });
+                }
+            );
+    }catch (error) {
+        console.error("Error during updating Seat: ", error);
+        return next(
+            {
+                statusCode: 500,
+                error: true,
+                errormessage: "DB error: " + error.message
+            });
+    }
+})
+app.delete("/seats:id", auth, (req, res, next) => {
+    if(
+        !req.user.hasAirlineRole() &&
+        !airlines.newAirline(req.auth).hasAirlineRole()
+    )
+        return next(
+            {
+                statuscode: 403,
+                error: true,
+                errormessage: "Access denied! Unauthorized user"
+            }
+        )
+    seats.getModel().deleteOne({id: res.params.id})
+        .then(
+            (q) => {
+                if (q.deletedCount>0)
+                    return res.status(200).json(
+                        {
+                            error: false,
+                            errormessage: ""
+                        });
+                else
+                    return res.status(404).json(
+                        {
+                            error: true,
+                            errormessage: "Seat with ID" + req.params.id + "not found"
+                        });
+            }
+        ).catch((reason) => {
+        return next(
+            {
+                statuscode: 404,
+                error: true,
+                errormessage: "DB error" + reason
+            });
+    })
+})
+app.get("/seats", auth, (req, res, next) => {
+    if(
+        !req.user.hasAirlineRole() &&
+        !airlines.newAirline(req.auth).hasAirlineRole()
+    )
+        return next(
+            {
+                statuscode: 403,
+                error: true,
+                errormessage: "Unauthorized."
+            })
+    seats.getModel().find({})
+        .then(
+            (seat) => {
+                return res.status(200).json(seat);
+            })
+        .catch(
+            (reason) => {
+                return next({
+                    statuscode: 404,
+                    error: true,
+                    errormessage: "DB error" + reason
+                });
+            });
+})

@@ -5,9 +5,11 @@ export interface Seats extends mongoose.Document{
    numberSeat: string,
     classes: string,
     legroom: boolean,
+
     getNumberSeat: () => string,
     getClasses: () => string,
     getLegroom: () => boolean,
+
     setNumberSeat: (numberSeat: string) => void,
     setClasses: (classes: string) => void,
     setLegroom: (legroom: boolean) => void
