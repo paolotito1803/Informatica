@@ -369,7 +369,7 @@ app.put('/airlines:id', async (req, res, next) => {
                 }
             );
     } catch (error) {
-        console.error("Error updating user:", error);
+        console.error("Error updating Airline:", error);
         return next({ statusCode: 500, error: true, errormessage: "DB error: " + error.message });
     }
 });
@@ -394,7 +394,9 @@ app.delete('/airlines:id', auth, (req,res,next) => {
     Aircrafts
     Steps:
     - insert -> POST    FATTO
-    - update -> PUT
+    - update -> PUT     FATTO
+    - delete -> DEL     FATTO
+    - ritorno ->GET     FATTO
  */
 app.post('/aircrafts', auth, (req, res, next) => {
     let a = airlines.newAirline(req.auth).hasAdminRole();
@@ -412,9 +414,192 @@ app.post('/aircrafts', auth, (req, res, next) => {
         console.error("Not airline, impossible insert")
 });
 
+app.put('/aircrafts:id', auth, async (req, res, next) =>{
+    try {
+        const userId_aircrafts = req.params.id;
+        const updateData_aircrafts: any = {};
+        if(req.user.hasAirlineRole()) {
+            if (!req.body.modell &&
+                !req.body.seats) {
+                return next({statusCode: 400, error: true, errormessage: "At least one field must be provided"});
+            }
+            if (req.body.modell) {
+                updateData_aircrafts.modell = req.body.modell;
+            }
+            if (req.body.seats) {
+                updateData_aircrafts.seats = req.body.seats;
+            }
+
+            const updatedAircraft= await airlines.getModel().findByIdAndUpdate(userId_aircrafts, updateData_aircrafts, {new: true})
+                .then(
+                    () => {
+                        return res.status(200).json(
+                            {
+                                error: false,
+                                errormessage: "",
+                                id: updatedAircraft._id
+                            });
+                    }
+                )
+                .catch(() => {
+                        return next(
+                            {
+                                statusCode: 404,
+                                error: true,
+                                errormessage: "Aircraft not found."
+                            });
+                    }
+                );
+        }
+    } catch (error) {
+        console.error("Error updating Aircraft:", error);
+        return next({ statusCode: 500, error: true, errormessage: "DB error: " + error.message });
+    }
+});
+
+app.delete('/aircrafts:id', auth, (req, res, next) => {
+    if( !user.newUser(req.auth).hasAirlineRole()) {
+        return next({ statusCode:404, error: true, errormessage: "Unauthorized: user is not an administrator."} );
+    }
+    aircrafts.getModel().deleteOne( {_id: req.params.id } )
+        .then(
+            ( q )=> {
+                if( q.deletedCount > 0 )
+                    return res.status(200).json( {error:false, errormessage:""} );
+                else
+                    return res.status(404).json( {error:true, errormessage:"Invalid aircraft ID"} );
+            }).catch( (reason)=> {
+        return next({ statusCode:404, error: true, errormessage: "DB error: "+reason });
+    })
+});
+
+app.get('/aircrafts', (req, res, next) => {
+   aircrafts.getModel().find({}, {}).then((aircrafts) => {
+       return res.status(200).json(aircrafts);
+   }).catch( (reason)=> {
+       return next({statuscode: 404, error: true, errormessage: "DB error" + reason});
+   })
+});
 /*
 Flights
     Steps:
-    - insert -> POST
-    - update -> PUT
+    - insert -> POST    FATTO
+    - update -> PUT     FATTO
+    - delete -> DEL     FATTO
+    - ritorno-> GET     FATTO
  */
+
+app.post('/flights', auth, (req, res, next) => {
+    if(!req.user.hasAirlineRole()) {
+        return next({statuscode: 403, error: true, errormessage: "Unauthorized."} );
+    }
+    else{
+        let f = flights.newFlight(req.body);
+        f.save().then((data) => {return res.status(200).json({error: false, errormessage: '', id: data._id})
+        }).catch((reason) => {
+            if(reasoncode === 11000){
+                return next({
+                    statuscode: 409,
+                    error: true,
+                    errormessage: "Flight already exists"
+                });
+            }else{
+                return next({
+                    statudcode: 404,
+                    errir: true,
+                    errormessage: "DB error" + reason.errmsg
+                });
+            }
+        });
+    }
+});
+
+app.get('/flights', auth, (req, rea, next) => {
+    if(!req.users.hasAirlineRole())
+        return next({statuscode: 403, error: true, errormessage: "Unauthorized"});
+    flights.getModel().find({}).then((flights) => {
+       return res.status(200).json(flights);
+    }).catch((reason) => {
+        return next({
+            statuscode: 404,
+            error: true,
+            errormessage: "DB error" + reason
+        });
+    });
+});
+
+app.delete('/flights:id', auth, (req, res, next) => {
+    if(!req.user.hasAirlineRole()){
+        return next({
+           statuscode: 403,
+            error: true,
+            errormessage: "Unauthorized"
+        });
+    }else{
+        flights.getModel().deleteOne({id: req.params.id}).then(
+            (q) => {
+                if(q.deleteCount > 0)
+                    return res.status(200).json({error: false, errormessage: ""});
+                else
+                    return res.status(404).json({error: true, errormessage: "Flight with ID" + req.params.id + "not found"});
+            }).catch((reason) => {
+                return next({statuscode: 404, error: true, errormessage: "DB error" + reason});
+            });
+    }
+});
+
+app.put('/flights:id', auth, async (req, res, next) =>{
+    try {
+        const userId_flights = req.params.id;
+        const updateData_flights: any = {};
+        if(req.user.hasAirlineRole()) {
+            if (!req.body.airline &&
+                !req.body.aircraft &&
+                !req.body.route &&
+                !req.body.ticket &&
+                !req.body.departTime) {
+                    return next({statusCode: 400, error: true, errormessage: "At least one field must be provided"});
+            }
+            if (req.body.airline) {
+                updateData_flights.airline = req.body.airline;
+            }
+            if (req.body.aircraft) {
+                updateData_flights.aircraft = req.body.aircraft;
+            }
+            if (req.body.route) {
+                updateData_flights.route = req.body.route;
+            }
+            if (req.body.ticket) {
+                updateData_flights.ticket = req.body.ticket;
+            }
+            if(req.body.departTime){
+                updateData_flights.departTime = req.body.departTime;
+            }
+
+
+            const updatedFlight= await flights.getModel().findByIdAndUpdate(userId_flights, updateData_flights, {new: true})
+                .then(
+                    () => {
+                        return res.status(200).json(
+                            {
+                                error: false,
+                                errormessage: "",
+                                id: updatedFlight._id,
+                            });
+                    }
+                )
+                .catch(() => {
+                        return next(
+                            {
+                                statusCode: 404,
+                                error: true,
+                                errormessage: "Flight not found."
+                            });
+                    }
+                );
+        }
+    } catch (error) {
+        console.error("Error updating Flight:", error);
+        return next({ statusCode: 500, error: true, errormessage: "DB error: " + error.message });
+    }
+});

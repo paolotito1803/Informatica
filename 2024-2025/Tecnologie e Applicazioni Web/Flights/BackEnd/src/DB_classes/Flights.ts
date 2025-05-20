@@ -8,16 +8,19 @@ export interface Flights extends mongoose.Document{
     readonly _id: mongoose.Schema.Types.ObjectId,
     airline: Airlines[],
     aircraft: Aircrafts[],
-    route: Routes[],
+    route: Routes,
     ticket: Tickets[],
+    departTime: Date,
     getAirline: () => Array<Airlines>,
     getAircraft: () => Array<Aircrafts>,
     getTicket: () => Array<Tickets>,
-    getRoute: () => Array<Routes>,
+    getRoute: () => Routes,
+    getDepartTime: () => Date,
     setAirline: (airline: Array<Airlines>) => void,
     setAircraft: (aircraft: Array<Aircrafts>) => void,
     setTickets: (ticket: Array<Tickets>) => void,
-    setRoutes: (route: Array<Routes>) => void
+    setRoutes: (route: Routes) => void,
+    setDepartTime: (departTime: Date) => void
 }
 
 //Defining Schema
@@ -31,11 +34,15 @@ const flightSchema = new mongoose.Schema<Flights>({
         required: true
     },
     route: {
-        type: Array<Routes>(),
+        type: Routes,
         required: true
     },
     ticket: {
         type: Array<Tickets>(),
+        required: true
+    },
+    departTime: {
+        type: Date,
         required: true
     }
 })
@@ -57,6 +64,10 @@ flightSchema.methods.getRoute = function() {
     return this.route;
 }
 
+flightSchema.methods.getDepartTime = function() {
+    return this.departTime;
+}
+
 flightSchema.methods.setAirline = function(airline: Array<Airlines>): void {
     this.airline = airline;
 }
@@ -69,8 +80,12 @@ flightSchema.methods.setTicket = function(tickets: Array<Tickets>): void {
     this.ticket = tickets;
 }
 
-flightSchema.methods.setRoutes = function(routes: Array<Routes>): void {
+flightSchema.methods.setRoutes = function(routes: Routes): void {
     this.route = routes;
+}
+
+flightSchema.methods.setDepartTime = function(departTime: Date): void {
+    this.departTime = departTime;
 }
 
 export function getSchema() { return flightSchema; }
