@@ -9,7 +9,7 @@ export interface Flights extends mongoose.Document{
     airline: Airlines[],
     aircraft: Aircrafts[],
     route: Routes,
-    ticket: Tickets[],
+    tickets: Tickets[],
     departTime: Date,
     getAirline: () => Array<Airlines>,
     getAircraft: () => Array<Aircrafts>,
@@ -34,10 +34,11 @@ const flightSchema = new mongoose.Schema<Flights>({
         required: true
     },
     route: {
-        type: Routes,
+        type: mongoose.SchemaTypes.ObjectId,
+        ref: "Routes",
         required: true
     },
-    ticket: {
+    tickets: {
         type: Array<Tickets>(),
         required: true
     },
@@ -76,8 +77,8 @@ flightSchema.methods.setAircraft = function(aircraft: Array<Aircrafts>): void {
     this.aircraft = aircraft;
 }
 
-flightSchema.methods.setTicket = function(tickets: Array<Tickets>): void {
-    this.ticket = tickets;
+flightSchema.methods.setTickets = function(tickets: Array<Tickets>): void {
+    this.tickets = tickets;
 }
 
 flightSchema.methods.setRoutes = function(routes: Routes): void {

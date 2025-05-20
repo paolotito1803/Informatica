@@ -1,5 +1,4 @@
-import mongoose = require('mongoose')
-import {Flights} from "./Flights";
+import mongoose = require('mongoose');
 
 export interface Airports extends mongoose.Document {
     readonly _id: mongoose.Schema.Types.ObjectId,
@@ -7,10 +6,12 @@ export interface Airports extends mongoose.Document {
     city: string,
     state: string,
     position: [number, number],
+
     getCode: () => string,
     getCity: () => string,
     getState: () => string,
-    getNumber: () => [number, number],
+    getPosition: () => [number, number],
+
     setCode: (code: string) => void,
     setCity: (city: string) => void,
     setState: (state: string) => void,
@@ -44,15 +45,12 @@ const airportSchema = new mongoose.Schema<Airports>({
 airportSchema.methods.getCode = function (){
     return this.code;
 }
-
 airportSchema.methods.getCity = function (){
     return this.city;
 }
-
 airportSchema.methods.getState = function (){
     return this.state;
 }
-
 airportSchema.methods.getPosition = function (){
     return this.position;
 }
@@ -60,15 +58,12 @@ airportSchema.methods.getPosition = function (){
 airportSchema.methods.setCode = function (code: string){
     this.code = code;
 }
-
 airportSchema.methods.setCity = function (city: string){
     this.city = city;
 }
-
 airportSchema.methods.setState = function (state: string){
     this.state = state;
 }
-
 airportSchema.methods.setPosition = function (position: [number, number]) {
     this.position = position;
 }
@@ -84,8 +79,7 @@ export function getModel() : mongoose.Model<Airports>  { // Return Model as sing
     return airportModel;
 }
 
-export function newFlight( data ): Airports {
+export function newAirport( data ): Airports {
     let _airportModel = getModel();
-    let airports = new _airportModel( data );
-    return airports;
+    return new _airportModel(data);
 }

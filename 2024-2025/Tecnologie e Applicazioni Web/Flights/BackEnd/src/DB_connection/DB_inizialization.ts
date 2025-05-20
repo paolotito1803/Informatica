@@ -1,11 +1,11 @@
 import * as users from "../DB_classes/Users";
 import mongoose = require("mongoose");
 import http = require("http");
-import {app} from "./TravelRequests";
 import https = require("https");
 import fs = require("fs");
 const io = require("socket.io");
 let ios = undefined;
+
 
 export function DB_initialization(app) {
 // Connect to mongodb and launch the HTTP server trough Express

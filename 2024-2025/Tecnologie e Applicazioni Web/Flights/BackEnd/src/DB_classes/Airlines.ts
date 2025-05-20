@@ -11,13 +11,14 @@ export interface Airlines extends users.Users{
     flights: Flights[],
     routes: Routes[],
     revenue: number,
+
     getName: () => string,
     getRevenue: () => number,
     getFlight: () => Array<Flights>,
     getAircraft: () => Array<Aircrafts>
     getRoute: () => Array<Routes>,
+
     setName: (name: string) => void,
-    setRevenue: (revenue: number) => void,
     setFlight: (flights: Array<Flights>) => void,
     setAircraft: (aircrafts: Array<Aircrafts>) => void,
     setRoute: (routes: Array<Routes>) => void,
@@ -55,6 +56,13 @@ airlineSchema.methods.getName = function(){
 }
 
 airlineSchema.methods.getRevenue = function(){
+    if(!this.revenue){
+        let sumPrice: number=0.0;
+        for(let flight of this.flights)
+            for(let ticket of flight.tickets)
+                sumPrice+=ticket.price;
+        return sumPrice;
+    }
     return this.revenue;
 }
 
@@ -72,10 +80,6 @@ airlineSchema.methods.getFlight = function(){
 
 airlineSchema.methods.setName = function(name: string){
     this.name = name;
-}
-
-airlineSchema.methods.setRevenue = function(revenue: number){
-    this.revenue = revenue;
 }
 
 airlineSchema.methods.setAircraft = function(aircrafts: Array<Aircrafts>){

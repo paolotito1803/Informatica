@@ -3,17 +3,23 @@ import {Seats} from './Seats'
 
 export interface Aircrafts extends mongoose.Document{
     readonly _id: mongoose.Schema.Types.ObjectId,
-    modell: string,
+    aircraftID: string
+    aircraftModel: string,
     seat: Array<Seats>,
-    getModell: () => string,
+    getaircraftModel: () => string,
     getSeat: () => Array<Seats>,
-    setModell: (modell: string) => void,
+    setaircraftModel: (aircraftModel: string) => void,
     setSeat: (seat: Array<Seats>) => void
 }
 
 //Defining Schema
 const aircraftSchema = new mongoose.Schema<Aircrafts>({
-    modell: {
+    aircraftID:{
+        type: mongoose.SchemaTypes.String,
+        required: true,
+        unique: true,
+    },
+    aircraftModel: {
         type: mongoose.SchemaTypes.String,
         required: true,
         unique: true
@@ -26,16 +32,16 @@ const aircraftSchema = new mongoose.Schema<Aircrafts>({
 })
 
 //Defining Functions
-aircraftSchema.methods.getModell = function(){
-    return this.modell;
+aircraftSchema.methods.getaircraftModel = function(){
+    return this.aircraftModel;
 }
 
 aircraftSchema.methods.getSeat = function(){
     return this.seat;
 }
 
-aircraftSchema.methods.setModell = function(modell: string){
-    this.modell = modell;
+aircraftSchema.methods.setaircraftModel = function(aircraftModel: string){
+    this.aircraftModel = aircraftModel;
 }
 
 aircraftSchema.methods.setSeat = function(seat: Array<Seats>){

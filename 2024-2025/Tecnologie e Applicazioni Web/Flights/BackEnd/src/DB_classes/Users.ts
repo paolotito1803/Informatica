@@ -4,6 +4,7 @@ import crypto = require('crypto');
 
 export interface Users extends mongoose.Document {
     readonly _id: mongoose.Schema.Types.ObjectId,
+    passportID: string,
     username: string,
     mail: string,
     roles: string[],
@@ -23,6 +24,11 @@ const userSchema = new mongoose.Schema<Users>({
     username: {
         type: mongoose.SchemaTypes.String,
         required: true
+    },
+    passportID: {
+        type: mongoose.SchemaTypes.String,
+        required: true,
+        unique: true
     },
     mail: {
         type: mongoose.SchemaTypes.String,

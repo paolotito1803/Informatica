@@ -11,12 +11,14 @@ export interface Tickets extends mongoose.Document{
     numCabinBag: number,
     numCheckedLuggages: number,
     price: number,
+
     getUser: () => Users,
     getFlight: () => Flights,
     getSeat: () => Seats,
     getNumCabinBag: () => number,
     getNumCheckedLuggages: () => number,
     getPrice: () => number
+
     setUser: (user: Users) => void,
     setFlight: (flight: Flights) => void,
     setSeat: (seat: Seats) => void,
