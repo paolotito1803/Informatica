@@ -5,14 +5,17 @@ export interface Seats extends mongoose.Document{
    numberSeat: string,
     classes: string,
     legroom: boolean,
+    isFree: boolean,
 
     getNumberSeat: () => string,
     getClasses: () => string,
     getLegroom: () => boolean,
+    isFreeSeat: () => boolean,
 
     setNumberSeat: (numberSeat: string) => void,
     setClasses: (classes: string) => void,
-    setLegroom: (legroom: boolean) => void
+    setLegroom: (legroom: boolean) => void,
+    setSeat: (isFree: boolean) => void
 }
 
 //Defining Schema
@@ -30,6 +33,11 @@ const seatSchema = new mongoose.Schema<Seats>({
     legroom: {
         type: mongoose.SchemaTypes.Boolean,
         required: true
+    },
+    isFree: {
+        type: mongoose.SchemaTypes.Boolean,
+        required: true,
+        default: true
     }
 })
 
@@ -46,6 +54,10 @@ seatSchema.methods.getLegroom = function(){
     return this.legroom;
 }
 
+seatSchema.methods.isfree = function(){
+    return this.isFree;
+}
+
 seatSchema.methods.setNumberSeat = function(numberSeat: string){
     this.numberSeat = numberSeat;
 }
@@ -56,6 +68,10 @@ seatSchema.methods.setClasses = function(classes: string){
 
 seatSchema.methods.setLegroom = function(legroom: boolean){
     this.legroom = legroom;
+}
+
+seatSchema.methods.setSeat = function(isFree: boolean){
+    this.isFree = isFree;
 }
 
 export function getSchema() { return seatSchema; }

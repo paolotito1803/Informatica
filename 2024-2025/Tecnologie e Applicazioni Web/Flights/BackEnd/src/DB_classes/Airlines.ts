@@ -60,7 +60,7 @@ airlineSchema.methods.getRevenue = function(){
         let sumPrice: number=0.0;
         for(let flight of this.flights)
             for(let ticket of flight.tickets)
-                sumPrice+=ticket.price;
+                sumPrice += ticket.price;
         return sumPrice;
     }
     return this.revenue;

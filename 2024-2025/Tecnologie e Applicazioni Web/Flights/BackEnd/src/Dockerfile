@@ -4,7 +4,7 @@ LABEL maintainer="Filippo Bergamasco <filippo.bergamasco@unive.it>"
 EXPOSE 8080
 
 WORKDIR /app
-COPY . /app
+COPY DB_connection /app
 RUN npm install
 RUN npm run compile
 
