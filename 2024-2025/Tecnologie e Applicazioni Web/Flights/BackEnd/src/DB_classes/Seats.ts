@@ -1,4 +1,4 @@
-import mongoose = require('mongoose')
+import mongoose = require('mongoose');
 
 export interface Seats extends mongoose.Document{
     readonly _id: mongoose.Schema.Types.ObjectId,
@@ -15,7 +15,7 @@ export interface Seats extends mongoose.Document{
     setNumberSeat: (numberSeat: string) => void,
     setClasses: (classes: string) => void,
     setLegroom: (legroom: boolean) => void,
-    setSeat: (isFree: boolean) => void
+    setSeat: (isFree: boolean) => void,
 }
 
 //Defining Schema
@@ -37,7 +37,7 @@ const seatSchema = new mongoose.Schema<Seats>({
     isFree: {
         type: mongoose.SchemaTypes.Boolean,
         required: true,
-        default: true
+        default: true,
     }
 })
 
@@ -53,8 +53,7 @@ seatSchema.methods.getClasses = function(){
 seatSchema.methods.getLegroom = function(){
     return this.legroom;
 }
-
-seatSchema.methods.isfree = function(){
+seatSchema.methods.isFreeSeat = function(){
     return this.isFree;
 }
 
@@ -69,7 +68,6 @@ seatSchema.methods.setClasses = function(classes: string){
 seatSchema.methods.setLegroom = function(legroom: boolean){
     this.legroom = legroom;
 }
-
 seatSchema.methods.setSeat = function(isFree: boolean){
     this.isFree = isFree;
 }
@@ -87,6 +85,5 @@ export function getModel() : mongoose.Model<Seats>  { // Return Model as singlet
 
 export function newSeat( data ): Seats {
     let _seatModel = getModel();
-    let seat = new _seatModel( data );
-    return seat;
+    return new _seatModel(data);
 }

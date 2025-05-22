@@ -649,7 +649,6 @@ app.post('/tickets', auth, (req, res, next) => {
     else{
         let t = tickets.newTicket(req.body);
         t.seat.setSeat(false);
-
         t.save().then((data) => {return res.status(200).json({error: false, errormessage: '', id: data._id})
         }).catch((reason) => {
             if(reason.code === 11000){
@@ -930,7 +929,6 @@ app.get("/airports", auth, (req, res, next) => {
 
     Insert -> POST      -> FATTO
     Update -> PUT       -> FATTO
-    Delete -> DEL       -> FATTO
     Search -> GET       -> FATTO
  */
 app.post("/seats", auth, (req, res, next) => {
@@ -984,7 +982,7 @@ app.put("/seats:id", auth, async (req, res, next) => {
             !req.body.numberSeat &&
             !req.body.classes &&
             !req.body.legroom &&
-            !req.bosy.isFree
+            !req.body.isFree
         )
             return next(
                 {
@@ -995,10 +993,10 @@ app.put("/seats:id", auth, async (req, res, next) => {
             )
         const seatID = req.params.id;
         const updateData_seat: any = {
-            numberSeat: req.body.numberSeat,
-            classes: req.body.classes,
-            legroom: req.body.legroom,
-            isFree: req.body.isFree
+            numberSeat:     req.body.numberSeat,
+            classes:        req.body.classes,
+            legroom:        req.body.legroom,
+            isFree:         req.body.isFree
         };
         const updatedSeat = seats.getModel().findByIdAndUpdate(seatID, updateData_seat, {new: true})
             .then(
@@ -1016,7 +1014,7 @@ app.put("/seats:id", auth, async (req, res, next) => {
                         {
                             statusCode: 404,
                             error: true,
-                            errormessage: "Airport not found."
+                            errormessage: "Seat not found."
                         });
                 }
             );
@@ -1030,6 +1028,7 @@ app.put("/seats:id", auth, async (req, res, next) => {
             });
     }
 })
+
 app.get("/seats", auth, (req, res, next) => {
     if(
         !req.user.hasAirlineRole() &&
@@ -1055,17 +1054,39 @@ app.get("/seats", auth, (req, res, next) => {
                 });
             });
 })
-/*
-ricerca voli da parte di tutti da una determinata partenza a un determinato arrivo con tutti gli scali necessari
-visione statistiche vedi consegna
- */
 
-//Search for a determinated depart and destination
-app.get('/', (req, res, next) => {
+/*
+    Features:
+    - Filtered research of flights
+        - Departing airport
+        - Arriving airport
+ */
+app.get("/", (req, res, next) => {
     const search: any = {
         depart: req.params.depart,
         destination: req.params.destination
     }
-    flights.getModel().find({}, {search}).then((result) => {return res.status(200).json(result);}
-    ).catch((reason) => {return next({statusode: 404, error: true, errormessage: reason})});
-});
+    flights.getModel().find({}, search)
+        .then(
+            (data) => {
+                return res.status(200).json(data)
+            }
+        )
+        .then(
+        () => {
+                return res.status(200).json(
+                    {
+                        error: false,
+                        errormessage: ""
+                    });
+            }
+        ).catch(
+            (reason) => {
+                return res.status(404).json(
+                    {
+                        error: true,
+                        errormessage: "Flights not found!"+reason.errmsg
+                    });
+        }
+    )
+})
