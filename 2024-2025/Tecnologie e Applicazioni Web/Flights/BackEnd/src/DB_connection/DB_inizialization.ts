@@ -444,7 +444,6 @@ export function DB_initialization(app) {
                     { aircraftID: "N144DC", aircraftModel: "Boeing 757-225", seat: boeing757Seats },
                     { aircraftID: "N811AD", aircraftModel: "Boeing 757-225", seat: boeing757Seats }
                 ]);
-
                 /*
                 let a1_seats: seats.Seats[]
                 let a2_seats: seats.Seats[]

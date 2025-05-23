@@ -84,7 +84,6 @@ app.get("/", (req,res) => {
             "/routes",
             "/flights",
             "/tickets",
-
         ]
     } ); // json method sends a JSON response (setting the correct Content-Type) to the client
 });
