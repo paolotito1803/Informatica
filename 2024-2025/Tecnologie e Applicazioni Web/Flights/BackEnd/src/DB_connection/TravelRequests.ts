@@ -77,6 +77,14 @@ app.get("/", (req,res) => {
             "/users",
             "/airlines",
             "/login",
+            "/search",
+            "/seats",
+            "/aircrafts",
+            "/airports",
+            "/routes",
+            "/flights",
+            "/tickets",
+
         ]
     } ); // json method sends a JSON response (setting the correct Content-Type) to the client
 });
@@ -1061,7 +1069,7 @@ app.get("/seats", auth, (req, res, next) => {
         - Departing airport
         - Arriving airport
  */
-app.get("/", (req, res, next) => {
+app.get("/search", (req, res, next) => {
     const search: any = {
         depart: req.params.depart,
         destination: req.params.destination
