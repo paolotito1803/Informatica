@@ -58,7 +58,7 @@ routeSchema.methods.getDestination = function(){
     return this.destination;
 }
 
-routeSchema.methods.getDepartment = function(){
+routeSchema.methods.getDepart = function(){
     return this.depart;
 }
 

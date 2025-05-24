@@ -13,12 +13,21 @@ import * as routes from "./Routes"
 import * as seats from "./Seats"
 import * as flights from "./Flights"
 import * as aircrafts from "./Aircrafts"
+import {Airlines} from "./Airlines";
+import {Aircrafts} from "./Aircrafts";
+import {Routes} from "./Routes";
+import {Tickets} from "./Tickets";
+import {Users} from "./Users";
+import {Seats} from "./Seats";
+import {Flights} from "./Flights";
+
 
 let ios = undefined;
 
+
 export function DB_initialization(app) {
 // Connect to mongodb and launch the HTTP server trough Express
-    mongoose.connect('mongodb://mymongo:27017/flight_project')
+    mongoose.connect('mongodb://mongoproject:27017/flight_project')
         .then(
             () => {
                 console.log("Connected to MongoDB");
@@ -35,7 +44,7 @@ export function DB_initialization(app) {
                 });
                 u.setRole("admin");
                 u.setPassword("admin");
-                return u.save()
+                return u.save();
             } else {
                 console.log("Admin user already exists");
             }
@@ -360,6 +369,12 @@ export function DB_initialization(app) {
                 return routesData;
             }
         }
+        /*
+            Aircrafts
+            Seats
+            Tickets
+            Flights
+         */
     ).then(
         () => {
             return aircrafts.getModel().countDocuments({})
@@ -458,6 +473,11 @@ export function DB_initialization(app) {
                 return aircraftsData;
             }
         }
+        /*
+            Seats
+            Tickets
+            Flights
+         */
     ).then(
         () => {
             return seats.getModel().countDocuments({})
@@ -493,6 +513,10 @@ export function DB_initialization(app) {
                 return Promise.all([s1, s2, s3]);
             }
         }
+        /*
+            Tickets
+            Flights
+         */
     ).then(
         () => {
             return flights.getModel().countDocuments({})
@@ -531,6 +555,9 @@ export function DB_initialization(app) {
                 return Promise.all([s1, s2, s3]);
             }
         }
+        /*
+            Tickets
+         */
     ).then(
         () => {
             return tickets.getModel().countDocuments({})
@@ -593,10 +620,10 @@ export function DB_initialization(app) {
             // on port 8443
             //
 
-            https.createServer({
+            /*https.createServer({
                 key: fs.readFileSync('/keys/key.pem'),
                 cert: fs.readFileSync('/keys/cert.pem')
-            }, app).listen(8443);
+            }, app).listen(8443);*/
         }
     ).catch(
         (err) => {
