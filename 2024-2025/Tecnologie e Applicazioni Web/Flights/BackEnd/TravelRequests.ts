@@ -18,29 +18,29 @@ colors.enabled = true;
 
 
 import mongoose = require('mongoose');
-import { Users } from '../DB_classes/Users';
-import * as users from '../DB_classes/Users';
+import { Users } from './Users';
+import * as users from './Users';
 
-import {Routes} from '../DB_classes/Routes';
-import * as routes from '../DB_classes/Routes';
+import {Routes} from './Routes';
+import * as routes from './Routes';
 
-import {Airlines} from '../DB_classes/Airlines';
-import * as airlines from '../DB_classes/Airlines';
+import {Airlines} from './Airlines';
+import * as airlines from './Airlines';
 
-import {Aircrafts} from "../DB_classes/Aircrafts";
-import * as aircrafts from '../DB_classes/Aircrafts';
+import {Aircrafts} from "./Aircrafts";
+import * as aircrafts from './Aircrafts';
 
-import {Flights} from "../DB_classes/Flights";
-import * as flights from '../DB_classes/Flights';
+import {Flights} from "./Flights";
+import * as flights from './Flights';
 
-import {Seats} from "../DB_classes/Seats";
-import * as seats from '../DB_classes/Seats';
+import {Seats} from "./Seats";
+import * as seats from './Seats';
 
-import {Tickets} from "../DB_classes/Tickets";
-import * as tickets from '../DB_classes/Tickets';
+import {Tickets} from "./Tickets";
+import * as tickets from './Tickets';
 
-import {Airports} from "../DB_classes/Airports";
-import * as airports from '../DB_classes/Airports';
+import {Airports} from "./Airports";
+import * as airports from './Airports';
 
 import express = require('express');
 

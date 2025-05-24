@@ -5,25 +5,16 @@ import https = require("https");
 import fs = require("fs");
 const io = require("socket.io");
 
-import * as users from "../DB_classes/Users"
-import * as airlines from "../DB_classes/Airlines"
-import * as airports from "../DB_classes/Airports"
-import * as tickets from "../DB_classes/Tickets"
-import * as routes from "../DB_classes/Routes"
-import * as seats from "../DB_classes/Seats"
-import * as flights from "../DB_classes/Flights"
-import * as aircrafts from "../DB_classes/Aircrafts"
-import {Airlines} from "../DB_classes/Airlines";
-import {Aircrafts} from "../DB_classes/Aircrafts";
-import {Routes} from "../DB_classes/Routes";
-import {Tickets} from "../DB_classes/Tickets";
-import {Users} from "../DB_classes/Users";
-import {Seats} from "../DB_classes/Seats";
-import {Flights} from "../DB_classes/Flights";
-
+import * as users from "./Users"
+import * as airlines from "./Airlines"
+import * as airports from "./Airports"
+import * as tickets from "./Tickets"
+import * as routes from "./Routes"
+import * as seats from "./Seats"
+import * as flights from "./Flights"
+import * as aircrafts from "./Aircrafts"
 
 let ios = undefined;
-
 
 export function DB_initialization(app) {
 // Connect to mongodb and launch the HTTP server trough Express
@@ -369,12 +360,6 @@ export function DB_initialization(app) {
                 return routesData;
             }
         }
-        /*
-            Aircrafts
-            Seats
-            Tickets
-            Flights
-         */
     ).then(
         () => {
             return aircrafts.getModel().countDocuments({})
@@ -473,11 +458,6 @@ export function DB_initialization(app) {
                 return aircraftsData;
             }
         }
-        /*
-            Seats
-            Tickets
-            Flights
-         */
     ).then(
         () => {
             return seats.getModel().countDocuments({})
@@ -513,10 +493,6 @@ export function DB_initialization(app) {
                 return Promise.all([s1, s2, s3]);
             }
         }
-        /*
-            Tickets
-            Flights
-         */
     ).then(
         () => {
             return flights.getModel().countDocuments({})
@@ -555,9 +531,6 @@ export function DB_initialization(app) {
                 return Promise.all([s1, s2, s3]);
             }
         }
-        /*
-            Tickets
-         */
     ).then(
         () => {
             return tickets.getModel().countDocuments({})
