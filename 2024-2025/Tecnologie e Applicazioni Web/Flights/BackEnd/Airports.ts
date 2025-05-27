@@ -1,7 +1,7 @@
 import mongoose = require('mongoose');
 
 export interface Airports extends mongoose.Document {
-    readonly _id: mongoose.Schema.Types.ObjectId,
+    readonly _ICAO: string
     code: string,
     city: string,
     state: string,
@@ -20,6 +20,11 @@ export interface Airports extends mongoose.Document {
 
 //Defining Schema
 const airportSchema = new mongoose.Schema<Airports>({
+    _ICAO: {
+        type: mongoose.SchemaTypes.String,
+        required: true,
+        unique: true
+    },
     code: {
         type: mongoose.SchemaTypes.String,
         required: true,
