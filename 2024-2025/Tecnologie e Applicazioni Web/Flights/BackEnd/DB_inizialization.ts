@@ -328,6 +328,72 @@ export function DB_initialization(app) {
         }
     ).then(
         () => {
+            return aircrafts.getModel().countDocuments({})
+        }
+    ).then(
+        (count) => { //dati di test per tutti i documenti
+            if (count == 0) {
+                console.log("Adding some test aircrafts into the database");
+                let boeing777Seats: seats.Seats[]=[];
+                let airbusA380Seats: seats.Seats[]=[];
+                let boeing787Seats: seats.Seats[]=[];
+                let airbusA350Seats: seats.Seats[]=[];
+                let boeing747Seats: seats.Seats[]=[];
+                let airbusA320Seats: seats.Seats[]=[];
+                let boeing737Seats: seats.Seats[]=[];
+                let airbusA319Seats: seats.Seats[]=[];
+                let airbusA321Seats: seats.Seats[]=[];
+
+                let aircraftsData = aircrafts.getModel().create([
+                    { aircraftID: "A6-ECI",     aircraftModel: "Boeing 777-300ER",          seat: aircraftConfig("Boeing 777-300ER",            boeing777Seats) }, // Emirates
+                    { aircraftID: "G-YMMN",     aircraftModel: "Boeing 777-200ER",          seat: aircraftConfig("Boeing 777-200ER",            boeing777Seats) }, // British Airways
+                    { aircraftID: "SQ638",      aircraftModel: "Airbus A380-800",           seat: aircraftConfig("Airbus A380-800",             airbusA380Seats) }, // Singapore Airlines
+                    { aircraftID: "JA381A",     aircraftModel: "Airbus A380-800",           seat: aircraftConfig("Airbus A380-800",             airbusA380Seats) }, // All Nippon Airways (ANA)
+                    { aircraftID: "N6067E",     aircraftModel: "Boeing 787-9 Dreamliner",   seat: aircraftConfig("Boeing 787-9 Dreamliner",     boeing787Seats) }, // United Airlines
+                    { aircraftID: "F-HRBA",     aircraftModel: "Boeing 787-10 Dreamliner",  seat: aircraftConfig("Boeing 787-10 Dreamliner",    boeing787Seats) }, // Air France
+                    { aircraftID: "JA01XJ",     aircraftModel: "Airbus A350-900",           seat: aircraftConfig("Airbus A350-900",             airbusA350Seats) }, // Japan Airlines
+                    { aircraftID: "EC-MIL",     aircraftModel: "Airbus A350-900",           seat: aircraftConfig("Airbus A350-900",             airbusA380Seats) }, // Iberia
+                    { aircraftID: "D-ABYA",     aircraftModel: "Boeing 747-8I",             seat: aircraftConfig("Boeing 747-8I",               boeing747Seats) }, // Lufthansa
+                    { aircraftID: "B-2485",     aircraftModel: "Boeing 747-8I",             seat: aircraftConfig("Boeing 747-8I",               boeing747Seats) }, // Air China
+                    { aircraftID: "N780BA",     aircraftModel: "Boeing 747-400",            seat: aircraftConfig("Boeing 747-400",              boeing747Seats) }, // Atlas Air
+                    { aircraftID: "F-GSQJ",     aircraftModel: "Boeing 777-300ER",          seat: aircraftConfig("Boeing 777-300ER",            boeing777Seats) }, // Air France
+                    { aircraftID: "N26902",     aircraftModel: "Boeing 787-9 Dreamliner",   seat: aircraftConfig("Boeing 787-9 Dreamliner",     boeing787Seats) }, // United Airlines
+                    { aircraftID: "N501DN",     aircraftModel: "Airbus A321neo",            seat: aircraftConfig("Airbus A321neo",              airbusA321Seats) }, // Delta Air Lines
+                    { aircraftID: "G-TTNA",     aircraftModel: "Airbus A320neo",            seat: aircraftConfig("Airbus A320",                 airbusA320Seats) }, // British Airways
+                    { aircraftID: "N320FR",     aircraftModel: "Airbus A320neo",            seat: aircraftConfig("Airbus A320neo",              airbusA320Seats) }, // Frontier Airlines
+                    { aircraftID: "G-EUPA",     aircraftModel: "Airbus A319-100",           seat: aircraftConfig("Airbus A319-100",             airbusA319Seats) }, // British Airways
+                    { aircraftID: "N601NK",     aircraftModel: "Airbus A320-200",           seat: aircraftConfig("Airbus A320-200",             airbusA320Seats) }, // Spirit Airlines
+                    { aircraftID: "JA73AN",     aircraftModel: "Boeing 737-800",            seat: aircraftConfig("Boeing 737-800",              boeing737Seats) }, // All Nippon Airways (ANA)
+                    { aircraftID: "N5017Q",     aircraftModel: "Boeing 737 MAX 9",          seat: aircraftConfig("Boeing 737 MAX 9",            boeing737Seats) }, // Alaska Airlines
+                    { aircraftID: "B-304Z",     aircraftModel: "Comac C919",                seat: aircraftConfig("Comac C919",                  airbusA320Seats) }, // China Eastern Airlines
+                    { aircraftID: "VH-OQB",     aircraftModel: "Airbus A380-800",           seat: aircraftConfig("Airbus A380-800",             airbusA380Seats) }, // Qantas Airways
+                    { aircraftID: "D-AIMD",     aircraftModel: "Airbus A340-600",           seat: aircraftConfig("Airbus A340-600",             airbusA350Seats) }, // Lufthansa
+                    { aircraftID: "G-VNAP",     aircraftModel: "Airbus A340-600",           seat: aircraftConfig("Airbus A340-600",             airbusA350Seats) }, // Virgin Atlantic
+                    { aircraftID: "F-WWCF",     aircraftModel: "Airbus A350-1000",          seat: aircraftConfig("Airbus A350-1000",            airbusA350Seats) }, // Qatar Airways
+                    { aircraftID: "N264LV",     aircraftModel: "Boeing 737 MAX 8",          seat: aircraftConfig("Boeing 737 MAX 8",            boeing737Seats) }, // Southwest Airlines
+                    { aircraftID: "N501DN",     aircraftModel: "Airbus A321neo",            seat: aircraftConfig("Airbus A321neo",              airbusA321Seats) }, // Delta Air Lines
+                    { aircraftID: "G-TTNA",     aircraftModel: "Airbus A320neo",            seat: aircraftConfig("Airbus A320neo",              airbusA320Seats) }, // British Airways
+                    { aircraftID: "N320FR",     aircraftModel: "Airbus A320neo",            seat: aircraftConfig("Airbus A320neo",              airbusA380Seats) }, // Frontier Airlines
+                    { aircraftID: "JA01XJ",     aircraftModel: "Airbus A350-900",           seat: aircraftConfig("Airbus A350-900",             airbusA350Seats) }, // Japan Airlines
+                    { aircraftID: "B-304Z",     aircraftModel: "Comac C919",                seat: aircraftConfig("Comac C919",                  airbusA320Seats) }, // China Eastern Airlines
+                    { aircraftID: "N5017Q",     aircraftModel: "Boeing 737 MAX 9",          seat: aircraftConfig("Boeing 737 MAX 9",            boeing737Seats) }, // Alaska Airlines
+                    { aircraftID: "G-EUPA",     aircraftModel: "Airbus A319-100",           seat: aircraftConfig("Airbus A319-100",             airbusA319Seats) }, // British Airways
+                    { aircraftID: "N601NK",     aircraftModel: "Airbus A320-200",           seat: aircraftConfig("Airbus A320-200",             airbusA320Seats) }, // Spirit Airlines
+                    { aircraftID: "JA73AN",     aircraftModel: "Boeing 737-800",            seat: aircraftConfig("Boeing 737-800",              boeing737Seats) }, // All Nippon Airways (ANA)
+                    { aircraftID: "N780BA",     aircraftModel: "Boeing 747-400",            seat: aircraftConfig("Boeing 747-400",              boeing747Seats) }, // Atlas Air
+                    { aircraftID: "F-GSQJ",     aircraftModel: "Boeing 777-300ER",          seat: aircraftConfig("Boeing 777-300ER",            boeing777Seats) }, // Air France
+                    { aircraftID: "N26902",     aircraftModel: "Boeing 787-9 Dreamliner",   seat: aircraftConfig("Boeing 787-9 Dreamliner",     boeing787Seats) }, // United Airlines
+                ]);
+                return aircraftsData;
+            }
+        }
+        /*
+            Seats
+            Tickets
+            Flights
+         */
+    ).then(
+        () => {
             return routes.getModel().countDocuments({})
         }
     ).then(
@@ -449,72 +515,6 @@ export function DB_initialization(app) {
         */
 
         /*
-            Tickets
-            Flights
-         */
-    ).then(
-        () => {
-            return aircrafts.getModel().countDocuments({})
-        }
-    ).then(
-        (count) => { //dati di test per tutti i documenti
-            if (count == 0) {
-                console.log("Adding some test aircrafts into the database");
-                let boeing777Seats: seats.Seats[]=[];
-                let airbusA380Seats: seats.Seats[]=[];
-                let boeing787Seats: seats.Seats[]=[];
-                let airbusA350Seats: seats.Seats[]=[];
-                let boeing747Seats: seats.Seats[]=[];
-                let airbusA320Seats: seats.Seats[]=[];
-                let boeing737Seats: seats.Seats[]=[];
-                let airbusA319Seats: seats.Seats[]=[];
-                let airbusA321Seats: seats.Seats[]=[];
-
-                let aircraftsData = aircrafts.getModel().create([
-                    { aircraftID: "A6-ECI",     aircraftModel: "Boeing 777-300ER",          seat: aircraftConfig("Boeing 777-300ER",            boeing777Seats) }, // Emirates
-                    { aircraftID: "G-YMMN",     aircraftModel: "Boeing 777-200ER",          seat: aircraftConfig("Boeing 777-200ER",            boeing777Seats) }, // British Airways
-                    { aircraftID: "SQ638",      aircraftModel: "Airbus A380-800",           seat: aircraftConfig("Airbus A380-800",             airbusA380Seats) }, // Singapore Airlines
-                    { aircraftID: "JA381A",     aircraftModel: "Airbus A380-800",           seat: aircraftConfig("Airbus A380-800",             airbusA380Seats) }, // All Nippon Airways (ANA)
-                    { aircraftID: "N6067E",     aircraftModel: "Boeing 787-9 Dreamliner",   seat: aircraftConfig("Boeing 787-9 Dreamliner",     boeing787Seats) }, // United Airlines
-                    { aircraftID: "F-HRBA",     aircraftModel: "Boeing 787-10 Dreamliner",  seat: aircraftConfig("Boeing 787-10 Dreamliner",    boeing787Seats) }, // Air France
-                    { aircraftID: "JA01XJ",     aircraftModel: "Airbus A350-900",           seat: aircraftConfig("Airbus A350-900",             airbusA350Seats) }, // Japan Airlines
-                    { aircraftID: "EC-MIL",     aircraftModel: "Airbus A350-900",           seat: aircraftConfig("Airbus A350-900",             airbusA380Seats) }, // Iberia
-                    { aircraftID: "D-ABYA",     aircraftModel: "Boeing 747-8I",             seat: aircraftConfig("Boeing 747-8I",               boeing747Seats) }, // Lufthansa
-                    { aircraftID: "B-2485",     aircraftModel: "Boeing 747-8I",             seat: aircraftConfig("Boeing 747-8I",               boeing747Seats) }, // Air China
-                    { aircraftID: "N780BA",     aircraftModel: "Boeing 747-400",            seat: aircraftConfig("Boeing 747-400",              boeing747Seats) }, // Atlas Air
-                    { aircraftID: "F-GSQJ",     aircraftModel: "Boeing 777-300ER",          seat: aircraftConfig("Boeing 777-300ER",            boeing777Seats) }, // Air France
-                    { aircraftID: "N26902",     aircraftModel: "Boeing 787-9 Dreamliner",   seat: aircraftConfig("Boeing 787-9 Dreamliner",     boeing787Seats) }, // United Airlines
-                    { aircraftID: "N501DN",     aircraftModel: "Airbus A321neo",            seat: aircraftConfig("Airbus A321neo",              airbusA321Seats) }, // Delta Air Lines
-                    { aircraftID: "G-TTNA",     aircraftModel: "Airbus A320neo",            seat: aircraftConfig("Airbus A320",                 airbusA320Seats) }, // British Airways
-                    { aircraftID: "N320FR",     aircraftModel: "Airbus A320neo",            seat: aircraftConfig("Airbus A320neo",              airbusA320Seats) }, // Frontier Airlines
-                    { aircraftID: "G-EUPA",     aircraftModel: "Airbus A319-100",           seat: aircraftConfig("Airbus A319-100",             airbusA319Seats) }, // British Airways
-                    { aircraftID: "N601NK",     aircraftModel: "Airbus A320-200",           seat: aircraftConfig("Airbus A320-200",             airbusA320Seats) }, // Spirit Airlines
-                    { aircraftID: "JA73AN",     aircraftModel: "Boeing 737-800",            seat: aircraftConfig("Boeing 737-800",              boeing737Seats) }, // All Nippon Airways (ANA)
-                    { aircraftID: "N5017Q",     aircraftModel: "Boeing 737 MAX 9",          seat: aircraftConfig("Boeing 737 MAX 9",            boeing737Seats) }, // Alaska Airlines
-                    { aircraftID: "B-304Z",     aircraftModel: "Comac C919",                seat: aircraftConfig("Comac C919",                  airbusA320Seats) }, // China Eastern Airlines
-                    { aircraftID: "VH-OQB",     aircraftModel: "Airbus A380-800",           seat: aircraftConfig("Airbus A380-800",             airbusA380Seats) }, // Qantas Airways
-                    { aircraftID: "D-AIMD",     aircraftModel: "Airbus A340-600",           seat: aircraftConfig("Airbus A340-600",             airbusA350Seats) }, // Lufthansa
-                    { aircraftID: "G-VNAP",     aircraftModel: "Airbus A340-600",           seat: aircraftConfig("Airbus A340-600",             airbusA350Seats) }, // Virgin Atlantic
-                    { aircraftID: "F-WWCF",     aircraftModel: "Airbus A350-1000",          seat: aircraftConfig("Airbus A350-1000",            airbusA350Seats) }, // Qatar Airways
-                    { aircraftID: "N264LV",     aircraftModel: "Boeing 737 MAX 8",          seat: aircraftConfig("Boeing 737 MAX 8",            boeing737Seats) }, // Southwest Airlines
-                    { aircraftID: "N501DN",     aircraftModel: "Airbus A321neo",            seat: aircraftConfig("Airbus A321neo",              airbusA321Seats) }, // Delta Air Lines
-                    { aircraftID: "G-TTNA",     aircraftModel: "Airbus A320neo",            seat: aircraftConfig("Airbus A320neo",              airbusA320Seats) }, // British Airways
-                    { aircraftID: "N320FR",     aircraftModel: "Airbus A320neo",            seat: aircraftConfig("Airbus A320neo",              airbusA380Seats) }, // Frontier Airlines
-                    { aircraftID: "JA01XJ",     aircraftModel: "Airbus A350-900",           seat: aircraftConfig("Airbus A350-900",             airbusA350Seats) }, // Japan Airlines
-                    { aircraftID: "B-304Z",     aircraftModel: "Comac C919",                seat: aircraftConfig("Comac C919",                  airbusA320Seats) }, // China Eastern Airlines
-                    { aircraftID: "N5017Q",     aircraftModel: "Boeing 737 MAX 9",          seat: aircraftConfig("Boeing 737 MAX 9",            boeing737Seats) }, // Alaska Airlines
-                    { aircraftID: "G-EUPA",     aircraftModel: "Airbus A319-100",           seat: aircraftConfig("Airbus A319-100",             airbusA319Seats) }, // British Airways
-                    { aircraftID: "N601NK",     aircraftModel: "Airbus A320-200",           seat: aircraftConfig("Airbus A320-200",             airbusA320Seats) }, // Spirit Airlines
-                    { aircraftID: "JA73AN",     aircraftModel: "Boeing 737-800",            seat: aircraftConfig("Boeing 737-800",              boeing737Seats) }, // All Nippon Airways (ANA)
-                    { aircraftID: "N780BA",     aircraftModel: "Boeing 747-400",            seat: aircraftConfig("Boeing 747-400",              boeing747Seats) }, // Atlas Air
-                    { aircraftID: "F-GSQJ",     aircraftModel: "Boeing 777-300ER",          seat: aircraftConfig("Boeing 777-300ER",            boeing777Seats) }, // Air France
-                    { aircraftID: "N26902",     aircraftModel: "Boeing 787-9 Dreamliner",   seat: aircraftConfig("Boeing 787-9 Dreamliner",     boeing787Seats) }, // United Airlines
-                ]);
-                return aircraftsData;
-            }
-        }
-        /*
-            Seats
             Tickets
             Flights
          */
