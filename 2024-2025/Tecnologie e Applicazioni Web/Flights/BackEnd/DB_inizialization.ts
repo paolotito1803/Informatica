@@ -328,7 +328,7 @@ export function DB_initialization(app) {
         }
     ).then(
         () => {
-            return aircrafts.getModel().countDocuments({})
+            return aircrafts.getModel().countDocuments()
         }
     ).then(
         (count) => { //dati di test per tutti i documenti
@@ -400,73 +400,422 @@ export function DB_initialization(app) {
         (count) => { //dati di test per tutti i documenti
             if (count == 0) {
                 console.log("Adding some test routes into the database");
+                /*
+                    - { code: "ATL", city: "Atlanta",         state: "USA",               position: [33.6407, -84.4277] },
+                    - { code: "DXB", city: "Dubai",           state: "UAE",               position: [25.2532, 55.3657] },
+                    - { code: "HND", city: "Tokyo",           state: "Japan",             position: [35.5494, 139.7798] },
+                    - { code: "LHR", city: "London",          state: "UK",                position: [51.4700, -0.4543] },
+                    { code: "DFW", city: "Dallas",          state: "USA",               position: [32.8998, -97.0403] },
+                    { code: "DEN", city: "Denver",          state: "USA",               position: [39.8561, -104.6737] },
+                    { code: "ORD", city: "Chicago",         state: "USA",               position: [41.9742, -87.9073] },
+                    { code: "IST", city: "Istanbul",        state: "Turkey",            position: [41.2753, 28.7519] },
+                    { code: "DEL", city: "Delhi",           state: "India",             position: [28.5562, 77.1000] },
+                    { code: "PVG", city: "Shanghai",        state: "China",             position: [31.1443, 121.8083] },
+                    { code: "LAX", city: "Los Angeles",     state: "USA",               position: [33.9416, -118.4085] },
+                    { code: "SIN", city: "Singapore",       state: "Singapore",         position: [1.3644, 103.9915] },
+                    { code: "CDG", city: "Paris",           state: "France",            position: [49.0097, 2.5479] },
+                    { code: "FRA", city: "Frankfurt",       state: "Germany",           position: [50.0379, 8.5622] },
+                    { code: "MUC", city: "Munich",          state: "Germany",           position: [48.3537, 11.7861] },
+                    { code: "ZRH", city: "Zurich",          state: "Switzerland",       position: [47.4506, 8.5610] },
+                    { code: "SYD", city: "Sydney",          state: "Australia",         position: [-33.9399, 151.1753] },
+                    { code: "JFK", city: "New York",        state: "USA",               position: [40.6413, -73.7781] },
+                    { code: "SFO", city: "San Francisco",   state: "USA",               position: [37.6213, -122.3790] },
+                    { code: "YYZ", city: "Toronto",         state: "Canada",            position: [43.6777, -79.6248] },
+                    { code: "GRU", city: "São Paulo",       state: "Brazil",            position: [-23.4319, -46.4679] },
+                    { code: "EZE", city: "Buenos Aires",    state: "Argentina",         position: [-34.8222, -58.5358] },
+                    { code: "HKG", city: "Hong Kong",       state: "China",             position: [22.3080, 113.9185] },
+                    { code: "ICN", city: "Seoul",           state: "South Korea",       position: [37.4602, 126.4407] },
+                    { code: "NRT", city: "Tokyo",           state: "Japan",             position: [35.7719, 140.3929] },
+                    { code: "BKK", city: "Bangkok",         state: "Thailand",          position: [13.6811, 100.7473] },
+                    { code: "DOH", city: "Doha",            state: "Qatar",             position: [25.2731, 51.6085] },
+                    { code: "AMS", city: "Amsterdam",       state: "Netherlands",       position: [52.3105, 4.7683] },
+                    { code: "VIE", city: "Vienna",          state: "Austria",           position: [48.1103, 16.5697] },
+                    { code: "MAD", city: "Madrid",          state: "Spain",             position: [40.4722, -3.5609] },
+                    { code: "BCN", city: "Barcelona",       state: "Spain",             position: [41.2974, 2.0833] },
+                    { code: "MEX", city: "Mexico City",     state: "Mexico",            position: [19.4361, -99.0719] },
+                    { code: "LIM", city: "Lima",            state: "Peru",              position: [-12.0219, -77.1143] },
+                    { code: "JNB", city: "Johannesburg",    state: "South Africa",      position: [-26.1367, 28.2411] },
+                    { code: "CPT", city: "Cape Town",       state: "South Africa",      position: [-33.9694, 18.5975] },
+                    { code: "VCE", city: "Venice",          state: "Italy",             position: [45.3019, 12.2107] },
+                    { code: "FCO", city: "Rome",            state: "Italy",             position: [41.8003, 12.2389] },
+                    { code: "MXP", city: "Milan",           state: "Italy",             position: [45.6300, 8.7281] },
+                    { code: "GIG", city: "Rio de Janeiro",  state: "Brazil",            position: [-22.8099, -43.2506] },
+                    { code: "PEK", city: "Beijing",         state: "China",             position: [40.0801, 116.5846] },
+                    { code: "KUL", city: "Kuala Lumpur",    state: "Malaysia",          position: [2.7456, 101.7099] },
+                    { code: "IST", city: "Istanbul",        state: "Turkey",            position: [41.2753, 28.7519] },
+                    { code: "DME", city: "Moscow",          state: "Russia",            position: [55.4088, 37.9063] },
+                    { code: "SVO", city: "Moscow",          state: "Russia",            position: [55.9726, 37.4146] },
+                    { code: "LED", city: "Saint Petersburg", state: "Russia",           position: [59.8003, 30.2625] },
+                    { code: "CUN", city: "Cancún",          state: "Mexico",            position: [21.0365, -86.8771] },
+                    { code: "MIA", city: "Miami",           state: "USA",               position: [25.7959, -80.2870] },
+                    { code: "BOS", city: "Boston",          state: "USA",               position: [42.3656, -71.0096] },
+                    { code: "PHX", city: "Phoenix",         state: "USA",               position: [33.4343, -112.0122] },
+                    { code: "IAH", city: "Houston",         state: "USA",               position: [29.9902, -95.3368] },
+                    { code: "DTW", city: "Detroit",         state: "USA",               position: [42.2124, -83.3534] },
+                    { code: "SAN", city: "San Diego",       state: "USA",               position: [32.7336, -117.1897] },
+                    { code: "MCO", city: "Orlando",         state: "USA",               position: [28.4312, -81.3081] },
+                    { code: "SLC", city: "Salt Lake City",  state: "USA",               position: [40.7899, -111.9791] },
+                    { code: "YVR", city: "Vancouver",       state: "Canada",            position: [49.1947, -123.1792] },
+                    { code: "MEM", city: "Memphis",         state: "USA",               position: [35.0424, -89.9767] },
+                    { code: "SAT", city: "San Antonio",     state: "USA",               position: [29.5337, -98.4698] },
+                    { code: "TUL", city: "Tulsa",           state: "USA",               position: [36.1984, -95.8881] },
+                    { code: "JAX", city: "Jacksonville",    state: "USA",               position: [30.4941, -81.6879] },
+                    { code: "BUF", city: "Buffalo",         state: "USA",               position: [42.9405, -78.7322] },
+                    { code: "DUB", city: "Dublin",          state: "Ireland",           position: [53.4213, -6.2701] },
+                    { code: "CPH", city: "Copenhagen",      state: "Denmark",           position: [55.6181, 12.6561] },
+                    { code: "OSL", city: "Oslo",            state: "Norway",            position: [60.1939, 11.1004] },
+                    { code: "ARN", city: "Stockholm",       state: "Sweden",            position: [59.6519, 17.9186] },
+                    { code: "HEL", city: "Helsinki",        state: "Finland",           position: [60.3172, 24.9633] },
+                    { code: "PRG", city: "Prague",          state: "Czech Republic",    position: [50.1008, 14.2600] },
+                    { code: "BRU", city: "Brussels",        state: "Belgium",           position: [50.9010, 4.4844] },
+                    { code: "LIS", city: "Lisbon",          state: "Portugal",          position: [38.7742, -9.1342] },
+                    { code: "ATH", city: "Athens",          state: "Greece",            position: [37.9364, 23.9445] },
+                    { code: "SOF", city: "Sofia",           state: "Bulgaria",          position: [42.6952, 23.4021] },
+                    { code: "BOM", city: "Mumbai",          state: "India",             position: [19.0896, 72.8656] },
+                    { code: "SGN", city: "Ho Chi Minh City", state: "Vietnam",          position: [10.8185, 106.6519] },
+                    { code: "MNL", city: "Manila",          state: "Philippines",       position: [14.5086, 121.0198] },
+                    { code: "TPE", city: "Taipei",          state: "Taiwan",            position: [25.0777, 121.2325] },
+                    { code: "JED", city: "Jeddah",          state: "Saudi Arabia",      position: [21.6796, 39.1565] },
+                    { code: "RUH", city: "Riyadh",          state: "Saudi Arabia",      position: [24.9576, 46.6988] },
+                    { code: "BOG", city: "Bogotá",          state: "Colombia",          position: [4.7016, -74.1469] },
+                    { code: "SCL", city: "Santiago",        state: "Chile",             position: [-33.3930, -70.7856] },
+                    { code: "UIO", city: "Quito",           state: "Ecuador",           position: [-0.1292, -78.3575] },
+                    { code: "PTY", city: "Panama City",     state: "Panama",            position: [9.0714, -79.3835] },
+                    { code: "CAI", city: "Cairo",           state: "Egypt",             position: [30.1219, 31.4056] },
+                    { code: "NBO", city: "Nairobi",         state: "Kenya",             position: [-1.3192, 36.9275] },
+                    { code: "LOS", city: "Lagos",           state: "Nigeria",           position: [6.5774, 3.3212] },
+                    { code: "ACC", city: "Accra",           state: "Ghana",             position: [5.6052, -0.1668] },
+                    { code: "DAR", city: "Dar es Salaam",   state: "Tanzania",          position: [-6.8751, 39.2026] },
+                    { code: "ADD", city: "Addis Abeba",     state: "Ethiopia",          position: [8.9779, 38.7993] },
+                    { code: "CMN", city: "Casablanca",      state: "Morocco",           position: [33.3675, -7.5899] },
+                    { code: "DKR", city: "Dakar",           state: "Senegal",           position: [14.7397, -17.4902] }
+                 */
+
+                let ATL: any
+                (async () => {ATL=await airports.getAirportByCode("ATL")})();
+                let DXB: any
+                (async () => {DXB=await airports.getAirportByCode("DXB")})();
+                let HND: any
+                (async () => {HND=await airports.getAirportByCode("HND")})();
+                let LHR: any
+                (async () => {LHR=await airports.getAirportByCode("LHR")})();
+                let DFW: any;
+                (async () => { DFW = await airports.getAirportByCode("DFW"); })();
+
+                let DEN: any;
+                (async () => { DEN = await airports.getAirportByCode("DEN"); })();
+
+                let ORD: any;
+                (async () => { ORD = await airports.getAirportByCode("ORD"); })();
+
+                let IST: any;
+                (async () => { IST = await airports.getAirportByCode("IST"); })();
+
+                let DEL: any;
+                (async () => { DEL = await airports.getAirportByCode("DEL"); })();
+
+                let PVG: any;
+                (async () => { PVG = await airports.getAirportByCode("PVG"); })();
+
+                let LAX: any;
+                (async () => { LAX = await airports.getAirportByCode("LAX"); })();
+
+                let SIN: any;
+                (async () => { SIN = await airports.getAirportByCode("SIN"); })();
+
+                let CDG: any;
+                (async () => { CDG = await airports.getAirportByCode("CDG"); })();
+
+                let FRA: any;
+                (async () => { FRA = await airports.getAirportByCode("FRA"); })();
+
+                let MUC: any;
+                (async () => { MUC = await airports.getAirportByCode("MUC"); })();
+
+                let ZRH: any;
+                (async () => { ZRH = await airports.getAirportByCode("ZRH"); })();
+
+                let SYD: any;
+                (async () => { SYD = await airports.getAirportByCode("SYD"); })();
+
+                let JFK: any;
+                (async () => { JFK = await airports.getAirportByCode("JFK"); })();
+
+                let SFO: any;
+                (async () => { SFO = await airports.getAirportByCode("SFO"); })();
+
+                let YYZ: any;
+                (async () => { YYZ = await airports.getAirportByCode("YYZ"); })();
+
+                let GRU: any;
+                (async () => { GRU = await airports.getAirportByCode("GRU"); })();
+
+                let EZE: any;
+                (async () => { EZE = await airports.getAirportByCode("EZE"); })();
+
+                let HKG: any;
+                (async () => { HKG = await airports.getAirportByCode("HKG"); })();
+
+                let ICN: any;
+                (async () => { ICN = await airports.getAirportByCode("ICN"); })();
+
+                let NRT: any;
+                (async () => { NRT = await airports.getAirportByCode("NRT"); })();
+
+                let BKK: any;
+                (async () => { BKK = await airports.getAirportByCode("BKK"); })();
+
+                let DOH: any;
+                (async () => { DOH = await airports.getAirportByCode("DOH"); })();
+
+                let AMS: any;
+                (async () => { AMS = await airports.getAirportByCode("AMS"); })();
+
+                let VIE: any;
+                (async () => { VIE = await airports.getAirportByCode("VIE"); })();
+
+                let MAD: any;
+                (async () => { MAD = await airports.getAirportByCode("MAD"); })();
+
+                let BCN: any;
+                (async () => { BCN = await airports.getAirportByCode("BCN"); })();
+
+                let MEX: any;
+                (async () => { MEX = await airports.getAirportByCode("MEX"); })();
+
+                let LIM: any;
+                (async () => { LIM = await airports.getAirportByCode("LIM"); })();
+
+                let JNB: any;
+                (async () => { JNB = await airports.getAirportByCode("JNB"); })();
+
+                let CPT: any;
+                (async () => { CPT = await airports.getAirportByCode("CPT"); })();
+
+                let VCE: any;
+                (async () => { VCE = await airports.getAirportByCode("VCE"); })();
+
+                let FCO: any;
+                (async () => { FCO = await airports.getAirportByCode("FCO"); })();
+
+                let MXP: any;
+                (async () => { MXP = await airports.getAirportByCode("MXP"); })();
+
+                let GIG: any;
+                (async () => { GIG = await airports.getAirportByCode("GIG"); })();
+
+                let PEK: any;
+                (async () => { PEK = await airports.getAirportByCode("PEK"); })();
+
+                let KUL: any;
+                (async () => { KUL = await airports.getAirportByCode("KUL"); })();
+
+                let DME: any;
+                (async () => { DME = await airports.getAirportByCode("DME"); })();
+
+                let SVO: any;
+                (async () => { SVO = await airports.getAirportByCode("SVO"); })();
+
+                let LED: any;
+                (async () => { LED = await airports.getAirportByCode("LED"); })();
+
+                let CUN: any;
+                (async () => { CUN = await airports.getAirportByCode("CUN"); })();
+
+                let MIA: any;
+                (async () => { MIA = await airports.getAirportByCode("MIA"); })();
+
+                let BOS: any;
+                (async () => { BOS = await airports.getAirportByCode("BOS"); })();
+
+                let PHX: any;
+                (async () => { PHX = await airports.getAirportByCode("PHX"); })();
+
+                let IAH: any;
+                (async () => { IAH = await airports.getAirportByCode("IAH"); })();
+
+                let DTW: any;
+                (async () => { DTW = await airports.getAirportByCode("DTW"); })();
+
+                let SAN: any;
+                (async () => { SAN = await airports.getAirportByCode("SAN"); })();
+
+                let MCO: any;
+                (async () => { MCO = await airports.getAirportByCode("MCO"); })();
+
+                let SLC: any;
+                (async () => { SLC = await airports.getAirportByCode("SLC"); })();
+
+                let YVR: any;
+                (async () => { YVR = await airports.getAirportByCode("YVR"); })();
+
+                let MEM: any;
+                (async () => { MEM = await airports.getAirportByCode("MEM"); })();
+
+                let SAT: any;
+                (async () => { SAT = await airports.getAirportByCode("SAT"); })();
+
+                let TUL: any;
+                (async () => { TUL = await airports.getAirportByCode("TUL"); })();
+
+                let JAX: any;
+                (async () => { JAX = await airports.getAirportByCode("JAX"); })();
+
+                let BUF: any;
+                (async () => { BUF = await airports.getAirportByCode("BUF"); })();
+
+                let DUB: any;
+                (async () => { DUB = await airports.getAirportByCode("DUB"); })();
+
+                let CPH: any;
+                (async () => { CPH = await airports.getAirportByCode("CPH"); })();
+
+                let OSL: any;
+                (async () => { OSL = await airports.getAirportByCode("OSL"); })();
+
+                let ARN: any;
+                (async () => { ARN = await airports.getAirportByCode("ARN"); })();
+
+                let HEL: any;
+                (async () => { HEL = await airports.getAirportByCode("HEL"); })();
+
+                let PRG: any;
+                (async () => { PRG = await airports.getAirportByCode("PRG"); })();
+
+                let BRU: any;
+                (async () => { BRU = await airports.getAirportByCode("BRU"); })();
+
+                let LIS: any;
+                (async () => { LIS = await airports.getAirportByCode("LIS"); })();
+
+                let ATH: any;
+                (async () => { ATH = await airports.getAirportByCode("ATH"); })();
+
+                let SOF: any;
+                (async () => { SOF = await airports.getAirportByCode("SOF"); })();
+
+                let BOM: any;
+                (async () => { BOM = await airports.getAirportByCode("BOM"); })();
+
+                let SGN: any;
+                (async () => { SGN = await airports.getAirportByCode("SGN"); })();
+
+                let MNL: any;
+                (async () => { MNL = await airports.getAirportByCode("MNL"); })();
+
+                let TPE: any;
+                (async () => { TPE = await airports.getAirportByCode("TPE"); })();
+
+                let JED: any;
+                (async () => { JED = await airports.getAirportByCode("JED"); })();
+
+                let RUH: any;
+                (async () => { RUH = await airports.getAirportByCode("RUH"); })();
+
+                let BOG: any;
+                (async () => { BOG = await airports.getAirportByCode("BOG"); })();
+
+                let SCL: any;
+                (async () => { SCL = await airports.getAirportByCode("SCL"); })();
+
+                let UIO: any;
+                (async () => { UIO = await airports.getAirportByCode("UIO"); })();
+
+                let PTY: any;
+                (async () => { PTY = await airports.getAirportByCode("PTY"); })();
+
+                let CAI: any;
+                (async () => { CAI = await airports.getAirportByCode("CAI"); })();
+
+                let NBO: any;
+                (async () => { NBO = await airports.getAirportByCode("NBO"); })();
+
+                let LOS: any;
+                (async () => { LOS = await airports.getAirportByCode("LOS"); })();
+
+                let ACC: any;
+                (async () => { ACC = await airports.getAirportByCode("ACC"); })();
+
+                let DAR: any;
+                (async () => { DAR = await airports.getAirportByCode("DAR"); })();
+
+                let ADD: any;
+                (async () => { ADD = await airports.getAirportByCode("ADD"); })();
+
+                let CMN: any;
+                (async () => { CMN = await airports.getAirportByCode("CMN"); })();
+
+                let DKR: any;
+                (async () => { DKR = await airports.getAirportByCode("DKR"); })();
+
+
+
                 let routesData = routes.getModel().create([
                     /* Routes with stops */
-                    { destination: airports.getModel().findOne({code: "VCE"}), depart: airports.getModel().findOne({code: "JFK"}), layoverFuel: airports.getModel().findOne({code: "FRA"}) },
-                    { destination: airports.getModel().findOne({code: "LHR"}), depart: airports.getModel().findOne({code: "SYD"}), layoverFuel: airports.getModel().findOne({code: "DXB"}) },
-                    { destination: airports.getModel().findOne({code: "CDG"}), depart: airports.getModel().findOne({code: "LAX"}), layoverFuel: airports.getModel().findOne({code: "ORD"}) },
-                    { destination: airports.getModel().findOne({code: "HND"}), depart: airports.getModel().findOne({code: "JFK"}), layoverFuel: airports.getModel().findOne({code: "ICN"}) },
-                    { destination: airports.getModel().findOne({code: "AMS"}), depart: airports.getModel().findOne({code: "GRU"}), layoverFuel: airports.getModel().findOne({code: "MAD"}) },
-                    { destination: airports.getModel().findOne({code: "SIN"}), depart: airports.getModel().findOne({code: "YYZ"}), layoverFuel: airports.getModel().findOne({code: "HKG"}) },
-                    { destination: airports.getModel().findOne({code: "FCO"}), depart: airports.getModel().findOne({code: "SFO"}), layoverFuel: airports.getModel().findOne({code: "LHR"}) },
-                    { destination: airports.getModel().findOne({code: "ICN"}), depart: airports.getModel().findOne({code: "MEX"}), layoverFuel: airports.getModel().findOne({code: "NRT"}) },
-                    { destination: airports.getModel().findOne({code: "JNB"}), depart: airports.getModel().findOne({code: "ORD"}), layoverFuel: airports.getModel().findOne({code: "DOH"}) },
-                    { destination: airports.getModel().findOne({code: "SYD"}), depart: airports.getModel().findOne({code: "DXB"}), layoverFuel: airports.getModel().findOne({code: "SIN"}) },
-                    { destination: airports.getModel().findOne({code: "HND"}), depart: airports.getModel().findOne({code: "ATL"}), layoverFuel: airports.getModel().findOne({code: "LAX"}) },
-                    { destination: airports.getModel().findOne({code: "LHR"}), depart: airports.getModel().findOne({code: "DXB"}), layoverFuel: airports.getModel().findOne({code: "IST"}) },
-                    { destination: airports.getModel().findOne({code: "SYD"}), depart: airports.getModel().findOne({code: "ORD"}), layoverFuel: airports.getModel().findOne({code: "ICN"}) },
-                    { destination: airports.getModel().findOne({code: "SYD"}), depart: airports.getModel().findOne({code: "JFK"}), layoverFuel: airports.getModel().findOne({code: "LAX"}) }, // USA → Australia via Los Angeles
-                    { destination: airports.getModel().findOne({code: "DXB"}), depart: airports.getModel().findOne({code: "LHR"}), layoverFuel: airports.getModel().findOne({code: "IST"}) }, // UK → UAE via Istanbul
-                    { destination: airports.getModel().findOne({code: "HND"}), depart: airports.getModel().findOne({code: "ATL"}), layoverFuel: airports.getModel().findOne({code: "ICN"}) }, // USA → Japan via Seoul
-                    { destination: airports.getModel().findOne({code: "GRU"}), depart: airports.getModel().findOne({code: "CDG"}), layoverFuel: airports.getModel().findOne({code: "MAD"}) }, // France → Brazil via Madrid
-                    { destination: airports.getModel().findOne({code: "SIN"}), depart: airports.getModel().findOne({code: "YYZ"}), layoverFuel: airports.getModel().findOne({code: "HKG"}) }, // Canada → Singapore via Hong Kong
-                    { destination: airports.getModel().findOne({code: "JNB"}), depart: airports.getModel().findOne({code: "ORD"}), layoverFuel: airports.getModel().findOne({code: "DOH"}) }, // USA → South Africa via Doha
-                    { destination: airports.getModel().findOne({code: "PEK"}), depart: airports.getModel().findOne({code: "MEX"}), layoverFuel: airports.getModel().findOne({code: "NRT"}) }, // Mexico → China via Tokyo Narita
-                    { destination: airports.getModel().findOne({code: "AMS"}), depart: airports.getModel().findOne({code: "EZE"}), layoverFuel: airports.getModel().findOne({code: "BCN"}) }, // Argentina → Netherlands via Barcelona
-                    { destination: airports.getModel().findOne({code: "FCO"}), depart: airports.getModel().findOne({code: "SFO"}), layoverFuel: airports.getModel().findOne({code: "LHR"}) }, // USA → Italy via London
-                    { destination: airports.getModel().findOne({code: "ICN"}), depart: airports.getModel().findOne({code: "DEL"}), layoverFuel: airports.getModel().findOne({code: "BKK"}) }, // India → South Korea via Bangkok
+                    {depart: JFK._id, layoverFuel: FRA._id, destination: VCE._id}, // USA → Italy via Frankfurt
+                    {depart: SYD._id, layoverFuel: DXB._id, destination: LHR._id}, // Australia → UK via Dubai
+                    {depart: LAX._id, layoverFuel: ORD._id, destination: CDG._id}, // USA → France via Chicago
+                    {depart: JFK._id, layoverFuel: ICN._id, destination: HND._id}, // USA → Japan via Seoul
+                    {depart: GRU._id, layoverFuel: MAD._id, destination: AMS._id}, // Brazil → Netherlands via Madrid
+                    {depart: YYZ._id, layoverFuel: HKG._id, destination: SIN._id}, // Canada → Singapore via Hong Kong
+                    {depart: SFO._id, layoverFuel: LHR._id, destination: FCO._id}, // USA → Italy via London
+                    {depart: MEX._id, layoverFuel: NRT._id, destination: ICN._id}, // Mexico → South Korea via Tokyo Narita
+                    {depart: ORD._id, layoverFuel: DOH._id, destination: JNB._id}, // USA → South Africa via Doha
+                    {depart: DXB._id, layoverFuel: SIN._id, destination: SYD._id}, // UAE → Australia via Singapore
+                    {depart: ATL._id, layoverFuel: LAX._id, destination: HND._id}, // USA → Japan via Los Angeles
+                    {depart: DXB._id, layoverFuel: IST._id, destination: LHR._id}, // UAE → UK via Istanbul
+                    {depart: ORD._id, layoverFuel: ICN._id, destination: SYD._id}, // USA → Australia via Seoul
+                    {depart: JFK._id, layoverFuel: LAX._id, destination: SYD._id}, // USA → Australia via Los Angeles
+                    {depart: LHR._id, layoverFuel: IST._id, destination: DXB._id}, // UK → UAE via Istanbul
+                    {depart: ATL._id, layoverFuel: ICN._id, destination: HND._id}, // USA → Japan via Seoul
+                    {depart: CDG._id, layoverFuel: MAD._id, destination: GRU._id}, // France → Brazil via Madrid
+                    {depart: YYZ._id, layoverFuel: HKG._id, destination: SIN._id}, // Canada → Singapore via Hong Kong
+                    {depart: ORD._id, layoverFuel: DOH._id, destination: JNB._id}, // USA → South Africa via Doha
+                    {depart: MEX._id, layoverFuel: NRT._id, destination: PEK._id}, // Mexico → China via Tokyo Narita
+                    {depart: EZE._id, layoverFuel: BCN._id, destination: AMS._id}, // Argentina → Netherlands via Barcelona
+                    {depart: SFO._id, layoverFuel: LHR._id, destination: FCO._id}, // USA → Italy via London
+                    {depart: DEL._id, layoverFuel: BKK._id, destination: ICN._id}, // India → South Korea via Bangkok
 
                     /* Direct routes */
-                    { destination: airports.getModel().findOne({code: "JFK"}), depart: airports.getModel().findOne({code: "LHR"}) }, // Londra → New York
-                    { destination: airports.getModel().findOne({code: "DXB"}), depart: airports.getModel().findOne({code: "SYD"}) }, // Sydney → Dubai
-                    { destination: airports.getModel().findOne({code: "ATL"}), depart: airports.getModel().findOne({code: "FRA"}) }, // Francoforte → Atlanta
-                    { destination: airports.getModel().findOne({code: "SIN"}), depart: airports.getModel().findOne({code: "HND"}) }, // Tokyo Haneda → Singapore
-                    { destination: airports.getModel().findOne({code: "ICN"}), depart: airports.getModel().findOne({code: "LAX"}) }, // Los Angeles → Seoul
-                    { destination: airports.getModel().findOne({code: "AMS"}), depart: airports.getModel().findOne({code: "YYZ"}) }, // Toronto → Amsterdam
-                    { destination: airports.getModel().findOne({code: "GRU"}), depart: airports.getModel().findOne({code: "CDG"}) }, // Parigi → São Paulo
-                    { destination: airports.getModel().findOne({code: "JNB"}), depart: airports.getModel().findOne({code: "DEL"}) }, // Delhi → Johannesburg
-                    { destination: airports.getModel().findOne({code: "MEX"}), depart: airports.getModel().findOne({code: "EZE"}) }, // Buenos Aires → Città del Messico
-                    { destination: airports.getModel().findOne({code: "SYD"}), depart: airports.getModel().findOne({code: "PEK"}) }, // Pechino → Sydney
+                    {depart: LHR._id, destination: JFK._id}, // Londra → New York
+                    {depart: SYD._id, destination: DXB._id}, // Sydney → Dubai
+                    {depart: FRA._id, destination: ATL._id}, // Francoforte → Atlanta
+                    {depart: HND._id, destination: SIN._id}, // Tokyo Haneda → Singapore
+                    {depart: LAX._id, destination: ICN._id}, // Los Angeles → Seoul
+                    {depart: YYZ._id, destination: AMS._id}, // Toronto → Amsterdam
+                    {depart: CDG._id, destination: GRU._id}, // Parigi → São Paulo
+                    {depart: DEL._id, destination: JNB._id}, // Delhi → Johannesburg
+                    {depart: EZE._id, destination: MEX._id}, // Buenos Aires → Città del Messico
+                    {depart: PEK._id, destination: SYD._id}, // Pechino → Sydney
 
-                    { destination: airports.getModel().findOne({code: "JFK"}), depart: airports.getModel().findOne({code: "LAX"}) }, // Los Angeles → New York
-                    { destination: airports.getModel().findOne({code: "ORD"}), depart: airports.getModel().findOne({code: "ATL"}) }, // Atlanta → Chicago
-                    { destination: airports.getModel().findOne({code: "DFW"}), depart: airports.getModel().findOne({code: "DEN"}) }, // Denver → Dallas
-                    { destination: airports.getModel().findOne({code: "YYZ"}), depart: airports.getModel().findOne({code: "MEX"}) }, // Toronto → Mexico City
-                    { destination: airports.getModel().findOne({code: "SFO"}), depart: airports.getModel().findOne({code: "SEA"}) }, // San Francisco → Seattle
+                    {depart: LAX._id, destination: JFK._id}, // Los Angeles → New York
+                    {depart: ATL._id, destination: ORD._id}, // Atlanta → Chicago
+                    {depart: DEN._id, destination: DFW._id}, // Denver → Dallas
+                    {depart: MEX._id, destination: YYZ._id}, // Toronto → Mexico City
 
-                    { destination: airports.getModel().findOne({code: "LHR"}), depart: airports.getModel().findOne({code: "CDG"}) }, // Parigi → Londra
-                    { destination: airports.getModel().findOne({code: "AMS"}), depart: airports.getModel().findOne({code: "FRA"}) }, // Francoforte → Amsterdam
-                    { destination: airports.getModel().findOne({code: "MAD"}), depart: airports.getModel().findOne({code: "BCN"}) }, // Barcellona → Madrid
-                    { destination: airports.getModel().findOne({code: "VIE"}), depart: airports.getModel().findOne({code: "ZRH"}) }, // Zurigo → Vienna
-                    { destination: airports.getModel().findOne({code: "MXP"}), depart: airports.getModel().findOne({code: "FCO"}) }, // Milano → Roma
+                    {depart: CDG._id, destination: LHR._id}, // Parigi → Londra
+                    {depart: FRA._id, destination: AMS._id}, // Francoforte → Amsterdam
+                    {depart: BCN._id, destination: MAD._id}, // Barcellona → Madrid
+                    {depart: ZRH._id, destination: VIE._id}, // Zurigo → Vienna
+                    {depart: FCO._id, destination: MXP._id}, // Milano → Roma
 
-                    { destination: airports.getModel().findOne({code: "MXP"}), depart: airports.getModel().findOne({code: "SIN"}) }, // Milano Malpensa → Singapore
-                    { destination: airports.getModel().findOne({code: "ICN"}), depart: airports.getModel().findOne({code: "PVG"}) }, // Shanghai → Seoul
-                    { destination: airports.getModel().findOne({code: "SIN"}), depart: airports.getModel().findOne({code: "BKK"}) }, // Bangkok → Singapore
-                    { destination: airports.getModel().findOne({code: "DEL"}), depart: airports.getModel().findOne({code: "PEK"}) }, // Pechino → Delhi
-                    { destination: airports.getModel().findOne({code: "KUL"}), depart: airports.getModel().findOne({code: "DOH"}) }, // Kuala Lumpur → Doha
+                    {depart: SIN._id, destination: MXP._id}, // Milano Malpensa → Singapore
+                    {depart: PVG._id, destination: ICN._id}, // Shanghai → Seoul
+                    {depart: BKK._id, destination: SIN._id}, // Bangkok → Singapore
+                    {depart: PEK._id, destination: DEL._id}, // Pechino → Delhi
+                    {depart: DOH._id, destination: KUL._id}, // Kuala Lumpur → Doha
 
-                    { destination: airports.getModel().findOne({code: "GRU"}), depart: airports.getModel().findOne({code: "EZE"}) }, // Buenos Aires → São Paulo
-                    { destination: airports.getModel().findOne({code: "LIM"}), depart: airports.getModel().findOne({code: "MEX"}) }, // Città del Messico → Lima
-                    { destination: airports.getModel().findOne({code: "GIG"}), depart: airports.getModel().findOne({code: "BOG"}) }, // Bogotá → Rio de Janeiro
-                    { destination: airports.getModel().findOne({code: "SCL"}), depart: airports.getModel().findOne({code: "UIO"}) }, // Quito → Santiago del Cile
-                    { destination: airports.getModel().findOne({code: "CUN"}), depart: airports.getModel().findOne({code: "PTY"}) }, // Cancún → Panama City
+                    {depart: EZE._id, destination: GRU._id}, // Buenos Aires → São Paulo
+                    {depart: MEX._id, destination: LIM._id}, // Città del Messico → Lima
+                    {depart: BOG._id, destination: GIG._id}, // Bogotá → Rio de Janeiro
+                    {depart: UIO._id, destination: SCL._id}, // Quito → Santiago del Cile
+                    {depart: PTY._id, destination: CUN._id}, // Cancún → Panama City
 
-                    { destination: airports.getModel().findOne({code: "JNB"}), depart: airports.getModel().findOne({code: "CPT"}) }, // Cape Town → Johannesburg
-                    { destination: airports.getModel().findOne({code: "CAI"}), depart: airports.getModel().findOne({code: "NBO"}) }, // Nairobi → Cairo
-                    { destination: airports.getModel().findOne({code: "LOS"}), depart: airports.getModel().findOne({code: "ACC"}) }, // Accra → Lagos
-                    { destination: airports.getModel().findOne({code: "DAR"}), depart: airports.getModel().findOne({code: "ADD"}) }, // Addis Abeba → Dar es Salaam
-                    { destination: airports.getModel().findOne({code: "CMN"}), depart: airports.getModel().findOne({code: "DKR"}) } // Dakar → Casablanca
+                    {depart: CPT._id, destination: JNB._id}, // Cape Town → Johannesburg
+                    {depart: NBO._id, destination: CAI._id}, // Nairobi → Cairo
+                    {depart: ACC._id, destination: LOS._id}, // Accra → Lagos
+                    {depart: ADD._id, destination: DAR._id}, // Addis Abeba → Dar es Salaam
+                    {depart: DKR._id, destination: CMN._id}  // Dakar → Casablanca
                 ]);
                 return routesData;
             }

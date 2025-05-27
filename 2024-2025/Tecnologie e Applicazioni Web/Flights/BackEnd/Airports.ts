@@ -68,6 +68,8 @@ airportSchema.methods.setPosition = function (position: [number, number]) {
     this.position = position;
 }
 
+
+
 export function getSchema() { return airportSchema; }
 
 // Mongoose Model
@@ -83,3 +85,14 @@ export function newAirport( data ): Airports {
     let _airportModel = getModel();
     return new _airportModel(data);
 }
+
+export const getAirportByCode = async (code: string) => {
+    try {
+        const AirportModel: mongoose.Model<any> = getModel(); // Ottieni il modello
+          // Trova l'aeroporto per codice
+        return await AirportModel.findOne({code: code}); // Restituisce il documento trovato
+    } catch (err) {
+        console.error("Errore durante il recupero dell'aeroporto:", err);
+        throw err; // Rilancia l'errore se necessario
+    }
+};

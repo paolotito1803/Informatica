@@ -21,21 +21,21 @@ export interface Routes extends mongoose.Document{
 //Defining the schema
 const routeSchema = new mongoose.Schema<Routes>({
     destination: {
-        type: mongoose.SchemaTypes.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: "Airports",
         required: true
     },
     depart: {
-        type: mongoose.SchemaTypes.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: "Airports",
         required: true
     },
     length: {
-        type: mongoose.SchemaTypes.Number,
+        type: mongoose.Schema.Types.Number,
         required: false
     },
     layoverFuel: {
-        type: mongoose.SchemaTypes.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: "Airports",
         required: false
     }

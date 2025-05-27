@@ -1,4 +1,4 @@
-import mongoose = require('mongoose')
+import mongoose = require('mongoose');
 import {Seats} from './Seats'
 
 export interface Aircrafts extends mongoose.Document{
@@ -52,8 +52,8 @@ export function getSchema() { return aircraftSchema; }
 
 // Mongoose Model
 let aircraftModel;  // This is not exposed outside the model
-export function getModel() : mongoose.Model< Aircrafts>  { // Return Model as singleton
-    if( !aircraftSchema ) {
+export function getModel() : mongoose.Model<Aircrafts> { // Return Model as singleton
+    if( !aircraftModel ) {
         aircraftModel = mongoose.model('Aircraft', getSchema() )
     }
     return aircraftModel;
@@ -61,6 +61,5 @@ export function getModel() : mongoose.Model< Aircrafts>  { // Return Model as si
 
 export function newAircraft( data ): Aircrafts {
     let _aircraftModel = getModel();
-    let aircraft = new _aircraftModel( data );
-    return aircraft;
+    return new _aircraftModel(data);
 }
