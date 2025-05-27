@@ -26,9 +26,9 @@ let ios = undefined;
 
 async function setSeats(aircraftSeats: Seats[], rows: number, seatsPerRow: number){
     const seatClasses = ["Economy", "Business", "First"];
-    const seatLetters = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M"]; // Configurazione standard
-    const legroomProbability = 0.3;                             // Probabilità che un posto abbia più spazio per le gambe
-    const freeProbability = 0.7;                                // Probabilità che un posto sia libero
+    const seatLetters = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M"];          // Configurazione standard
+    const legroomProbability = 0.3;                                                                         // Probabilità che un posto abbia più spazio per le gambe
+    const freeProbability = 0.7;                                                                            // Probabilità che un posto sia libero
 
     for (let row = 1; row <= rows; row++) {
         for (let letter=0; letter<seatsPerRow; letter++) {
@@ -196,7 +196,7 @@ export function DB_initialization(app) {
             }
         ).then(
         (count) => { //dati di test per tutti i documenti
-            if (count == 0) {
+            if (count-1 == 0) {
                 console.log("Adding some test users into the database");
                 let m1 = users
                     .getModel()
@@ -416,6 +416,7 @@ export function DB_initialization(app) {
             return seats.getModel().countDocuments({})
         }
     ).then(
+        /*
         (count) => { //dati di test per tutti i documenti
             if (count == 0) {
                 console.log("Adding some test seats into the database");
@@ -445,6 +446,8 @@ export function DB_initialization(app) {
                 return seatsArray;
             }
         }
+        */
+
         /*
             Tickets
             Flights
