@@ -352,7 +352,7 @@ export function DB_initialization(app) {
                     {_ICAO: "HECA", code: "CAI", city: "Cairo", state: "Egypt", position: [30.1219, 31.4056]},
                     {_ICAO: "HKJK", code: "NBO", city: "Nairobi", state: "Kenya", position: [-1.3192, 36.9275]},
                     {_ICAO: "DGAA", code: "ACC", city: "Accra", state: "Ghana", position: [5.6052, -0.1668]},
-                    {_ICAO: "HTDA", code: "DAR", city: "Dar es Salaam", state: [-6.8751, 39.2026]},
+                    {_ICAO: "HTDA", code: "DAR", city: "Dar es Salaam", state: "Tanzania", position: [-6.8751, 39.2026]},
                     {_ICAO: "HAAB", code: "ADD", city: "Addis Abeba", state: "Ethiopia", position: [8.9779, 38.7993]},
                     {_ICAO: "GMMN", code: "CMN", city: "Casablanca", state: "Morocco", position: [33.3675, -7.5899]},
                     {_ICAO: "GOOY", code: "DKR", city: "Dakar", state: "Senegal", position: [14.7397, -17.4902]}
@@ -876,70 +876,70 @@ export function DB_initialization(app) {
 
                 let routesData = routes.getModel().create([
                     /* Routes with stops */
-                    {depart: JFK._id, layoverFuel: FRA._id, destination: VCE._id}, // USA → Italy via Frankfurt
-                    {depart: SYD._id, layoverFuel: DXB._id, destination: LHR._id}, // Australia → UK via Dubai
-                    {depart: LAX._id, layoverFuel: ORD._id, destination: CDG._id}, // USA → France via Chicago
-                    {depart: JFK._id, layoverFuel: ICN._id, destination: HND._id}, // USA → Japan via Seoul
-                    {depart: GRU._id, layoverFuel: MAD._id, destination: AMS._id}, // Brazil → Netherlands via Madrid
-                    {depart: YYZ._id, layoverFuel: HKG._id, destination: SIN._id}, // Canada → Singapore via Hong Kong
-                    {depart: SFO._id, layoverFuel: LHR._id, destination: FCO._id}, // USA → Italy via London
-                    {depart: MEX._id, layoverFuel: NRT._id, destination: ICN._id}, // Mexico → South Korea via Tokyo Narita
-                    {depart: ORD._id, layoverFuel: DOH._id, destination: JNB._id}, // USA → South Africa via Doha
-                    {depart: DXB._id, layoverFuel: SIN._id, destination: SYD._id}, // UAE → Australia via Singapore
-                    {depart: ATL._id, layoverFuel: LAX._id, destination: HND._id}, // USA → Japan via Los Angeles
-                    {depart: DXB._id, layoverFuel: IST._id, destination: LHR._id}, // UAE → UK via Istanbul
-                    {depart: ORD._id, layoverFuel: ICN._id, destination: SYD._id}, // USA → Australia via Seoul
-                    {depart: JFK._id, layoverFuel: LAX._id, destination: SYD._id}, // USA → Australia via Los Angeles
-                    {depart: LHR._id, layoverFuel: IST._id, destination: DXB._id}, // UK → UAE via Istanbul
-                    {depart: ATL._id, layoverFuel: ICN._id, destination: HND._id}, // USA → Japan via Seoul
-                    {depart: CDG._id, layoverFuel: MAD._id, destination: GRU._id}, // France → Brazil via Madrid
-                    {depart: YYZ._id, layoverFuel: HKG._id, destination: SIN._id}, // Canada → Singapore via Hong Kong
-                    {depart: ORD._id, layoverFuel: DOH._id, destination: JNB._id}, // USA → South Africa via Doha
-                    {depart: MEX._id, layoverFuel: NRT._id, destination: PEK._id}, // Mexico → China via Tokyo Narita
-                    {depart: EZE._id, layoverFuel: BCN._id, destination: AMS._id}, // Argentina → Netherlands via Barcelona
-                    {depart: SFO._id, layoverFuel: LHR._id, destination: FCO._id}, // USA → Italy via London
-                    {depart: DEL._id, layoverFuel: BKK._id, destination: ICN._id}, // India → South Korea via Bangkok
+                    {depart: JFK._ICAO, layoverFuel: FRA._ICAO, destination: VCE._ICAO}, // USA → Italy via Frankfurt
+                    {depart: SYD._ICAO, layoverFuel: DXB._ICAO, destination: LHR._ICAO}, // Australia → UK via Dubai
+                    {depart: LAX._ICAO, layoverFuel: ORD._ICAO, destination: CDG._ICAO}, // USA → France via Chicago
+                    {depart: JFK._ICAO, layoverFuel: ICN._ICAO, destination: HND._ICAO}, // USA → Japan via Seoul
+                    {depart: GRU._ICAO, layoverFuel: MAD._ICAO, destination: AMS._ICAO}, // Brazil → Netherlands via Madrid
+                    {depart: YYZ._ICAO, layoverFuel: HKG._ICAO, destination: SIN._ICAO}, // Canada → Singapore via Hong Kong
+                    {depart: SFO._ICAO, layoverFuel: LHR._ICAO, destination: FCO._ICAO}, // USA → Italy via London
+                    {depart: MEX._ICAO, layoverFuel: NRT._ICAO, destination: ICN._ICAO}, // Mexico → South Korea via Tokyo Narita
+                    {depart: ORD._ICAO, layoverFuel: DOH._ICAO, destination: JNB._ICAO}, // USA → South Africa via Doha
+                    {depart: DXB._ICAO, layoverFuel: SIN._ICAO, destination: SYD._ICAO}, // UAE → Australia via Singapore
+                    {depart: ATL._ICAO, layoverFuel: LAX._ICAO, destination: HND._ICAO}, // USA → Japan via Los Angeles
+                    {depart: DXB._ICAO, layoverFuel: IST._ICAO, destination: LHR._ICAO}, // UAE → UK via Istanbul
+                    {depart: ORD._ICAO, layoverFuel: ICN._ICAO, destination: SYD._ICAO}, // USA → Australia via Seoul
+                    {depart: JFK._ICAO, layoverFuel: LAX._ICAO, destination: SYD._ICAO}, // USA → Australia via Los Angeles
+                    {depart: LHR._ICAO, layoverFuel: IST._ICAO, destination: DXB._ICAO}, // UK → UAE via Istanbul
+                    {depart: ATL._ICAO, layoverFuel: ICN._ICAO, destination: HND._ICAO}, // USA → Japan via Seoul
+                    {depart: CDG._ICAO, layoverFuel: MAD._ICAO, destination: GRU._ICAO}, // France → Brazil via Madrid
+                    {depart: YYZ._ICAO, layoverFuel: HKG._ICAO, destination: SIN._ICAO}, // Canada → Singapore via Hong Kong
+                    {depart: ORD._ICAO, layoverFuel: DOH._ICAO, destination: JNB._ICAO}, // USA → South Africa via Doha
+                    {depart: MEX._ICAO, layoverFuel: NRT._ICAO, destination: PEK._ICAO}, // Mexico → China via Tokyo Narita
+                    {depart: EZE._ICAO, layoverFuel: BCN._ICAO, destination: AMS._ICAO}, // Argentina → Netherlands via Barcelona
+                    {depart: SFO._ICAO, layoverFuel: LHR._ICAO, destination: FCO._ICAO}, // USA → Italy via London
+                    {depart: DEL._ICAO, layoverFuel: BKK._ICAO, destination: ICN._ICAO}, // India → South Korea via Bangkok
 
                     /* Direct routes */
-                    {depart: LHR._id, destination: JFK._id}, // Londra → New York
-                    {depart: SYD._id, destination: DXB._id}, // Sydney → Dubai
-                    {depart: FRA._id, destination: ATL._id}, // Francoforte → Atlanta
-                    {depart: HND._id, destination: SIN._id}, // Tokyo Haneda → Singapore
-                    {depart: LAX._id, destination: ICN._id}, // Los Angeles → Seoul
-                    {depart: YYZ._id, destination: AMS._id}, // Toronto → Amsterdam
-                    {depart: CDG._id, destination: GRU._id}, // Parigi → São Paulo
-                    {depart: DEL._id, destination: JNB._id}, // Delhi → Johannesburg
-                    {depart: EZE._id, destination: MEX._id}, // Buenos Aires → Città del Messico
-                    {depart: PEK._id, destination: SYD._id}, // Pechino → Sydney
+                    {depart: LHR._ICAO, destination: JFK._ICAO}, // Londra → New York
+                    {depart: SYD._ICAO, destination: DXB._ICAO}, // Sydney → Dubai
+                    {depart: FRA._ICAO, destination: ATL._ICAO}, // Francoforte → Atlanta
+                    {depart: HND._ICAO, destination: SIN._ICAO}, // Tokyo Haneda → Singapore
+                    {depart: LAX._ICAO, destination: ICN._ICAO}, // Los Angeles → Seoul
+                    {depart: YYZ._ICAO, destination: AMS._ICAO}, // Toronto → Amsterdam
+                    {depart: CDG._ICAO, destination: GRU._ICAO}, // Parigi → São Paulo
+                    {depart: DEL._ICAO, destination: JNB._ICAO}, // Delhi → Johannesburg
+                    {depart: EZE._ICAO, destination: MEX._ICAO}, // Buenos Aires → Città del Messico
+                    {depart: PEK._ICAO, destination: SYD._ICAO}, // Pechino → Sydney
 
-                    {depart: LAX._id, destination: JFK._id}, // Los Angeles → New York
-                    {depart: ATL._id, destination: ORD._id}, // Atlanta → Chicago
-                    {depart: DEN._id, destination: DFW._id}, // Denver → Dallas
-                    {depart: MEX._id, destination: YYZ._id}, // Toronto → Mexico City
+                    {depart: LAX._ICAO, destination: JFK._ICAO}, // Los Angeles → New York
+                    {depart: ATL._ICAO, destination: ORD._ICAO}, // Atlanta → Chicago
+                    {depart: DEN._ICAO, destination: DFW._ICAO}, // Denver → Dallas
+                    {depart: MEX._ICAO, destination: YYZ._ICAO}, // Toronto → Mexico City
 
-                    {depart: CDG._id, destination: LHR._id}, // Parigi → Londra
-                    {depart: FRA._id, destination: AMS._id}, // Francoforte → Amsterdam
-                    {depart: BCN._id, destination: MAD._id}, // Barcellona → Madrid
-                    {depart: ZRH._id, destination: VIE._id}, // Zurigo → Vienna
-                    {depart: FCO._id, destination: MXP._id}, // Milano → Roma
+                    {depart: CDG._ICAO, destination: LHR._ICAO}, // Parigi → Londra
+                    {depart: FRA._ICAO, destination: AMS._ICAO}, // Francoforte → Amsterdam
+                    {depart: BCN._ICAO, destination: MAD._ICAO}, // Barcellona → Madrid
+                    {depart: ZRH._ICAO, destination: VIE._ICAO}, // Zurigo → Vienna
+                    {depart: FCO._ICAO, destination: MXP._ICAO}, // Milano → Roma
 
-                    {depart: MXP._id, destination: SIN._id}, // Milano Malpensa → Singapore
-                    {depart: PVG._id, destination: ICN._id}, // Shanghai → Seoul
-                    {depart: BKK._id, destination: SIN._id}, // Bangkok → Singapore
-                    {depart: PEK._id, destination: DEL._id}, // Pechino → Delhi
-                    {depart: KUL._id, destination: DOH._id}, // Kuala Lumpur → Doha
+                    {depart: MXP._ICAO, destination: SIN._ICAO}, // Milano Malpensa → Singapore
+                    {depart: PVG._ICAO, destination: ICN._ICAO}, // Shanghai → Seoul
+                    {depart: BKK._ICAO, destination: SIN._ICAO}, // Bangkok → Singapore
+                    {depart: PEK._ICAO, destination: DEL._ICAO}, // Pechino → Delhi
+                    {depart: KUL._ICAO, destination: DOH._ICAO}, // Kuala Lumpur → Doha
 
-                    {depart: EZE._id, destination: GRU._id}, // Buenos Aires → São Paulo
-                    {depart: MEX._id, destination: LIM._id}, // Città del Messico → Lima
-                    {depart: BOG._id, destination: GIG._id}, // Bogotá → Rio de Janeiro
-                    {depart: UIO._id, destination: SCL._id}, // Quito → Santiago del Cile
-                    {depart: PTY._id, destination: CUN._id}, // Cancún → Panama City
+                    {depart: EZE._ICAO, destination: GRU._ICAO}, // Buenos Aires → São Paulo
+                    {depart: MEX._ICAO, destination: LIM._ICAO}, // Città del Messico → Lima
+                    {depart: BOG._ICAO, destination: GIG._ICAO}, // Bogotá → Rio de Janeiro
+                    {depart: UIO._ICAO, destination: SCL._ICAO}, // Quito → Santiago del Cile
+                    {depart: PTY._ICAO, destination: CUN._ICAO}, // Cancún → Panama City
 
-                    {depart: CPT._id, destination: JNB._id}, // Cape Town → Johannesburg
-                    {depart: NBO._id, destination: CAI._id}, // Nairobi → Cairo
-                    {depart: ACC._id, destination: LOS._id}, // Accra → Lagos
-                    {depart: ADD._id, destination: DAR._id}, // Addis Abeba → Dar es Salaam
-                    {depart: DKR._id, destination: CMN._id}  // Dakar → Casablanca
+                    {depart: CPT._ICAO, destination: JNB._ICAO}, // Cape Town → Johannesburg
+                    {depart: NBO._ICAO, destination: CAI._ICAO}, // Nairobi → Cairo
+                    {depart: ACC._ICAO, destination: LOS._ICAO}, // Accra → Lagos
+                    {depart: ADD._ICAO, destination: DAR._ICAO}, // Addis Abeba → Dar es Salaam
+                    {depart: DKR._ICAO, destination: CMN._ICAO}  // Dakar → Casablanca
                 ]);
                 return routesData;
             }
