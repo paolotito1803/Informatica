@@ -91,9 +91,9 @@ export function newAirport( data ): Airports {
     return new _airportModel(data);
 }
 
-export const getAirportByCode = async (code: string) => {
+export const getAirportByCode = async (code: string): Promise<Airports> => {
     try {
-        const AirportModel: mongoose.Model<any> = getModel(); // Ottieni il modello
+        const AirportModel: mongoose.Model<Airports> = getModel(); // Ottieni il modello
           // Trova l'aeroporto per codice
         return await AirportModel.findOne({code: code}); // Restituisce il documento trovato
     } catch (err) {

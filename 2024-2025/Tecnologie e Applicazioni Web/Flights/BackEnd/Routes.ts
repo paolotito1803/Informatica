@@ -1,21 +1,20 @@
 import mongoose = require('mongoose');
-import {Airports} from "./Airports"
+import * as airports from "./Airports"
 
 export interface Routes extends mongoose.Document{
-    readonly _id: mongoose.Schema.Types.ObjectId,
-    destination: Airports,
-    depart: Airports,
+    destination: airports.Airports,
+    depart: airports.Airports,
     length: number,
-    layoverFuel: Airports,
+    layoverFuel: airports.Airports,
 
-    setDestination: (dst:Airports) => void,
-    setDepartment: (dep:Airports) => void,
-    setLayoverFuel: (lf:Airports) => void,
+    setDestination: (dst:airports.Airports) => void,
+    setDepartment: (dep:airports.Airports) => void,
+    setLayoverFuel: (lf:airports.Airports) => void,
 
-    getDestination: () => Airports,
-    getDepart: () => Airports,
+    getDestination: () => airports.Airports,
+    getDepart: () => airports.Airports,
     getLength: () => number,
-    getLayoverFuel: () => Airports
+    getLayoverFuel: () => airports.Airports
 }
 
 //Defining the schema
@@ -42,15 +41,15 @@ const routeSchema = new mongoose.Schema<Routes>({
 })
 
 //Defining functions
-routeSchema.methods.setDestination = function(dst:Airports){
+routeSchema.methods.setDestination = function(dst:airports.Airports){
     this.destination = dst;
 }
 
-routeSchema.methods.setDepartment = function(dep:Airports){
+routeSchema.methods.setDepartment = function(dep:airports.Airports){
     this.depart = dep;
 }
 
-routeSchema.methods.setLayoverFuel = function(lp:Airports){
+routeSchema.methods.setLayoverFuel = function(lp:airports.Airports){
     this.layoverFuel = lp;
 }
 
@@ -96,3 +95,33 @@ export function newRoute( data ): Routes {
     let _routemodel = getModel();
     return new _routemodel(data);
 }
+
+export const createNewRoute = async (depCode: string, arrCode: string, lofCode: string) => {
+    try {
+        // Recupera gli aeroporti dal database
+        const dep = await airports.getAirportByCode(depCode);
+        const arr = await airports.getAirportByCode(arrCode);
+        const lof = await airports.getAirportByCode(lofCode);
+
+        // Controlla che tutti gli aeroporti siano stati trovati
+        if (!dep || !arr || !lof) {
+            throw new Error("Uno o più aeroporti non sono stati trovati!");
+        }
+
+        // Creazione della rotta con i codici ICAO
+        const newR = newRoute({
+            depart: dep._ICAO,
+            layoverFuel: lof._ICAO,
+            destination: arr._ICAO,
+        });
+
+        // Salvataggio della rotta nel database
+        await newR.save();
+
+        console.log('Nuova rotta salvata con successo:', newR);
+        return newR; // Restituisce la rotta salvata se necessario
+    } catch (err) {
+        console.error("Errore durante la creazione della rotta:", err);
+        throw err; // Lancia l'errore, se opportuno
+    }
+};
