@@ -6,6 +6,11 @@ exports.newFlight = newFlight;
 const mongoose = require("mongoose");
 //Defining Schema
 const flightSchema = new mongoose.Schema({
+    flightCode: {
+        type: mongoose.SchemaTypes.String,
+        required: true,
+        unique: true
+    },
     airline: {
         type: Array(),
         required: true
@@ -19,10 +24,12 @@ const flightSchema = new mongoose.Schema({
         ref: "Routes",
         required: true
     },
+    /*
     tickets: {
-        type: Array(),
+        type: Array<Tickets>(),
         required: true
     },
+    */
     departTime: {
         type: Date,
         required: true
@@ -35,9 +42,11 @@ flightSchema.methods.getAirline = function () {
 flightSchema.methods.getAircraft = function () {
     return this.aircraft;
 };
-flightSchema.methods.getTickets = function () {
+/*
+flightSchema.methods.getTickets = function() {
     return this.ticket;
-};
+}
+*/
 flightSchema.methods.getRoute = function () {
     return this.route;
 };
@@ -50,9 +59,11 @@ flightSchema.methods.setAirline = function (airline) {
 flightSchema.methods.setAircraft = function (aircraft) {
     this.aircraft = aircraft;
 };
-flightSchema.methods.setTickets = function (tickets) {
+/*
+flightSchema.methods.setTickets = function(tickets: Array<Tickets>): void {
     this.tickets = tickets;
-};
+}
+*/
 flightSchema.methods.setRoutes = function (routes) {
     this.route = routes;
 };

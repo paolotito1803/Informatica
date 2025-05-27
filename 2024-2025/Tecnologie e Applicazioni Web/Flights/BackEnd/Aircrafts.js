@@ -39,14 +39,13 @@ function getSchema() { return aircraftSchema; }
 // Mongoose Model
 let aircraftModel; // This is not exposed outside the model
 function getModel() {
-    if (!aircraftSchema) {
+    if (!aircraftModel) {
         aircraftModel = mongoose.model('Aircraft', getSchema());
     }
     return aircraftModel;
 }
 function newAircraft(data) {
     let _aircraftModel = getModel();
-    let aircraft = new _aircraftModel(data);
-    return aircraft;
+    return new _aircraftModel(data);
 }
 //# sourceMappingURL=Aircrafts.js.map

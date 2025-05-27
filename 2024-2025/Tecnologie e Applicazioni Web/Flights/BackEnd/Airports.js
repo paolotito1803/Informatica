@@ -1,11 +1,17 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.getAirportByCode = void 0;
 exports.getSchema = getSchema;
 exports.getModel = getModel;
 exports.newAirport = newAirport;
 const mongoose = require("mongoose");
 //Defining Schema
 const airportSchema = new mongoose.Schema({
+    _ICAO: {
+        type: mongoose.SchemaTypes.String,
+        required: true,
+        unique: true
+    },
     code: {
         type: mongoose.SchemaTypes.String,
         required: true,
@@ -64,4 +70,16 @@ function newAirport(data) {
     let _airportModel = getModel();
     return new _airportModel(data);
 }
+const getAirportByCode = async (code) => {
+    try {
+        const AirportModel = getModel(); // Ottieni il modello
+        // Trova l'aeroporto per codice
+        return await AirportModel.findOne({ code: code }); // Restituisce il documento trovato
+    }
+    catch (err) {
+        console.error("Errore durante il recupero dell'aeroporto:", err);
+        throw err; // Rilancia l'errore se necessario
+    }
+};
+exports.getAirportByCode = getAirportByCode;
 //# sourceMappingURL=Airports.js.map

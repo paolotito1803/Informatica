@@ -511,8 +511,12 @@ app.put('/flights:id', auth, async (req, res, next) => {
                 !req.body.aircraft &&
                 !req.body.route &&
                 !req.body.ticket &&
-                !req.body.departTime) {
+                !req.body.departTime &&
+                !req.body.flightCode) {
                 return next({ statusCode: 400, error: true, errormessage: "At least one field must be provided" });
+            }
+            if (req.body.flightCode) {
+                updateData_flights.flightCode = req.body.flightCode;
             }
             if (req.body.airline) {
                 updateData_flights.airline = req.body.airline;
