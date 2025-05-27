@@ -24,6 +24,146 @@ import {Flights} from "./Flights";
 
 let ios = undefined;
 
+async function setSeats(aircraftSeats: Seats[], rows: number, seatsPerRow: number){
+    const seatClasses = ["Economy", "Business", "First"];
+    const seatLetters = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M"]; // Configurazione standard
+    const legroomProbability = 0.3;                             // Probabilità che un posto abbia più spazio per le gambe
+    const freeProbability = 0.7;                                // Probabilità che un posto sia libero
+
+    for (let row = 1; row <= rows; row++) {
+        for (let letter=0; letter<seatsPerRow; letter++) {
+            let seat = await seats
+                .getModel()
+                .create({
+                    numberSeat: `${seatLetters[letter]}${row}`,
+                    classes: seatClasses[Math.floor(Math.random() * seatClasses.length)],
+                    legroom: Math.random() < legroomProbability,
+                    isFree: Math.random() < freeProbability
+                    /*
+                        If isFree is false, we have to create its tickets!
+                     */
+                });
+            aircraftSeats.push(seat);
+        }
+    }
+}
+async function aircraftConfig(aircraftModel: string, aircraftSeats: Seats[]) {
+    /*
+        "Boeing 777-300ER":         { rows: 50, seatsPerRow: 10 },
+        "Boeing 777-200ER":         { rows: 47, seatsPerRow: 10 },
+        "Airbus A380-800":          { rows: 60, seatsPerRow: 12 },
+        "Boeing 787-9 Dreamliner":  { rows: 45, seatsPerRow: 9 },
+        "Boeing 787-10 Dreamliner": { rows: 46, seatsPerRow: 9 },
+        "Airbus A350-900":          { rows: 48, seatsPerRow: 9 },
+        "Boeing 747-8I":            { rows: 55, seatsPerRow: 10 },
+        "Boeing 747-400":           { rows: 54, seatsPerRow: 10 },
+        "Airbus A321neo":           { rows: 32, seatsPerRow: 6 },
+        "Airbus A320neo":           { rows: 30, seatsPerRow: 6 },
+        "Airbus A320-200":          { rows: 30, seatsPerRow: 6 },
+        "Airbus A319-100":          { rows: 25, seatsPerRow: 6 },
+        "Boeing 737-800":           { rows: 35, seatsPerRow: 6 },
+        "Boeing 737 MAX 9":         { rows: 35, seatsPerRow: 6 },
+        "Boeing 737 MAX 8":         { rows: 34, seatsPerRow: 6 },
+        "Comac C919":               { rows: 30, seatsPerRow: 6 },
+        "Airbus A340-600":          { rows: 50, seatsPerRow: 9 },
+        "Airbus A350-1000":         { rows: 48, seatsPerRow: 9 },
+     */
+    let rows: number;
+    let seatsPerRow: number;
+    switch(aircraftModel){
+        case "Boeing 777-300ER":
+            rows=50;
+            seatsPerRow=10;
+            await setSeats(aircraftSeats, rows, seatsPerRow);
+            break;
+        case "Boeing 777-200ER":
+            rows=47;
+            seatsPerRow=10;
+            await setSeats(aircraftSeats, rows, seatsPerRow);
+            break;
+        case "Airbus A380-800":
+            rows=60;
+            seatsPerRow=12;
+            await setSeats(aircraftSeats, rows, seatsPerRow);
+            break;
+        case "Boeing 787-9 Dreamliner":
+            rows=45;
+            seatsPerRow=9;
+            await setSeats(aircraftSeats, rows, seatsPerRow);
+            break;
+        case "Boeing 787-10 Dreamliner":
+            rows=46;
+            seatsPerRow=9;
+            await setSeats(aircraftSeats, rows, seatsPerRow);
+            break;
+        case "Airbus A350-900":
+            rows=48;
+            seatsPerRow=9;
+            await setSeats(aircraftSeats, rows, seatsPerRow);
+            break;
+        case "Airbus A350-1000":
+            rows=48;
+            seatsPerRow=9;
+            await setSeats(aircraftSeats, rows, seatsPerRow);
+            break;
+        case "Boeing 747-8I":
+            rows=55;
+            seatsPerRow=10;
+            await setSeats(aircraftSeats, rows, seatsPerRow);
+            break;
+        case "Boeing 747-400":
+            rows=54;
+            seatsPerRow=10;
+            await setSeats(aircraftSeats, rows, seatsPerRow);
+            break;
+        case "Airbus A321neo":
+            rows=32;
+            seatsPerRow=6;
+            await setSeats(aircraftSeats, rows, seatsPerRow);
+            break;
+        case "Airbus A320neo":
+            rows=30;
+            seatsPerRow=6;
+            await setSeats(aircraftSeats, rows, seatsPerRow);
+            break;
+        case "Airbus A320-200":
+            rows=30;
+            seatsPerRow=6;
+            await setSeats(aircraftSeats, rows, seatsPerRow);
+            break;
+        case "Airbus A319-100":
+            rows=25;
+            seatsPerRow=6;
+            await setSeats(aircraftSeats, rows, seatsPerRow);
+            break;
+        case "Boeing 737-800":
+            rows=35;
+            seatsPerRow=6;
+            await setSeats(aircraftSeats, rows, seatsPerRow);
+            break;
+        case "Boeing 737 MAX 9":
+            rows=35;
+            seatsPerRow=6;
+            await setSeats(aircraftSeats, rows, seatsPerRow);
+            break;
+        case "Boeing 737 MAX 8":
+            rows=34;
+            seatsPerRow=6;
+            await setSeats(aircraftSeats, rows, seatsPerRow);
+            break;
+        case "Comac C919":
+            rows=30;
+            seatsPerRow=6;
+            await setSeats(aircraftSeats, rows, seatsPerRow);
+            break;
+        case "Airbus A340-600":
+            rows=50;
+            seatsPerRow=9;
+            await setSeats(aircraftSeats, rows, seatsPerRow);
+            break;
+    }
+    return aircraftSeats
+}
 
 export function DB_initialization(app) {
 // Connect to mongodb and launch the HTTP server trough Express
@@ -87,93 +227,12 @@ export function DB_initialization(app) {
         }
     ).then(
         () => {
-            return airlines.getModel().countDocuments({})
-        }
-    ).then(
-        (count) => { //dati di test per tutti i documenti
-            if (count == 0) {
-                console.log("Adding some test airlines into the database");
-                let airlinesData = airlines.getModel().create([
-                    { username: "ITA Airways", passportID: "ITA", mail: "ita.airways@project_flight.it", roles: ["airline"] },
-                    { username: "Qatar Airways", passportID: "QATAR", mail: "qatar.airways@project_flight.it", roles: ["airline"] },
-                    { username: "Singapore Airlines", passportID: "SINGAPORE", mail: "singapore.airlines@project_flight.it", roles: ["airline"] },
-                    { username: "Emirates", passportID: "EMIRATES", mail: "emirates.airlines@project_flight.it", roles: ["airline"] },
-                    { username: "ANA All Nippon Airways", passportID: "ANA", mail: "ana.airlines@project_flight.it", roles: ["airline"] },
-                    { username: "Cathay Pacific", passportID: "CATHAY", mail: "cathay.pacific@project_flight.it", roles: ["airline"] },
-                    { username: "Japan Airlines", passportID: "JAPAN", mail: "japan.airlines@project_flight.it", roles: ["airline"] },
-                    { username: "Turkish Airlines", passportID: "TURKISH", mail: "turkish.airlines@project_flight.it", roles: ["airline"] },
-                    { username: "Air France", passportID: "AIRFRANCE", mail: "airfrance.airlines@project_flight.it", roles: ["airline"] },
-                    { username: "British Airways", passportID: "BRITISH", mail: "british.airways@project_flight.it", roles: ["airline"] },
-                    { username: "Lufthansa", passportID: "LUFTHANSA", mail: "lufthansa.fluggesellschaften@project_flight.it", roles: ["airline"] },
-                    { username: "Swiss International Air Lines", passportID: "SWISS", mail: "swiss.airlines@project_flight.it", roles: ["airline"] },
-                    { username: "KLM Royal Dutch Airlines", passportID: "KLM", mail: "klm.airlines@project_flight.it", roles: ["airline"] },
-                    { username: "Delta Air Lines", passportID: "DELTA", mail: "delta.airlines@project_flight.it", roles: ["airline"] },
-                    { username: "United Airlines", passportID: "UNITED", mail: "united.airlines@project_flight.it", roles: ["airline"] },
-                    { username: "American Airlines", passportID: "AMERICAN", mail: "american.airlines@project_flight.it", roles: ["airline"] },
-                    { username: "EVA Air", passportID: "EVA", mail: "eva.air@project_flight.it", roles: ["airline"] },
-                    { username: "Qantas Airways", passportID: "QANTAS", mail: "qantas.airways@project_flight.it", roles: ["airline"] },
-                    { username: "Etihad Airways", passportID: "ETIHAD", mail: "etihad.airways@project_flight.it", roles: ["airline"] },
-                    { username: "Korean Air", passportID: "KOREAN", mail: "korean.air@project_flight.it", roles: ["airline"] },
-                    { username: "Hainan Airlines", passportID: "HAINAN", mail: "hainan.airlines@project_flight.it", roles: ["airline"] },
-                    { username: "Air Canada", passportID: "AIRCANADA", mail: "aircanada@project_flight.it", roles: ["airline"] },
-                    { username: "Aeroflot", passportID: "AEROFLOT", mail: "aeroflot@project_flight.it", roles: ["airline"] },
-                    { username: "Air China", passportID: "AIRCHINA", mail: "airchina@project_flight.it", roles: ["airline"] },
-                    { username: "China Southern Airlines", passportID: "CHINASOUTHERN", mail: "chinasouthern@project_flight.it", roles: ["airline"] },
-                    { username: "China Eastern Airlines", passportID: "CHINAEASTERN", mail: "chinaeastern@project_flight.it", roles: ["airline"] },
-                    { username: "Ryanair", passportID: "RYANAIR", mail: "ryanair@project_flight.it", roles: ["airline"] },
-                    { username: "EasyJet", passportID: "EASYJET", mail: "easyjet@project_flight.it", roles: ["airline"] },
-                    { username: "JetBlue Airways", passportID: "JETBLUE", mail: "jetblue@project_flight.it", roles: ["airline"] },
-                    { username: "IndiGo Airlines", passportID: "INDIGO", mail: "indigo@project_flight.it", roles: ["airline"] },
-                    { username: "Southwest Airlines", passportID: "SOUTHWEST", mail: "southwest@project_flight.it", roles: ["airline"] },
-                    { username: "Alaska Airlines", passportID: "ALASKA", mail: "alaska@project_flight.it", roles: ["airline"] },
-                    { username: "Air India", passportID: "AIRINDIA", mail: "airindia@project_flight.it", roles: ["airline"] },
-                    { username: "LATAM Airlines", passportID: "LATAM", mail: "latam@project_flight.it", roles: ["airline"] },
-                    { username: "Aeroméxico", passportID: "AEROMEXICO", mail: "aeromexico@project_flight.it", roles: ["airline"] },
-                    { username: "Virgin Atlantic", passportID: "VIRGINATLANTIC", mail: "virginatlantic@project_flight.it", roles: ["airline"] },
-                    { username: "Finnair", passportID: "FINNAIR", mail: "finnair@project_flight.it", roles: ["airline"] },
-                    { username: "Scandinavian Airlines", passportID: "SAS", mail: "sas@project_flight.it", roles: ["airline"] },
-                    { username: "Air New Zealand", passportID: "AIRNZ", mail: "airnz@project_flight.it", roles: ["airline"] },
-                    { username: "Thai Airways", passportID: "THAI", mail: "thai@project_flight.it", roles: ["airline"] },
-                    { username: "Malaysia Airlines", passportID: "MALAYSIA", mail: "malaysia@project_flight.it", roles: ["airline"] }
-                ]);
-                /*
-                let a1 = airlines
-                    .getModel()
-                    .create({
-                        name: "Singapore Airlines",
-                        passportID: "SINGAIR",
-                        mail: "singapore.airlines@project_flight.sg",
-                        roles: ["airline"]
-                    });
-                let a2 = airlines
-                    .getModel()
-                    .create({
-                        name: "ITA Airways",
-                        passportID: "ITAAIR",
-                        mail: "ita.airways@project_flight.it",
-                        roles: ["airline"]
-                    });
-                let a3 = airlines
-                    .getModel()
-                    .create({
-                        username: "Lufthansa",
-                        passportID: "LUFTHANSA",
-                        mail: "lufthansa.fluggesellschaften@project_flight.it",
-                        roles: ["airline"]
-                    })
-                   ;
-                 */
-                return airlinesData;
-            }
-        }
-    ).then(
-        () => {
             return airports.getModel().countDocuments({})
         }
     ).then(
         (count) => { //dati di test per tutti i documenti
             if (count == 0) {
-                console.log("Adding some test airlines into the database");
+                console.log("Adding some test airports into the database");
                 let airportsData = airports.getModel().create([
                     { name: "ATL", city: "Atlanta",         state: "USA",               position: [33.6407, -84.4277] },
                     { name: "DXB", city: "Dubai",           state: "UAE",               position: [25.2532, 55.3657] },
@@ -274,7 +333,7 @@ export function DB_initialization(app) {
     ).then(
         (count) => { //dati di test per tutti i documenti
             if (count == 0) {
-                console.log("Adding some test airlines into the database");
+                console.log("Adding some test routes into the database");
                 let routesData = routes.getModel().create([
                     /* Routes with stops */
                     { destination: airports.getModel().findOne({name: "VCE"}), depart: airports.getModel().findOne({name: "JFK"}), layoverFuel: airports.getModel().findOne({name: "FRA"}) },
@@ -343,29 +402,6 @@ export function DB_initialization(app) {
                     { destination: airports.getModel().findOne({name: "DAR"}), depart: airports.getModel().findOne({name: "ADD"}) }, // Addis Abeba → Dar es Salaam
                     { destination: airports.getModel().findOne({name: "CMN"}), depart: airports.getModel().findOne({name: "DKR"}) } // Dakar → Casablanca
                 ]);
-
-                /*
-                let a1 = routes
-                    .getModel()
-                    .create({
-                        destination: airports.getModel().findOne({name: "VCE"}),
-                        depart: airports.getModel().findOne({name: "FRA"})
-                    });
-                let a2 = routes
-                    .getModel()
-                    .create({
-                        destination: airports.getModel().findOne({name: "VCE"}),
-                        depart: airports.getModel().findOne({name: "JFK"}),
-                        layoverFuel: airports.getModel().findOne({name: "FRA"})
-                    });
-                let a3 = routes
-                    .getModel()
-                    .create({
-                        destination: airports.getModel().findOne({name: "FRA"}),
-                        depart: airports.getModel().findOne({name: "JFK"})
-                    });
-
-                 */
                 return routesData;
             }
         }
@@ -377,99 +413,100 @@ export function DB_initialization(app) {
          */
     ).then(
         () => {
+            return seats.getModel().countDocuments({})
+        }
+    ).then(
+        (count) => { //dati di test per tutti i documenti
+            if (count == 0) {
+                console.log("Adding some test seats into the database");
+                let seatsArray = [];
+                const seatClasses = ["Economy", "Business", "First"];
+                const aircraftRows = 50; // Numero di file realistico per un aereo commerciale
+                const seatLetters = ["A", "B", "C", "D", "E", "F"]; // Configurazione standard
+                const legroomProbability = 0.3; // Probabilità che un posto abbia più spazio per le gambe
+                const freeProbability = 0.7; // Probabilità che un posto sia libero
+
+                for (let row = 1; row <= aircraftRows; row++) {
+                    for (let letter of seatLetters) {
+                        let seat = seats
+                            .getModel()
+                            .create({
+                                numberSeat: `${letter}${row}`,
+                                classes: seatClasses[Math.floor(Math.random() * seatClasses.length)],
+                                legroom: Math.random() < legroomProbability,
+                                isFree: Math.random() < freeProbability
+                            });
+                        seatsArray.push(seat);
+                    }
+                }
+
+                console.log(seatsArray);
+
+                return seatsArray;
+            }
+        }
+        /*
+            Tickets
+            Flights
+         */
+    ).then(
+        () => {
             return aircrafts.getModel().countDocuments({})
         }
     ).then(
         (count) => { //dati di test per tutti i documenti
             if (count == 0) {
-                console.log("Adding some test airlines into the database");
-                let boeing777Seats: seats.Seats[];
-                let airbusA380Seats: seats.Seats[];
-                let boeing787Seats: seats.Seats[];
-                let airbusA350Seats: seats.Seats[];
-                let boeing747Seats: seats.Seats[];
-                let airbusA320Seats: seats.Seats[];
-                let boeing737Seats: seats.Seats[];
-                let airbusA319Seats: seats.Seats[];
-                let boeing757Seats: seats.Seats[];
-                let airbusA321Seats: seats.Seats[];
+                console.log("Adding some test aircrafts into the database");
+                let boeing777Seats: seats.Seats[]=[];
+                let airbusA380Seats: seats.Seats[]=[];
+                let boeing787Seats: seats.Seats[]=[];
+                let airbusA350Seats: seats.Seats[]=[];
+                let boeing747Seats: seats.Seats[]=[];
+                let airbusA320Seats: seats.Seats[]=[];
+                let boeing737Seats: seats.Seats[]=[];
+                let airbusA319Seats: seats.Seats[]=[];
+                let airbusA321Seats: seats.Seats[]=[];
 
                 let aircraftsData = aircrafts.getModel().create([
-                    { aircraftID: "A6-ECI", aircraftModel: "Boeing 777-300ER", seat: boeing777Seats }, // Emirates
-                    { aircraftID: "G-YMMN", aircraftModel: "Boeing 777-200ER", seat: boeing777Seats }, // British Airways
-                    { aircraftID: "SQ638", aircraftModel: "Airbus A380-800", seat: airbusA380Seats }, // Singapore Airlines
-                    { aircraftID: "JA381A", aircraftModel: "Airbus A380-800", seat: airbusA380Seats }, // All Nippon Airways (ANA)
-                    { aircraftID: "N6067E", aircraftModel: "Boeing 787-9 Dreamliner", seat: boeing787Seats }, // United Airlines
-                    { aircraftID: "F-HRBA", aircraftModel: "Boeing 787-10 Dreamliner", seat: boeing787Seats }, // Air France
-                    { aircraftID: "JA01XJ", aircraftModel: "Airbus A350-900", seat: airbusA350Seats }, // Japan Airlines
-                    { aircraftID: "EC-MIL", aircraftModel: "Airbus A350-900", seat: airbusA350Seats }, // Iberia
-                    { aircraftID: "D-ABYA", aircraftModel: "Boeing 747-8I", seat: boeing747Seats }, // Lufthansa
-                    { aircraftID: "B-2485", aircraftModel: "Boeing 747-8I", seat: boeing747Seats }, // Air China
-                    { aircraftID: "N780BA", aircraftModel: "Boeing 747-400", seat: boeing747Seats }, // Atlas Air
-                    { aircraftID: "F-GSQJ", aircraftModel: "Boeing 777-300ER", seat: boeing777Seats }, // Air France
-                    { aircraftID: "N26902", aircraftModel: "Boeing 787-9 Dreamliner", seat: boeing787Seats }, // United Airlines
-                    { aircraftID: "N501DN", aircraftModel: "Airbus A321neo", seat: airbusA321Seats }, // Delta Air Lines
-                    { aircraftID: "G-TTNA", aircraftModel: "Airbus A320neo", seat: airbusA320Seats }, // British Airways
-                    { aircraftID: "N320FR", aircraftModel: "Airbus A320neo", seat: airbusA320Seats }, // Frontier Airlines
-                    { aircraftID: "G-EUPA", aircraftModel: "Airbus A319-100", seat: airbusA319Seats }, // British Airways
-                    { aircraftID: "N601NK", aircraftModel: "Airbus A320-200", seat: airbusA320Seats }, // Spirit Airlines
-                    { aircraftID: "JA73AN", aircraftModel: "Boeing 737-800", seat: boeing737Seats }, // All Nippon Airways (ANA)
-                    { aircraftID: "N5017Q", aircraftModel: "Boeing 737 MAX 9", seat: boeing737Seats }, // Alaska Airlines
-                    { aircraftID: "B-304Z", aircraftModel: "Comac C919", seat: airbusA320Seats }, // China Eastern Airlines
-                    { aircraftID: "VH-OQB", aircraftModel: "Airbus A380-800", seat: airbusA380Seats }, // Qantas Airways
-                    { aircraftID: "D-AIMD", aircraftModel: "Airbus A340-600", seat: airbusA350Seats }, // Lufthansa
-                    { aircraftID: "G-VNAP", aircraftModel: "Airbus A340-600", seat: airbusA350Seats }, // Virgin Atlantic
-                    { aircraftID: "F-WWCF", aircraftModel: "Airbus A350-1000", seat: airbusA350Seats }, // Qatar Airways
-                    { aircraftID: "N264LV", aircraftModel: "Boeing 737 MAX 8", seat: boeing737Seats }, // Southwest Airlines
-                    { aircraftID: "N501DN", aircraftModel: "Airbus A321neo", seat: airbusA321Seats }, // Delta Air Lines
-                    { aircraftID: "G-TTNA", aircraftModel: "Airbus A320neo", seat: airbusA320Seats }, // British Airways
-                    { aircraftID: "N320FR", aircraftModel: "Airbus A320neo", seat: airbusA320Seats }, // Frontier Airlines
-                    { aircraftID: "JA01XJ", aircraftModel: "Airbus A350-900", seat: airbusA350Seats }, // Japan Airlines
-                    { aircraftID: "B-304Z", aircraftModel: "Comac C919", seat: airbusA320Seats }, // China Eastern Airlines
-                    { aircraftID: "N5017Q", aircraftModel: "Boeing 737 MAX 9", seat: boeing737Seats }, // Alaska Airlines
-                    { aircraftID: "G-EUPA", aircraftModel: "Airbus A319-100", seat: airbusA319Seats }, // British Airways
-                    { aircraftID: "N601NK", aircraftModel: "Airbus A320-200", seat: airbusA320Seats }, // Spirit Airlines
-                    { aircraftID: "JA73AN", aircraftModel: "Boeing 737-800", seat: boeing737Seats }, // All Nippon Airways (ANA)
-                    { aircraftID: "N780BA", aircraftModel: "Boeing 747-400", seat: boeing747Seats }, // Atlas Air
-                    { aircraftID: "F-GSQJ", aircraftModel: "Boeing 777-300ER", seat: boeing777Seats }, // Air France
-                    { aircraftID: "N26902", aircraftModel: "Boeing 787-9 Dreamliner", seat: boeing787Seats }, // United Airlines
-                    { aircraftID: "N601DL", aircraftModel: "Boeing 757-232", seat: boeing757Seats },
-                    { aircraftID: "N602DL", aircraftModel: "Boeing 757-232", seat: boeing757Seats },
-                    { aircraftID: "G-MCEA", aircraftModel: "Boeing 757-225", seat: boeing757Seats },
-                    { aircraftID: "N757HW", aircraftModel: "Boeing 757-225", seat: boeing757Seats },
-                    { aircraftID: "N783SP", aircraftModel: "Boeing 757-225PCF", seat: boeing757Seats },
-                    { aircraftID: "N935FD", aircraftModel: "Boeing 757-2T7SF", seat: boeing757Seats },
-                    { aircraftID: "G-MONC", aircraftModel: "Boeing 757-2T7", seat: boeing757Seats },
-                    { aircraftID: "N757A", aircraftModel: "Boeing 757-200", seat: boeing757Seats },
-                    { aircraftID: "N144DC", aircraftModel: "Boeing 757-225", seat: boeing757Seats },
-                    { aircraftID: "N811AD", aircraftModel: "Boeing 757-225", seat: boeing757Seats }
+                    { aircraftID: "A6-ECI",     aircraftModel: "Boeing 777-300ER",          seat: aircraftConfig("Boeing 777-300ER",            boeing777Seats) }, // Emirates
+                    { aircraftID: "G-YMMN",     aircraftModel: "Boeing 777-200ER",          seat: aircraftConfig("Boeing 777-200ER",            boeing777Seats) }, // British Airways
+                    { aircraftID: "SQ638",      aircraftModel: "Airbus A380-800",           seat: aircraftConfig("Airbus A380-800",             airbusA380Seats) }, // Singapore Airlines
+                    { aircraftID: "JA381A",     aircraftModel: "Airbus A380-800",           seat: aircraftConfig("Airbus A380-800",             airbusA380Seats) }, // All Nippon Airways (ANA)
+                    { aircraftID: "N6067E",     aircraftModel: "Boeing 787-9 Dreamliner",   seat: aircraftConfig("Boeing 787-9 Dreamliner",     boeing787Seats) }, // United Airlines
+                    { aircraftID: "F-HRBA",     aircraftModel: "Boeing 787-10 Dreamliner",  seat: aircraftConfig("Boeing 787-10 Dreamliner",    boeing787Seats) }, // Air France
+                    { aircraftID: "JA01XJ",     aircraftModel: "Airbus A350-900",           seat: aircraftConfig("Airbus A350-900",             airbusA350Seats) }, // Japan Airlines
+                    { aircraftID: "EC-MIL",     aircraftModel: "Airbus A350-900",           seat: aircraftConfig("Airbus A350-900",             airbusA380Seats) }, // Iberia
+                    { aircraftID: "D-ABYA",     aircraftModel: "Boeing 747-8I",             seat: aircraftConfig("Boeing 747-8I",               boeing747Seats) }, // Lufthansa
+                    { aircraftID: "B-2485",     aircraftModel: "Boeing 747-8I",             seat: aircraftConfig("Boeing 747-8I",               boeing747Seats) }, // Air China
+                    { aircraftID: "N780BA",     aircraftModel: "Boeing 747-400",            seat: aircraftConfig("Boeing 747-400",              boeing747Seats) }, // Atlas Air
+                    { aircraftID: "F-GSQJ",     aircraftModel: "Boeing 777-300ER",          seat: aircraftConfig("Boeing 777-300ER",            boeing777Seats) }, // Air France
+                    { aircraftID: "N26902",     aircraftModel: "Boeing 787-9 Dreamliner",   seat: aircraftConfig("Boeing 787-9 Dreamliner",     boeing787Seats) }, // United Airlines
+                    { aircraftID: "N501DN",     aircraftModel: "Airbus A321neo",            seat: aircraftConfig("Airbus A321neo",              airbusA321Seats) }, // Delta Air Lines
+                    { aircraftID: "G-TTNA",     aircraftModel: "Airbus A320neo",            seat: aircraftConfig("Airbus A320",                 airbusA320Seats) }, // British Airways
+                    { aircraftID: "N320FR",     aircraftModel: "Airbus A320neo",            seat: aircraftConfig("Airbus A320neo",              airbusA320Seats) }, // Frontier Airlines
+                    { aircraftID: "G-EUPA",     aircraftModel: "Airbus A319-100",           seat: aircraftConfig("Airbus A319-100",             airbusA319Seats) }, // British Airways
+                    { aircraftID: "N601NK",     aircraftModel: "Airbus A320-200",           seat: aircraftConfig("Airbus A320-200",             airbusA320Seats) }, // Spirit Airlines
+                    { aircraftID: "JA73AN",     aircraftModel: "Boeing 737-800",            seat: aircraftConfig("Boeing 737-800",              boeing737Seats) }, // All Nippon Airways (ANA)
+                    { aircraftID: "N5017Q",     aircraftModel: "Boeing 737 MAX 9",          seat: aircraftConfig("Boeing 737 MAX 9",            boeing737Seats) }, // Alaska Airlines
+                    { aircraftID: "B-304Z",     aircraftModel: "Comac C919",                seat: aircraftConfig("Comac C919",                  airbusA320Seats) }, // China Eastern Airlines
+                    { aircraftID: "VH-OQB",     aircraftModel: "Airbus A380-800",           seat: aircraftConfig("Airbus A380-800",             airbusA380Seats) }, // Qantas Airways
+                    { aircraftID: "D-AIMD",     aircraftModel: "Airbus A340-600",           seat: aircraftConfig("Airbus A340-600",             airbusA350Seats) }, // Lufthansa
+                    { aircraftID: "G-VNAP",     aircraftModel: "Airbus A340-600",           seat: aircraftConfig("Airbus A340-600",             airbusA350Seats) }, // Virgin Atlantic
+                    { aircraftID: "F-WWCF",     aircraftModel: "Airbus A350-1000",          seat: aircraftConfig("Airbus A350-1000",            airbusA350Seats) }, // Qatar Airways
+                    { aircraftID: "N264LV",     aircraftModel: "Boeing 737 MAX 8",          seat: aircraftConfig("Boeing 737 MAX 8",            boeing737Seats) }, // Southwest Airlines
+                    { aircraftID: "N501DN",     aircraftModel: "Airbus A321neo",            seat: aircraftConfig("Airbus A321neo",              airbusA321Seats) }, // Delta Air Lines
+                    { aircraftID: "G-TTNA",     aircraftModel: "Airbus A320neo",            seat: aircraftConfig("Airbus A320neo",              airbusA320Seats) }, // British Airways
+                    { aircraftID: "N320FR",     aircraftModel: "Airbus A320neo",            seat: aircraftConfig("Airbus A320neo",              airbusA380Seats) }, // Frontier Airlines
+                    { aircraftID: "JA01XJ",     aircraftModel: "Airbus A350-900",           seat: aircraftConfig("Airbus A350-900",             airbusA350Seats) }, // Japan Airlines
+                    { aircraftID: "B-304Z",     aircraftModel: "Comac C919",                seat: aircraftConfig("Comac C919",                  airbusA320Seats) }, // China Eastern Airlines
+                    { aircraftID: "N5017Q",     aircraftModel: "Boeing 737 MAX 9",          seat: aircraftConfig("Boeing 737 MAX 9",            boeing737Seats) }, // Alaska Airlines
+                    { aircraftID: "G-EUPA",     aircraftModel: "Airbus A319-100",           seat: aircraftConfig("Airbus A319-100",             airbusA319Seats) }, // British Airways
+                    { aircraftID: "N601NK",     aircraftModel: "Airbus A320-200",           seat: aircraftConfig("Airbus A320-200",             airbusA320Seats) }, // Spirit Airlines
+                    { aircraftID: "JA73AN",     aircraftModel: "Boeing 737-800",            seat: aircraftConfig("Boeing 737-800",              boeing737Seats) }, // All Nippon Airways (ANA)
+                    { aircraftID: "N780BA",     aircraftModel: "Boeing 747-400",            seat: aircraftConfig("Boeing 747-400",              boeing747Seats) }, // Atlas Air
+                    { aircraftID: "F-GSQJ",     aircraftModel: "Boeing 777-300ER",          seat: aircraftConfig("Boeing 777-300ER",            boeing777Seats) }, // Air France
+                    { aircraftID: "N26902",     aircraftModel: "Boeing 787-9 Dreamliner",   seat: aircraftConfig("Boeing 787-9 Dreamliner",     boeing787Seats) }, // United Airlines
                 ]);
-                /*
-                let a1_seats: seats.Seats[]
-                let a2_seats: seats.Seats[]
-                let a3_seats: seats.Seats[]
-                let a1 = aircrafts
-                    .getModel()
-                    .create({
-                        aircraftID: "A6-ECI",
-                        aircraftModel: "Boeing 777-300ER",
-                        seat: a1_seats
-                    });
-                let a2 = aircrafts
-                    .getModel()
-                    .create({
-                        aircraftID: "G-YMMN",
-                        aircraftModel: "Boeing 777-200ER",
-                        seat: a2_seats
-                    });
-                let a3 = aircrafts
-                    .getModel()
-                    .create({
-                        aircraftID: "SQ638",
-                        aircraftModel: "Airbus A380-800",
-                        seat: a3_seats
-                    });
-                */
                 return aircraftsData;
             }
         }
@@ -480,79 +517,45 @@ export function DB_initialization(app) {
          */
     ).then(
         () => {
-            return seats.getModel().countDocuments({})
-        }
-    ).then(
-        (count) => { //dati di test per tutti i documenti
-            if (count == 0) {
-                console.log("Adding some test airlines into the database");
-                let s1 = seats
-                    .getModel()
-                    .create({
-                        numberSeat: "A1",
-                        classes: "Business",
-                        legroom: true,
-                        isFree: true
-                    });
-                let s2 = seats
-                    .getModel()
-                    .create({
-                        numberSeat: "B1",
-                        classes: "Economy",
-                        legroom: false,
-                        isFree: true
-                    });
-                let s3 = seats
-                    .getModel()
-                    .create({
-                        numberSeat: "C1",
-                        classes: "First",
-                        legroom: true,
-                        isFree: false
-                    });
-                return Promise.all([s1, s2, s3]);
-            }
-        }
-        /*
-            Tickets
-            Flights
-         */
-    ).then(
-        () => {
             return flights.getModel().countDocuments({})
         }
     ).then(
         (count) => { //dati di test per tutti i documenti
             if (count == 0) {
-                console.log("Adding some test airlines into the database");
-                let s1 = flights
-                    .getModel()
-                    .create({
-                        airline: airlines.getModel().findOne({name: "ITA Airways"}),
-                        aircraft: aircrafts.getModel().findOne({aircraftModel: "Boeing 777-200ER"}),
-                        route: routes.getModel().findOne({depart: "VCE", destination: "FRA"}),
-                        tickets: "Tickets[]",
-                        departTime: new Date().setFullYear(2025, 5, 20)
-                    });
-                let s2 = flights
-                    .getModel()
-                    .create({
-                        airline: airlines.getModel().findOne({name: "Lufthansa"}),
-                        aircraft: aircrafts.getModel().findOne({aircraftModel: "Airbus A380-800"}),
-                        route: routes.getModel().findOne({depart: "FRA", destination: "JFK"}),
-                        tickets: "Tickets[]",
-                        departTime: new Date().setFullYear(2025, 4, 20)
-                    });
-                let s3 = flights
-                    .getModel()
-                    .create({
-                        airline: airlines.getModel().findOne({name: "ITA Airways"}),
-                        aircraft: aircrafts.getModel().findOne({aircraftModel: "Boeing 777-300ER"}),
-                        route: routes.getModel().findOne({depart: "VCE", destination: "JFK"}),
-                        tickets: "Tickets[]",
-                        departTime: new Date().setFullYear(2025, 3, 20)
-                    });
-                return Promise.all([s1, s2, s3]);
+                console.log("Adding some test flights into the database");
+                let flightsData = flights.getModel().create([
+                    { flightCode: "LH400",  airline: airlines.getModel().findOne({name: "Lufthansa"}),                  aircraft: aircrafts.getModel().findOne({aircraftModel: "Airbus A380-800"}),                 route: routes.getModel().findOne({depart: "FRA", destination: "JFK"}), tickets: "Tickets[]", departTime: new Date(2025, 4, 20, 15, 30) },
+                    { flightCode: "BA117",  airline: airlines.getModel().findOne({name: "British Airways"}),            aircraft: aircrafts.getModel().findOne({aircraftModel: "Boeing 777-300ER"}),                route: routes.getModel().findOne({depart: "LHR", destination: "JFK"}), tickets: "Tickets[]", departTime: new Date(2025, 4, 20, 14, 15) },
+                    { flightCode: "QR818",  airline: airlines.getModel().findOne({name: "Qatar Airways"}),              aircraft: aircrafts.getModel().findOne({aircraftModel: "Airbus A350-1000"}),                route: routes.getModel().findOne({depart: "DOH", destination: "ICN"}), tickets: "Tickets[]", departTime: new Date(2025, 4, 21, 22, 45) },
+                    { flightCode: "SQ638",  airline: airlines.getModel().findOne({name: "Singapore Airlines"}),         aircraft: aircrafts.getModel().findOne({aircraftModel: "Airbus A380-800"}),                 route: routes.getModel().findOne({depart: "SIN", destination: "NRT"}), tickets: "Tickets[]", departTime: new Date(2025, 4, 21, 10, 5) },
+                    { flightCode: "EK202",  airline: airlines.getModel().findOne({name: "Emirates"}),                   aircraft: aircrafts.getModel().findOne({aircraftModel: "Boeing 777-300ER"}),                route: routes.getModel().findOne({depart: "JFK", destination: "DXB"}), tickets: "Tickets[]", departTime: new Date(2025, 4, 22, 18, 20) },
+                    { flightCode: "JL9",    airline: airlines.getModel().findOne({name: "Japan Airlines"}),             aircraft: aircrafts.getModel().findOne({aircraftModel: "Boeing 787-9 Dreamliner"}),         route: routes.getModel().findOne({depart: "HND", destination: "SFO"}), tickets: "Tickets[]", departTime: new Date(2025, 4, 22, 12, 10) },
+                    { flightCode: "AF96",   airline: airlines.getModel().findOne({name: "Air France"}),                 aircraft: aircrafts.getModel().findOne({aircraftModel: "Airbus A350-900"}),                 route: routes.getModel().findOne({depart: "CDG", destination: "YYZ"}), tickets: "Tickets[]", departTime: new Date(2025, 4, 23, 16, 45) },
+                    { flightCode: "TK10",   airline: airlines.getModel().findOne({name: "Turkish Airlines"}),           aircraft: aircrafts.getModel().findOne({aircraftModel: "Boeing 787-9 Dreamliner"}),         route: routes.getModel().findOne({depart: "IST", destination: "LAX"}), tickets: "Tickets[]", departTime: new Date(2025, 4, 24, 19, 30) },
+                    { flightCode: "DL200",  airline: airlines.getModel().findOne({name: "Delta Air Lines"}),            aircraft: aircrafts.getModel().findOne({aircraftModel: "Boeing 767-400ER"}),                route: routes.getModel().findOne({depart: "ATL", destination: "AMS"}), tickets: "Tickets[]", departTime: new Date(2025, 4, 25, 21, 15) },
+                    { flightCode: "UA181",  airline: airlines.getModel().findOne({name: "United Airlines"}),            aircraft: aircrafts.getModel().findOne({aircraftModel: "Boeing 777-200ER"}),                route: routes.getModel().findOne({depart: "ORD", destination: "HKG"}), tickets: "Tickets[]", departTime: new Date(2025, 4, 26, 13, 0) },
+                    { flightCode: "AZ611",  airline: airlines.getModel().findOne({name: "ITA Airways"}),                aircraft: aircrafts.getModel().findOne({aircraftModel: "Airbus A330-900"}),                 route: routes.getModel().findOne({depart: "FCO", destination: "JFK"}), tickets: "Tickets[]", departTime: new Date(2025, 4, 21, 10, 50) },
+                    { flightCode: "KL641",  airline: airlines.getModel().findOne({name: "KLM Royal Dutch Airlines"}),   aircraft: aircrafts.getModel().findOne({aircraftModel: "Boeing 787-9 Dreamliner"}),         route: routes.getModel().findOne({depart: "AMS", destination: "JFK"}), tickets: "Tickets[]", departTime: new Date(2025, 4, 21, 14, 35) },
+                    { flightCode: "AF9",    airline: airlines.getModel().findOne({name: "Air France"}),                 aircraft: aircrafts.getModel().findOne({aircraftModel: "Airbus A350-1000"}),                route: routes.getModel().findOne({depart: "CDG", destination: "LAX"}), tickets: "Tickets[]", departTime: new Date(2025, 4, 22, 9, 55) },
+                    { flightCode: "LH441",  airline: airlines.getModel().findOne({name: "Lufthansa"}),                  aircraft: aircrafts.getModel().findOne({aircraftModel: "Boeing 747-8I"}),                   route: routes.getModel().findOne({depart: "FRA", destination: "IAH"}), tickets: "Tickets[]", departTime: new Date(2025, 4, 22, 15, 40) },
+                    { flightCode: "EK201",  airline: airlines.getModel().findOne({name: "Emirates"}),                   aircraft: aircrafts.getModel().findOne({aircraftModel: "Boeing 777-300ER"}),                route: routes.getModel().findOne({depart: "DXB", destination: "JFK"}), tickets: "Tickets[]", departTime: new Date(2025, 4, 23, 8, 30) },
+                    { flightCode: "QR725",  airline: airlines.getModel().findOne({name: "Qatar Airways"}),              aircraft: aircrafts.getModel().findOne({aircraftModel: "Airbus A350-900"}),                 route: routes.getModel().findOne({depart: "DOH", destination: "ORD"}), tickets: "Tickets[]", departTime: new Date(2025, 4, 23, 11, 15) },
+                    { flightCode: "NH175",  airline: airlines.getModel().findOne({name: "ANA All Nippon Airways"}),     aircraft: aircrafts.getModel().findOne({aircraftModel: "Boeing 787-9 Dreamliner"}),         route: routes.getModel().findOne({depart: "HND", destination: "SEA"}), tickets: "Tickets[]", departTime: new Date(2025, 4, 24, 17, 20) },
+                    { flightCode: "JL6",    airline: airlines.getModel().findOne({name: "Japan Airlines"}),             aircraft: aircrafts.getModel().findOne({aircraftModel: "Boeing 777-300ER"}),                route: routes.getModel().findOne({depart: "NRT", destination: "JFK"}), tickets: "Tickets[]", departTime: new Date(2025, 4, 24, 13, 5) },
+                    { flightCode: "BA219",  airline: airlines.getModel().findOne({name: "British Airways"}),            aircraft: aircrafts.getModel().findOne({aircraftModel: "Airbus A350-1000"}),                route: routes.getModel().findOne({depart: "LHR", destination: "DEN"}), tickets: "Tickets[]", departTime: new Date(2025, 4, 25, 16, 30) },
+                    { flightCode: "TK80",   airline: airlines.getModel().findOne({name: "Turkish Airlines"}),           aircraft: aircrafts.getModel().findOne({aircraftModel: "Boeing 787-9 Dreamliner"}),         route: routes.getModel().findOne({depart: "IST", destination: "SFO"}), tickets: "Tickets[]", departTime: new Date(2025, 4, 26, 12, 45) },
+                    { flightCode: "EY101",  airline: airlines.getModel().findOne({name: "Etihad Airways"}),             aircraft: aircrafts.getModel().findOne({aircraftModel: "Boeing 787-10 Dreamliner"}),        route: routes.getModel().findOne({depart: "AUH", destination: "JFK"}), tickets: "Tickets[]", departTime: new Date(2025, 4, 20, 22, 10) },
+                    { flightCode: "CX255",  airline: airlines.getModel().findOne({name: "Cathay Pacific"}),             aircraft: aircrafts.getModel().findOne({aircraftModel: "Airbus A350-1000"}),                route: routes.getModel().findOne({depart: "HKG", destination: "LHR"}), tickets: "Tickets[]", departTime: new Date(2025, 4, 21, 7, 30) },
+                    { flightCode: "KE81",   airline: airlines.getModel().findOne({name: "Korean Air"}),                 aircraft: aircrafts.getModel().findOne({aircraftModel: "Boeing 747-8I"}),                   route: routes.getModel().findOne({depart: "ICN", destination: "ATL"}), tickets: "Tickets[]", departTime: new Date(2025, 4, 21, 13, 55) },
+                    { flightCode: "HA51",   airline: airlines.getModel().findOne({name: "Hainan Airlines"}),            aircraft: aircrafts.getModel().findOne({aircraftModel: "Boeing 787-9 Dreamliner"}),         route: routes.getModel().findOne({depart: "PEK", destination: "SEA"}), tickets: "Tickets[]", departTime: new Date(2025, 4, 22, 10, 20) },
+                    { flightCode: "AC875",  airline: airlines.getModel().findOne({name: "Air Canada"}),                 aircraft: aircrafts.getModel().findOne({aircraftModel: "Airbus A330-300"}),                 route: routes.getModel().findOne({depart: "CDG", destination: "YVR"}), tickets: "Tickets[]", departTime: new Date(2025, 4, 22, 16, 45) },
+                    { flightCode: "SU102",  airline: airlines.getModel().findOne({name: "Aeroflot"}),                   aircraft: aircrafts.getModel().findOne({aircraftModel: "Boeing 777-300ER"}),                route: routes.getModel().findOne({depart: "SVO", destination: "JFK"}), tickets: "Tickets[]", departTime: new Date(2025, 4, 23, 9, 55) },
+                    { flightCode: "CA985",  airline: airlines.getModel().findOne({name: "Air China"}),                  aircraft: aircrafts.getModel().findOne({aircraftModel: "Boeing 747-8I"}),                   route: routes.getModel().findOne({depart: "PEK", destination: "LAX"}), tickets: "Tickets[]", departTime: new Date(2025, 4, 23, 20, 30) },
+                    { flightCode: "CZ327",  airline: airlines.getModel().findOne({name: "China Southern Airlines"}),    aircraft: aircrafts.getModel().findOne({aircraftModel: "Airbus A350-900"}),                 route: routes.getModel().findOne({depart: "CAN", destination: "LAX"}), tickets: "Tickets[]", departTime: new Date(2025, 4, 24, 14, 15) },
+                    { flightCode: "MU587",  airline: airlines.getModel().findOne({name: "China Eastern Airlines"}),     aircraft: aircrafts.getModel().findOne({aircraftModel: "Boeing 777-300ER"}),                route: routes.getModel().findOne({depart: "PVG", destination: "JFK"}), tickets: "Tickets[]", departTime: new Date(2025, 4, 24, 19, 45) },
+                    { flightCode: "FR5567", airline: airlines.getModel().findOne({name: "Ryanair"}),                    aircraft: aircrafts.getModel().findOne({aircraftModel: "Boeing 737-800"}),                  route: routes.getModel().findOne({depart: "DUB", destination: "BCN"}), tickets: "Tickets[]", departTime: new Date(2025, 4, 25, 6, 30) }
+                ]);
+                return flightsData;
             }
         }
         /*
@@ -565,13 +568,13 @@ export function DB_initialization(app) {
     ).then(
         (count) => { //dati di test per tutti i documenti
             if (count == 0) {
-                console.log("Adding some test airlines into the database");
+                console.log("Adding some test tickets into the database");
                 let s1 = tickets
                     .getModel()
                     .create({
                         user: users.getModel().findOne({username: "micbos71"}),
                         seat: seats.getModel().findOne({numberSeat: "A1"}),
-                        flight: flights.getModel().findOne({/* flightCode, eg. EK135 */}), /* FRA-JFK */
+                        flight: flights.getModel().findOne({flightCode: "AC875"}), /* Paris CDG ->  Vancouver YVR */
                         numCabinBag: 2,
                         numCheckedLuggages: 1,
                         price: 349.99,
@@ -581,7 +584,7 @@ export function DB_initialization(app) {
                     .create({
                         user: users.getModel().findOne({username: "bordjack47"}),
                         seat: seats.getModel().findOne({numberSeat: "B1"}),
-                        flight: flights.getModel().findOne({/* flightCode, eg. EK135 */}), /* VCE-FRA */
+                        flight: flights.getModel().findOne({flightCode: "EK202"}), /* New York JFK -> Dubai DXB */
                         numCabinBag: 1,
                         numCheckedLuggages: 0,
                         price: 149.99,
@@ -591,12 +594,66 @@ export function DB_initialization(app) {
                     .create({
                         user: users.getModel().findOne({username: "tito_paul"}),
                         seat: seats.getModel().findOne({numberSeat: "C1"}),
-                        flight: flights.getModel().findOne({/* flightCode, eg. EK135 */}), /* VCE-JFK */
+                        flight: flights.getModel().findOne({flightCode: "AF9"}), /* Paris CDG -> Los Angeles LAX */
                         numCabinBag: 2,
                         numCheckedLuggages: 2,
                         price: 1999.99,
                     });
                 return Promise.all([s1, s2, s3]);
+            }
+        }
+    ).then(
+        () => {
+            return airlines.getModel().countDocuments({})
+        }
+    ).then(
+        (count) => { //dati di test per tutti i documenti
+            if (count == 0) {
+                console.log("Adding some test airlines into the database");
+                let airlinesData = airlines.getModel().create([
+                    { username: "ITA Airways",                      passportID: "ITA",              mail: "ita.airways@project_flight.it",                          roles: ["airline"] },
+                    { username: "Qatar Airways",                    passportID: "QATAR",            mail: "qatar.airways@project_flight.it",                        roles: ["airline"] },
+                    { username: "Singapore Airlines",               passportID: "SINGAPORE",        mail: "singapore.airlines@project_flight.it",                   roles: ["airline"] },
+                    { username: "Emirates",                         passportID: "EMIRATES",         mail: "emirates.airlines@project_flight.it",                    roles: ["airline"] },
+                    { username: "ANA All Nippon Airways",           passportID: "ANA",              mail: "ana.airlines@project_flight.it",                         roles: ["airline"] },
+                    { username: "Cathay Pacific",                   passportID: "CATHAY",           mail: "cathay.pacific@project_flight.it",                       roles: ["airline"] },
+                    { username: "Japan Airlines",                   passportID: "JAPAN",            mail: "japan.airlines@project_flight.it",                       roles: ["airline"] },
+                    { username: "Turkish Airlines",                 passportID: "TURKISH",          mail: "turkish.airlines@project_flight.it",                     roles: ["airline"] },
+                    { username: "Air France",                       passportID: "AIRFRANCE",        mail: "airfrance.airlines@project_flight.it",                   roles: ["airline"] },
+                    { username: "British Airways",                  passportID: "BRITISH",          mail: "british.airways@project_flight.it",                      roles: ["airline"] },
+                    { username: "Lufthansa",                        passportID: "LUFTHANSA",        mail: "lufthansa.fluggesellschaften@project_flight.it",         roles: ["airline"] },
+                    { username: "Swiss International Air Lines",    passportID: "SWISS",            mail: "swiss.airlines@project_flight.it",                       roles: ["airline"] },
+                    { username: "KLM Royal Dutch Airlines",         passportID: "KLM",              mail: "klm.airlines@project_flight.it",                         roles: ["airline"] },
+                    { username: "Delta Air Lines",                  passportID: "DELTA",            mail: "delta.airlines@project_flight.it",                       roles: ["airline"] },
+                    { username: "United Airlines",                  passportID: "UNITED",           mail: "united.airlines@project_flight.it",                      roles: ["airline"] },
+                    { username: "American Airlines",                passportID: "AMERICAN",         mail: "american.airlines@project_flight.it",                    roles: ["airline"] },
+                    { username: "EVA Air",                          passportID: "EVA",              mail: "eva.air@project_flight.it",                              roles: ["airline"] },
+                    { username: "Qantas Airways",                   passportID: "QANTAS",           mail: "qantas.airways@project_flight.it",                       roles: ["airline"] },
+                    { username: "Etihad Airways",                   passportID: "ETIHAD",           mail: "etihad.airways@project_flight.it",                       roles: ["airline"] },
+                    { username: "Korean Air",                       passportID: "KOREAN",           mail: "korean.air@project_flight.it",                           roles: ["airline"] },
+                    { username: "Hainan Airlines",                  passportID: "HAINAN",           mail: "hainan.airlines@project_flight.it",                      roles: ["airline"] },
+                    { username: "Air Canada",                       passportID: "AIRCANADA",        mail: "aircanada@project_flight.it",                            roles: ["airline"] },
+                    { username: "Aeroflot",                         passportID: "AEROFLOT",         mail: "aeroflot@project_flight.it",                             roles: ["airline"] },
+                    { username: "Air China",                        passportID: "AIRCHINA",         mail: "airchina@project_flight.it",                             roles: ["airline"] },
+                    { username: "China Southern Airlines",          passportID: "CHINASOUTHERN",    mail: "chinasouthern@project_flight.it",                        roles: ["airline"] },
+                    { username: "China Eastern Airlines",           passportID: "CHINAEASTERN",     mail: "chinaeastern@project_flight.it",                         roles: ["airline"] },
+                    { username: "Ryanair",                          passportID: "RYANAIR",          mail: "ryanair@project_flight.it",                              roles: ["airline"] },
+                    { username: "EasyJet",                          passportID: "EASYJET",          mail: "easyjet@project_flight.it",                              roles: ["airline"] },
+                    { username: "JetBlue Airways",                  passportID: "JETBLUE",          mail: "jetblue@project_flight.it",                              roles: ["airline"] },
+                    { username: "IndiGo Airlines",                  passportID: "INDIGO",           mail: "indigo@project_flight.it",                               roles: ["airline"] },
+                    { username: "Southwest Airlines",               passportID: "SOUTHWEST",        mail: "southwest@project_flight.it",                            roles: ["airline"] },
+                    { username: "Alaska Airlines",                  passportID: "ALASKA",           mail: "alaska@project_flight.it",                               roles: ["airline"] },
+                    { username: "Air India",                        passportID: "AIRINDIA",         mail: "airindia@project_flight.it",                             roles: ["airline"] },
+                    { username: "LATAM Airlines",                   passportID: "LATAM",            mail: "latam@project_flight.it",                                roles: ["airline"] },
+                    { username: "Aeroméxico",                       passportID: "AEROMEXICO",       mail: "aeromexico@project_flight.it",                           roles: ["airline"] },
+                    { username: "Virgin Atlantic",                  passportID: "VIRGINATLANTIC",   mail: "virginatlantic@project_flight.it",                       roles: ["airline"] },
+                    { username: "Finnair",                          passportID: "FINNAIR",          mail: "finnair@project_flight.it",                              roles: ["airline"] },
+                    { username: "Scandinavian Airlines",            passportID: "SAS",              mail: "sas@project_flight.it",                                  roles: ["airline"] },
+                    { username: "Air New Zealand",                  passportID: "AIRNZ",            mail: "airnz@project_flight.it",                                roles: ["airline"] },
+                    { username: "Thai Airways",                     passportID: "THAI",             mail: "thai@project_flight.it",                                 roles: ["airline"] },
+                    { username: "Malaysia Airlines",                passportID: "MALAYSIA",         mail: "malaysia@project_flight.it",                             roles: ["airline"] }
+                ]);
+                return airlinesData;
             }
         }
     ).then(

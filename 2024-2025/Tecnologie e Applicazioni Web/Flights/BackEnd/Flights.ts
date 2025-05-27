@@ -6,6 +6,7 @@ import {Tickets} from './Tickets'
 
 export interface Flights extends mongoose.Document{
     readonly _id: mongoose.Schema.Types.ObjectId,
+    flightCode: string,
     airline: Airlines[],
     aircraft: Aircrafts[],
     route: Routes,
@@ -25,6 +26,11 @@ export interface Flights extends mongoose.Document{
 
 //Defining Schema
 const flightSchema = new mongoose.Schema<Flights>({
+    flightCode: {
+        type: mongoose.SchemaTypes.String,
+        required: true,
+        unique: true
+    },
     airline: {
         type: Array<Airlines>(),
         required: true
