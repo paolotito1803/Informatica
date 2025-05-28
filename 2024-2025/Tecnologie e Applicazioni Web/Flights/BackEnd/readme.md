@@ -30,7 +30,7 @@ npx tsc
 5. Run the application
 
 ```
-node postmessages
+node travelrequests
 ```
 
 

@@ -74,7 +74,11 @@ const getAirportByCode = async (code) => {
     try {
         const AirportModel = getModel(); // Ottieni il modello
         // Trova l'aeroporto per codice
-        return await AirportModel.findOne({ code: code }); // Restituisce il documento trovato
+        let airport = AirportModel.findOne({ code: code }); // Restituisce il documento trovato
+        if (!airport) {
+            console.error("Airport " + code + " non trovato");
+        }
+        return airport;
     }
     catch (err) {
         console.error("Errore durante il recupero dell'aeroporto:", err);

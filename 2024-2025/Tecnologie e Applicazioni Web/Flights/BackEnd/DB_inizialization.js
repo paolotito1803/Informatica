@@ -231,14 +231,9 @@ function DB_initialization(app) {
                 { _ICAO: "KJFK", code: "JFK", city: "New York", state: "USA", position: [40.6413, -73.7781] },
                 { _ICAO: "KSFO", code: "SFO", city: "San Francisco", state: "USA", position: [37.6213, -122.3790] },
                 { _ICAO: "CYYZ", code: "YYZ", city: "Toronto", state: "Canada", position: [43.6777, -79.6248] },
+                { _ICAO: "DNMM", code: "LOS", city: "Lagos", state: "Nigeria", position: [6.5772, 3.3211] },
                 { _ICAO: "SBGR", code: "GRU", city: "São Paulo", state: "Brazil", position: [-23.4319, -46.4679] },
-                {
-                    _ICAO: "SAEZ",
-                    code: "EZE",
-                    city: "Buenos Aires",
-                    state: "Argentina",
-                    position: [-34.8222, -58.5358]
-                },
+                { _ICAO: "SAEZ", code: "EZE", city: "Buenos Aires", state: "Argentina", position: [-34.8222, -58.5358] },
                 { _ICAO: "VHHH", code: "HKG", city: "Hong Kong", state: "China", position: [22.3080, 113.9185] },
                 { _ICAO: "RKSI", code: "ICN", city: "Seoul", state: "South Korea", position: [37.4602, 126.4407] },
                 { _ICAO: "RJAA", code: "NRT", city: "Tokyo", state: "Japan", position: [35.7719, 140.3929] },
@@ -250,20 +245,8 @@ function DB_initialization(app) {
                 { _ICAO: "LEBL", code: "BCN", city: "Barcelona", state: "Spain", position: [41.2974, 2.0833] },
                 { _ICAO: "MMMX", code: "MEX", city: "Mexico City", state: "Mexico", position: [19.4361, -99.0719] },
                 { _ICAO: "SPJC", code: "LIM", city: "Lima", state: "Peru", position: [-12.0219, -77.1143] },
-                {
-                    _ICAO: "FAOR",
-                    code: "JNB",
-                    city: "Johannesburg",
-                    state: "South Africa",
-                    position: [-26.1367, 28.2411]
-                },
-                {
-                    _ICAO: "FACT",
-                    code: "CPT",
-                    city: "Cape Town",
-                    state: "South Africa",
-                    position: [-33.9694, 18.5975]
-                },
+                { _ICAO: "FAOR", code: "JNB", city: "Johannesburg", state: "South Africa", position: [-26.1367, 28.2411] },
+                { _ICAO: "FACT", code: "CPT", city: "Cape Town", state: "South Africa", position: [-33.9694, 18.5975] },
                 { _ICAO: "LIPZ", code: "VCE", city: "Venice", state: "Italy", position: [45.3019, 12.2107] },
                 { _ICAO: "LIRF", code: "FCO", city: "Rome", state: "Italy", position: [41.8003, 12.2389] },
                 { _ICAO: "LIMC", code: "MXP", city: "Milan", state: "Italy", position: [45.6300, 8.7281] },
@@ -329,7 +312,7 @@ function DB_initialization(app) {
                 { _ICAO: "HECA", code: "CAI", city: "Cairo", state: "Egypt", position: [30.1219, 31.4056] },
                 { _ICAO: "HKJK", code: "NBO", city: "Nairobi", state: "Kenya", position: [-1.3192, 36.9275] },
                 { _ICAO: "DGAA", code: "ACC", city: "Accra", state: "Ghana", position: [5.6052, -0.1668] },
-                { _ICAO: "HTDA", code: "DAR", city: "Dar es Salaam", state: [-6.8751, 39.2026] },
+                { _ICAO: "HTDA", code: "DAR", city: "Dar es Salaam", state: "Tanzania", position: [-6.8751, 39.2026] },
                 { _ICAO: "HAAB", code: "ADD", city: "Addis Abeba", state: "Ethiopia", position: [8.9779, 38.7993] },
                 { _ICAO: "GMMN", code: "CMN", city: "Casablanca", state: "Morocco", position: [33.3675, -7.5899] },
                 { _ICAO: "GOOY", code: "DKR", city: "Dakar", state: "Senegal", position: [14.7397, -17.4902] }

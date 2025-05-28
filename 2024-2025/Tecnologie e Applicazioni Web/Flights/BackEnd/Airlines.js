@@ -4,7 +4,6 @@ exports.getSchema = getSchema;
 exports.getModel = getModel;
 exports.newAirline = newAirline;
 const mongoose = require("mongoose");
-const users = require("./Users");
 //Defining schema
 const airlineSchema = new mongoose.Schema({
     name: {
@@ -25,10 +24,12 @@ const airlineSchema = new mongoose.Schema({
     },
     revenue: {
         type: mongoose.SchemaTypes.Number,
-        required: true
+        required: false
     }
 });
-airlineSchema.add(users.getSchema());
+/*
+airlineSchema.add(users.getSchema())
+*/
 //Defining functions
 airlineSchema.methods.getName = function () {
     return this.name;

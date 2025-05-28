@@ -813,7 +813,7 @@ app.post("/airports", auth, (req, res, next) => {
             }else{
                 return next({
                     statudcode: 404,
-                    errir: true,
+                    error: true,
                     errormessage: "DB error" + reason.errmsg
                 });
             }

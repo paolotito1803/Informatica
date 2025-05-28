@@ -95,7 +95,12 @@ export const getAirportByCode = async (code: string): Promise<Airports> => {
     try {
         const AirportModel: mongoose.Model<Airports> = getModel(); // Ottieni il modello
           // Trova l'aeroporto per codice
-        return await AirportModel.findOne({code: code}); // Restituisce il documento trovato
+        let airport = AirportModel.findOne({code: code}); // Restituisce il documento trovato
+        if( !airport )
+        {
+            console.error("Airport "+code+" non trovato");
+        }
+        return airport;
     } catch (err) {
         console.error("Errore durante il recupero dell'aeroporto:", err);
         throw err; // Rilancia l'errore se necessario
