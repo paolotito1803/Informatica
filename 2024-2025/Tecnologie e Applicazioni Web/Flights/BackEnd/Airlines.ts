@@ -44,12 +44,12 @@ const airlineSchema = new mongoose.Schema<Airlines>({
     },
     revenue: {
         type: mongoose.SchemaTypes.Number,
-        required: true
+        required: false
     }
 })
-
+/*
 airlineSchema.add(users.getSchema())
-
+*/
 //Defining functions
 airlineSchema.methods.getName = function(){
     return this.name;
