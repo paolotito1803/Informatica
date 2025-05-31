@@ -40,6 +40,7 @@ const routeSchema = new mongoose.Schema<Routes>({
     }
 })
 
+
 //Defining functions
 routeSchema.methods.setDestination = function(dst:airports.Airports){
     this.destination = dst;
