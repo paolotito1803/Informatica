@@ -1,115 +1,76 @@
-import mongoose = require('mongoose')
-import {Airlines} from "./Airlines";
-import {Aircrafts} from "./Aircrafts";
-import {Routes} from "./Routes";
-import {Tickets} from './Tickets'
+import mongoose = require("mongoose");
 
 export interface Flights extends mongoose.Document{
-    readonly _id: mongoose.Schema.Types.ObjectId,
-    flightCode: string,
-    airline: Airlines[],
-    aircraft: Aircrafts[],
-    route: Routes,
-    //tickets: Tickets[],
-    departTime: Date,
-    getAirline: () => Array<Airlines>,
-    getAircraft: () => Array<Aircrafts>,
-    getTicket: () => Array<Tickets>,
-    getRoute: () => Routes,
-    getDepartTime: () => Date,
-    setAirline: (airline: Array<Airlines>) => void,
-    setAircraft: (aircraft: Array<Aircrafts>) => void,
-    setTickets: (ticket: Array<Tickets>) => void,
-    setRoutes: (route: Routes) => void,
-    setDepartTime: (departTime: Date) => void
+    readonly _flightCode : string,
+    dataOra : Date,
+    route : mongoose.Schema.Types.ObjectId,
+    aircraft : mongoose.Schema.Types.String,
+
+    getDateOra : () => Date,
+    getRoute : () => mongoose.Schema.Types.ObjectId,
+    getAircraft : () => mongoose.Schema.Types.String,
+    setDataOra : (data : Date) => void,
+    setRoute: (code : mongoose.Schema.Types.ObjectId) => void,
+    setAircraft: (code : mongoose.Schema.Types.String) => void
 }
 
-//Defining Schema
 const flightSchema = new mongoose.Schema<Flights>({
-    flightCode: {
+    _flightCode : {
         type: mongoose.SchemaTypes.String,
-        required: true,
-        unique: true
+        required : true,
+        unique : true
     },
-    airline: {
-        type: Array<Airlines>(),
-        required: true
+    dataOra : {
+        type: mongoose.SchemaTypes.Date,
+        required : true
     },
-    aircraft: {
-        type: Array<Aircrafts>(),
-        required: true
+    route : {
+        type: mongoose.Schema.Types.ObjectId,
+        ref : "Routes",
+        required : true
     },
-    route: {
-        type: mongoose.SchemaTypes.ObjectId,
-        ref: "Routes",
-        required: true
-    },
-    /*
-    tickets: {
-        type: Array<Tickets>(),
-        required: true
-    },
-    */
-    departTime: {
-        type: Date,
-        required: true
+    aircraft : {
+        type : mongoose.Schema.Types.String,
+        ref : "Aircrafts",
+        required : true
     }
 })
 
-//Defining Functions
-flightSchema.methods.getAirline = function() {
-    return this.airline;
+flightSchema.methods.getDateOra = function() : Date {
+    return this.dataOra;
 }
 
-flightSchema.methods.getAircraft = function() {
-    return this.aircraft;
-}
-/*
-flightSchema.methods.getTickets = function() {
-    return this.ticket;
-}
-*/
-flightSchema.methods.getRoute = function() {
+flightSchema.methods.getRoute = function() : mongoose.Schema.Types.ObjectId {
     return this.route;
 }
 
-flightSchema.methods.getDepartTime = function() {
-    return this.departTime;
+flightSchema.methods.getAircraft = function() : mongoose.Schema.Types.String {
+    return this.aircraft;
 }
 
-flightSchema.methods.setAirline = function(airline: Array<Airlines>): void {
-    this.airline = airline;
+flightSchema.methods.setOraData = function(data : Date) : void {
+    this.dataOra = data;
 }
 
-flightSchema.methods.setAircraft = function(aircraft: Array<Aircrafts>): void {
-    this.aircraft = aircraft;
-}
-/*
-flightSchema.methods.setTickets = function(tickets: Array<Tickets>): void {
-    this.tickets = tickets;
-}
-*/
-flightSchema.methods.setRoutes = function(routes: Routes): void {
-    this.route = routes;
+flightSchema.methods.setRoute = function(route : mongoose.Schema.Types.ObjectId) : void {
+    this.route = route;
 }
 
-flightSchema.methods.setDepartTime = function(departTime: Date): void {
-    this.departTime = departTime;
+flightSchema.methods.setAircraft = function(code : mongoose.Schema.Types.String) : void {
+    this.aircraft = code;
 }
 
-export function getSchema() { return flightSchema; }
+export function getSchema() {return flightSchema;}
 
-// Mongoose Model
-let flightModel;  // This is not exposed outside the model
-export function getModel() : mongoose.Model<Flights>  { // Return Model as singleton
-    if( !flightModel ) {
-        flightModel = mongoose.model('Flight', getSchema() )
+let flightModel : any;
+export function getModel() : mongoose.Model<Flights> {
+    if(!flightModel) {
+        flightModel = mongoose.model('Flights', getSchema());
     }
     return flightModel;
 }
 
-export function newFlight( data ): Flights {
+export function newFlight(data) : Flights {
     let _flightModel = getModel();
-    let flight = new _flightModel( data );
-    return flight;
+    return new _flightModel(data);
 }

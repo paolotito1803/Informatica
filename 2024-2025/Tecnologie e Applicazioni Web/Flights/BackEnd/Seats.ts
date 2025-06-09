@@ -1,84 +1,72 @@
-import mongoose = require('mongoose');
+import mongoose = require("mongoose");
 
 export interface Seats extends mongoose.Document{
-    readonly _id: mongoose.Schema.Types.ObjectId,
-    numberSeat: string,
-    classes: string,
-    legroom: boolean,
-    isFree: boolean,
+    readonly _numSeat : string,
+    class : string,
+    legroom : boolean,
+    isFree : boolean,
 
-    getNumberSeat: () => string,
-    getClasses: () => string,
-    getLegroom: () => boolean,
-    isFreeSeat: () => boolean,
-
-    setNumberSeat: (numberSeat: string) => void,
-    setClasses: (classes: string) => void,
-    setLegroom: (legroom: boolean) => void,
-    setSeat: (isFree: boolean) => void,
+    getClass : () => string,
+    getLegroom : () => boolean,
+    getIsFree : () => boolean,
+    setClass : (clas: string) => void,
+    setLegroom : (legroom : boolean) => void,
+    setIsFree : () => void
 }
 
-//Defining Schema
 const seatSchema = new mongoose.Schema<Seats>({
-    numberSeat: {
-        type: mongoose.SchemaTypes.String,
-        required: true,
-        unique: true
+    _numSeat : {
+        type : mongoose.SchemaTypes.String,
+        required : true,
+        unique : true,
     },
-    classes: {
-        type: mongoose.SchemaTypes.String,
-        required: true,
-        unique: true
+    legroom : {
+        type : mongoose.SchemaTypes.Boolean,
+        required : true,
+        default : false
     },
-    legroom: {
-        type: mongoose.SchemaTypes.Boolean,
-        required: true
-    },
-    isFree: {
-        type: mongoose.SchemaTypes.Boolean,
+    isFree : {
+        type : mongoose.SchemaTypes.Boolean,
         required: true,
-        default: true,
+        default : true
+    },
+    class : {
+        type : mongoose.Schema.Types.String,
+        required : true 
     }
 })
 
-//Defining Functions
-seatSchema.methods.getNumberSeat = function(){
-    return this.numberSeat;
+seatSchema.methods.getClass = function() : string {
+    return this.class;
 }
 
-seatSchema.methods.getClasses = function(){
-    return this.classes;
-}
-
-seatSchema.methods.getLegroom = function(){
+seatSchema.methods.getLegroom = function() : boolean{
     return this.legroom;
 }
-seatSchema.methods.isFreeSeat = function(){
+
+seatSchema.methods.getIsFree = function() : boolean{
     return this.isFree;
 }
 
-seatSchema.methods.setNumberSeat = function(numberSeat: string){
-    this.numberSeat = numberSeat;
+seatSchema.methods.setClass = function(clas : string){
+    this.class = clas;
 }
 
-seatSchema.methods.setClasses = function(classes: string){
-    this.classes = classes;
-}
-
-seatSchema.methods.setLegroom = function(legroom: boolean){
+seatSchema.methods.setLegroom = function(legroom : boolean){
     this.legroom = legroom;
 }
-seatSchema.methods.setSeat = function(isFree: boolean){
-    this.isFree = isFree;
+
+seatSchema.methods.setIsFree = function(){
+    this.isFree = !this.isFree;
 }
 
 export function getSchema() { return seatSchema; }
 
 // Mongoose Model
-let seatModel;  // This is not exposed outside the model
+let seatModel: any;  // This is not exposed outside the model
 export function getModel() : mongoose.Model<Seats>  { // Return Model as singleton
     if( !seatModel ) {
-        seatModel = mongoose.model('Seat', getSchema() )
+        seatModel = mongoose.model('Seats', getSchema() )
     }
     return seatModel;
 }

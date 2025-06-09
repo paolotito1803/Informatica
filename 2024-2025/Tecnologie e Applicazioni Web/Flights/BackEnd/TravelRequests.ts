@@ -12,46 +12,30 @@ import fs = require('fs');
 import http = require('http');                  // HTTP module
 import https = require('https');                // HTTPS module
 import colors = require('colors');
-colors.enabled = true;
-
-
 import mongoose = require('mongoose');
+colors.enabled = true;
 import { Users } from './Users';
 import * as users from './Users';
-
-import {Routes} from './Routes';
 import * as routes from './Routes';
-
-import {Airlines} from './Airlines';
 import * as airlines from './Airlines';
-
-import {Aircrafts} from "./Aircrafts";
 import * as aircrafts from './Aircrafts';
-
-import {Flights} from "./Flights";
 import * as flights from './Flights';
-
 import {Seats} from "./Seats";
 import * as seats from './Seats';
-
-import {Tickets} from "./Tickets";
 import * as tickets from './Tickets';
-
 import {Airports} from "./Airports";
 import * as airports from './Airports';
 
 import express = require('express');
-
 import passport = require('passport');           // authentication middleware for Express
 import passportHTTP = require('passport-http');  // implements Basic and Digest authentication for HTTP (used for /login endpoint)
-
 import jsonwebtoken = require('jsonwebtoken');  // JWT generation
-const { expressjwt: jwt } = require('express-jwt');            // JWT parsing middleware for express
-import { DB_initialization } from "./DB_inizialization";
-
 import cors = require('cors');                  // Enable CORS middleware
 const io = require('socket.io');               // Socket.io websocket library
-import { nextTick } from 'process';
+
+
+const { expressjwt: jwt } = require('express-jwt');// JWT parsing middleware for express
+
 let app = express();
 let auth = jwt( {
     secret: process.env.JWT_SECRET,
@@ -109,7 +93,7 @@ passport.use( new passportHTTP.BasicStrategy(
             if( !user ) {
                 return done(null,false,{statusCode: 500, error: true, errormessage:"Invalid user"});
             }
-            if( user.validatePassword( password ) ) {
+            if( user.validatePassword( password )) {
                 return done(null, user);
             }
             return done(null,false,{statusCode: 500, error: true, errormessage:"Invalid password"});
@@ -202,8 +186,6 @@ app.use( function(err,req,res,next) {
 app.use( (req,res,next) => {
     res.status(404).json({statusCode:404, error:true, errormessage: "Invalid endpoint"} );
 })
-
-DB_initialization(app);
 
 //user data modifications
 /*

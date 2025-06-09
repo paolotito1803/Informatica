@@ -1,128 +1,125 @@
-import mongoose = require('mongoose')
-import {Users} from './Users';
-import {Flights} from './Flights';
-import {Seats} from "./Seats";
+import mongoose = require("mongoose");
+import { Users } from "./Users";
 
 export interface Tickets extends mongoose.Document{
-    readonly _id: mongoose.Schema.Types.ObjectId,
-    user: Users,
-    seat: Seats,
-    flight: Flights,
-    numCabinBag: number,
-    numCheckedLuggages: number,
-    price: number,
+    readonly _code : string,
+    user : mongoose.Schema.Types.ObjectId,
+    seat : mongoose.Schema.Types.String, // oppure string
+    //airline : mongoose.Schema.Types.String, // oppure string
+    flight : mongoose.Schema.Types.String, // oppure string
+    price : number,
+    numBag : number,
 
-    getUser: () => Users,
-    getFlight: () => Flights,
-    getSeat: () => Seats,
-    getNumCabinBag: () => number,
-    getNumCheckedLuggages: () => number,
-    getPrice: () => number
-
-    setUser: (user: Users) => void,
-    setFlight: (flight: Flights) => void,
-    setSeat: (seat: Seats) => void,
-    setNumCabinBag: (numCabinBag: number) => void,
-    setNumCheckedLuggages: (numCheckedLuggages: number) => void,
-    setPrice: (price: number) => void
+    getUser: () => mongoose.Schema.Types.ObjectId,
+    getSeat: () => mongoose.Schema.Types.String,
+    //getAirline: () => mongoose.Schema.Types.String,
+    getFlight : () => mongoose.Schema.Types.String,
+    getPrice: () => number,
+    getNumBag : () => number,
+    setUser: (user: mongoose.Schema.Types.ObjectId) => void
+    setSeat: (seat : mongoose.Schema.Types.String) => void,
+    //setAirline: (airline : mongoose.Schema.Types.String) => void,
+    setFlight : (flight : mongoose.Schema.Types.String) => void,
+    setPrice: (price : number) => void,
+    setNumBag: (numBag: number) => void
 }
 
-//Defining Schema
 const ticketSchema = new mongoose.Schema<Tickets>({
-    user: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
+    _code : {
+        type : mongoose.SchemaTypes.String,
         required: true,
         unique: true
+    },
+    user: {
+        type : mongoose.Schema.Types.ObjectId,
+        ref : "Users",
+        required: true
     },
     seat: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Seats',
-        required: true,
-        unique: true
-    },
-    flight: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Flights',
-        required: true,
-        unique: true
-    },
-    numCabinBag: {
-        type: mongoose.SchemaTypes.Number,
+        type : mongoose.Schema.Types.String,
+        ref : "Seats",
         required: true
     },
-    numCheckedLuggages: {
-        type: mongoose.SchemaTypes.Number,
+    /*airline: {
+        type : mongoose.Schema.Types.String,
+        ref : "Airlines",
+        required: true
+    },*/
+    flight : {
+        type : mongoose.Schema.Types.String,
+        ref : "Flights",
         required: true
     },
-    price: {
-        type: mongoose.SchemaTypes.Number,
-        required: true
+    price : {
+        type: mongoose.Schema.Types.Number,
+        required : true
+    },
+    numBag : {
+        type : mongoose.Schema.Types.Number,
+        required : true
     }
 })
 
-//Defining Functions
-ticketSchema.methods.getUser = function(){
+ticketSchema.methods.getUser = function() : mongoose.Schema.Types.ObjectId{
     return this.user;
 }
 
-ticketSchema.methods.getFlight = function(){
-    return this.flight;
-}
-
-ticketSchema.methods.getSeat = function(){
+ticketSchema.methods.getSeat = function() : mongoose.Schema.Types.ObjectId{
     return this.seat;
 }
 
-ticketSchema.methods.getNumCabinBag = function(){
-    return this.numCabinBag;
+/*ticketSchema.methods.getAirline = function() : mongoose.Schema.Types.ObjectId{
+    return this.airline;
+}*/
+
+ticketSchema.methods.getFlight = function() : mongoose.Schema.Types.ObjectId{
+    return this.flight;
 }
 
-ticketSchema.methods.getNumCheckedLuggages = function(){
-    return this.numCheckedLuggages;
-}
-
-ticketSchema.methods.getPrice = function(){
+ticketSchema.methods.getPrice = function() : number{
     return this.price;
 }
 
-ticketSchema.methods.setUser = function(user: Users){
+ticketSchema.methods.getNumBag = function() : number {
+    return this.numBag;
+} 
+
+ticketSchema.methods.setUser = function(user : mongoose.Schema.Types.ObjectId){
     this.user = user;
 }
 
-ticketSchema.methods.setFlight = function(flight: Flights){
-    this.flight = flight;
-}
-
-ticketSchema.methods.setSeat = function(seat: Seats){
+ticketSchema.methods.setSeat = function(seat : mongoose.Schema.Types.String){
     this.seat = seat;
 }
 
-ticketSchema.methods.setNumCabinBag = function(numCabinBag: number){
-    this.numCabinBag = numCabinBag;
+/*ticketSchema.methods.setAirline = function(airline : mongoose.Schema.Types.String){
+    this.airline = airline;
+}*/
+
+ticketSchema.methods.setFlight = function(flight : mongoose.Schema.Types.String){
+    this.flight = flight;
 }
 
-ticketSchema.methods.setNumCheckedLuggages = function(numCheckedLuggages: number){
-    this.numCheckedLuggages = numCheckedLuggages;
-}
-
-ticketSchema.methods.setPrice = function(price: number){
+ticketSchema.methods.setPrice = function(price : number){
     this.price = price;
+}
+
+ticketSchema.methods.setNumBag = function(numBag : number) : void {
+    this.numBag = numBag;
 }
 
 export function getSchema() { return ticketSchema; }
 
 // Mongoose Model
-let ticketModel;  // This is not exposed outside the model
+let ticketModel: any;  // This is not exposed outside the model
 export function getModel() : mongoose.Model<Tickets>  { // Return Model as singleton
     if( !ticketModel ) {
-        ticketModel = mongoose.model('Ticket', getSchema() )
+        ticketModel = mongoose.model('Tickets', getSchema() )
     }
     return ticketModel;
 }
 
 export function newTicket( data ): Tickets {
     let _ticketModel = getModel();
-    let tickets = new _ticketModel( data );
-    return tickets;
+    return new _ticketModel(data);
 }

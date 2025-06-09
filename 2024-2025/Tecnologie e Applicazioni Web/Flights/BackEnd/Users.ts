@@ -1,4 +1,5 @@
 import mongoose = require('mongoose');
+import { Tickets } from './Tickets';
 import crypto = require('crypto');
 
 
@@ -7,9 +8,10 @@ export interface Users extends mongoose.Document {
     passportID: string,
     username: string,
     mail: string,
-    roles: string[],
+    roles: string,
     salt: string,    // salt is a random string that will be mixed with the actual password before hashing
     digest: string,  // this is the hashed password (digest of the password)
+    tickets : Tickets[]
 
     setPassword: (pwd:string)=>void,
     validatePassword: (pwd:string)=>boolean,
@@ -17,6 +19,9 @@ export interface Users extends mongoose.Document {
     hasAirlineRole: () => boolean,
     hasPassangerRole: () => boolean,
     setRole: (role: string) => void,
+    getTickets: () => Tickets[],
+    setTickets: (tickets: Tickets[]) => void,
+    addTicket: (ticket: Tickets) => void
 }
 
 //Definig the schema
@@ -36,7 +41,7 @@ const userSchema = new mongoose.Schema<Users>({
         unique: true
     },
     roles: {
-        type: [mongoose.SchemaTypes.String],
+        type: mongoose.SchemaTypes.String,
         required: true,
     },
     salt:  {
@@ -46,6 +51,9 @@ const userSchema = new mongoose.Schema<Users>({
     digest:  {
         type: mongoose.SchemaTypes.String,
         required: false
+    },
+    tickets : {
+        type : Array.of<Tickets>()
     }
 })
 
@@ -65,35 +73,40 @@ userSchema.methods.validatePassword = function( pwd:string ):boolean {
 }
 
 userSchema.methods.hasAdminRole = function(): boolean{
-    for(let i in this.roles){
-        if(this.roles[i]==="admin")
-            return true
-    }return false;
+    if(this.roles === "admin")
+        return true;
+    return false;
 }
 
 userSchema.methods.hasAirlineRole = function(){
-    for( let roleidx in this.roles ) {
-        if( this.roles[roleidx] === 'airline' )
-            return true;
-    }
+    if(this.roles === "airline")
+        return true;
     return false;
 }
 
 userSchema.methods.hasPassangerRole = function(){
-    for( let roleidx in this.roles ) {
-        if( this.roles[roleidx] === 'passanger' )
-            return true;
-    }
+    if(this.roles === "passenger")
+        return true;
     return false;
 }
 
 userSchema.methods.setRole = function(role: string){
-    if(
-        role!= "admin" &&
-        role!= "airline" &&
-        role!= "passenger"
-    ) console.error("Inexistent role.");
-    else this.roles.push(role);
+    if( role!= "admin" && role!= "airline" && role!= "passenger") 
+        console.error("Inexistent role.");
+    else 
+        this.roles = role;
+}
+
+userSchema.methods.getTickets = function() : Tickets[]{
+    return this.tickets;
+}
+
+userSchema.methods.setTickets = function(tickets : Tickets[]){
+    this.tickets = tickets;
+} 
+
+userSchema.methods.addTicket = function(ticket: Tickets){
+    this.tickets.push(ticket);
 }
 
 export function getSchema() { return userSchema; }
@@ -102,7 +115,7 @@ export function getSchema() { return userSchema; }
 let userModel: any;  // This is not exposed outside the model
 export function getModel() : mongoose.Model< Users>  { // Return Model as singleton
     if( !userModel ) {
-        userModel = mongoose.model('User', getSchema() )
+        userModel = mongoose.model('Users', getSchema() )
     }
     return userModel;
 }

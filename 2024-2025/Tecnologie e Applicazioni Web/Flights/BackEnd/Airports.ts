@@ -1,87 +1,55 @@
 import mongoose = require('mongoose');
 
-export interface Airports extends mongoose.Document {
-    readonly _ICAO: string
-    code: string,
-    city: string,
-    state: string,
-    position: [number, number],
+export interface Airports extends mongoose.Document{
+    readonly _code : string,
+    name: string,
+    city : string,
 
-    getCode: () => string,
+    getName: () => string,
     getCity: () => string,
-    getState: () => string,
-    getPosition: () => [number, number],
-
-    setCode: (code: string) => void,
-    setCity: (city: string) => void,
-    setState: (state: string) => void,
-    setPosition: (position: [number, number]) => void
+    setName: (name: string) => void,
+    setCity: (city : string) => void
 }
 
-//Defining Schema
 const airportSchema = new mongoose.Schema<Airports>({
-    _ICAO: {
-        type: mongoose.SchemaTypes.String,
-        required: true,
-        unique: true
+    _code : {
+        type : mongoose.SchemaTypes.String,
+        required : true,
+        unique : true
     },
-    code: {
-        type: mongoose.SchemaTypes.String,
-        required: true,
-        unique: true
+    name : {
+        type : mongoose.SchemaTypes.String,
+        required : true,
     },
-    city: {
-        type: mongoose.SchemaTypes.String,
-        required: true
-    },
-    state: {
-        type: mongoose.SchemaTypes.String,
-        required: true,
-        unique: true
-    },
-    position: {
-        type: [mongoose.SchemaTypes.Number, mongoose.SchemaTypes.Number],
-        required: true,
-        unique: true
+    city : {
+        type : mongoose.SchemaTypes.String,
+        required : true
     }
-})
+});
 
-//Defining Functions
-airportSchema.methods.getCode = function (){
-    return this.code;
+airportSchema.methods.getName = function() : string {
+    return this.name;
 }
-airportSchema.methods.getCity = function (){
+
+airportSchema.methods.getCity = function() : string {
     return this.city;
 }
-airportSchema.methods.getState = function (){
-    return this.state;
-}
-airportSchema.methods.getPosition = function (){
-    return this.position;
+
+airportSchema.methods.setName = function(name : string){
+    this.name = name;
 }
 
-airportSchema.methods.setCode = function (code: string){
-    this.code = code;
-}
-airportSchema.methods.setCity = function (city: string){
+airportSchema.methods.setCity = function(city : string){
     this.city = city;
 }
-airportSchema.methods.setState = function (state: string){
-    this.state = state;
-}
-airportSchema.methods.setPosition = function (position: [number, number]) {
-    this.position = position;
-}
-
-
 
 export function getSchema() { return airportSchema; }
 
 // Mongoose Model
-let airportModel;  // This is not exposed outside the model
+let airportModel: any;  // This is not exposed outside the model
 export function getModel() : mongoose.Model<Airports>  { // Return Model as singleton
-    if( !airportModel) {
-        airportModel = mongoose.model('Airport', getSchema() )
+    if( !airportModel ) {
+        airportModel = mongoose.model('Airports', getSchema() )
     }
     return airportModel;
 }
@@ -90,19 +58,3 @@ export function newAirport( data ): Airports {
     let _airportModel = getModel();
     return new _airportModel(data);
 }
-
-export const getAirportByCode = async (code: string): Promise<Airports> => {
-    try {
-        const AirportModel: mongoose.Model<Airports> = getModel(); // Ottieni il modello
-          // Trova l'aeroporto per codice
-        let airport = AirportModel.findOne({code: code}); // Restituisce il documento trovato
-        if( !airport )
-        {
-            console.error("Airport "+code+" non trovato");
-        }
-        return airport;
-    } catch (err) {
-        console.error("Errore durante il recupero dell'aeroporto:", err);
-        throw err; // Rilancia l'errore se necessario
-    }
-};
