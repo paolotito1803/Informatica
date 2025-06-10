@@ -25,7 +25,7 @@ import * as seats from './Seats';
 import * as tickets from './Tickets';
 import {Airports} from "./Airports";
 import * as airports from './Airports';
-
+import { Inizializzazione } from './Inizializzazione';
 import express = require('express');
 import passport = require('passport');           // authentication middleware for Express
 import passportHTTP = require('passport-http');  // implements Basic and Digest authentication for HTTP (used for /login endpoint)
@@ -71,7 +71,7 @@ declare global {
     }
 }
 
-
+Inizializzazione(app);
 app.get("/", (req,res) => {
     res.status(200).json( { api_version: "1.0",
         endpoints: [ "/users", "/airlines", "/login", "/search", "/seats", "/aircrafts", "/airports", "/routes", "/flights", "/tickets"]
@@ -648,7 +648,7 @@ app.post('/tickets', auth, (req, res, next) => {
     }
     else{
         let t = tickets.newTicket(req.body);
-        t.seat.setSeat(false);
+        //t.seat.setSeat(false);
         t.save().then((data) => {return res.status(200).json({error: false, errormessage: '', id: data._id})
         }).catch((reason) => {
             if(reason.code === 11000){

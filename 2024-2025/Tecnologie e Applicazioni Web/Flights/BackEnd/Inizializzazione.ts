@@ -152,7 +152,7 @@ export function Inizializzazione(app){
         }
         ).then( (count) => { //dati di test per tutti i documenti
             if (count == 0) {
-                console.log("Adding some test aircraft into the database");
+                console.log("Adding some test airline into the database");
                 let air1 = Airlines
                     .getModel()
                     .create({
@@ -193,21 +193,21 @@ export function Inizializzazione(app){
                     .create({
                        _code : "011",
                        name : "Marco Polo",
-                       City : "Venice"
+                       city : "Venice"
                     });
                 let airp2 = Airports
                     .getModel()
                     .create({
                        _code : "012",
                        name : "JFK",
-                       City : "Ney York"
+                       city : "Ney York"
                     });
                 let airp3 = Airports
                 .getModel()
                 .create({
                     _code : "013",
                     name : "FCO",
-                    City : "Rome"
+                    city : "Rome"
                 });
                 return Promise.all([airp1, airp2, airp3]);
             }
@@ -321,7 +321,7 @@ export function Inizializzazione(app){
                 console.log("Socket.io client connected".green);
             });
 
-            //server.listen(8080, () => console.log("HTTP Server started on port 8080".green));
+            server.listen(8080, () => console.log("HTTP Server started on port 8080".green));
             // To start an HTTPS server we create an https.Server instance
             // passing the express application middleware. Then, we start listening
             // on port 8443
