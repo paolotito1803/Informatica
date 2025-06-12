@@ -23,6 +23,10 @@ const flightSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.String,
         ref: "Aircrafts",
         required: true
+    },
+    duration: {
+        type: mongoose.Schema.Types.Number,
+        required: true
     }
 });
 flightSchema.methods.getDateOra = function () {
@@ -34,6 +38,9 @@ flightSchema.methods.getRoute = function () {
 flightSchema.methods.getAircraft = function () {
     return this.aircraft;
 };
+flightSchema.methods.getDuration = function () {
+    return this.duration;
+};
 flightSchema.methods.setOraData = function (data) {
     this.dataOra = data;
 };
@@ -42,6 +49,9 @@ flightSchema.methods.setRoute = function (route) {
 };
 flightSchema.methods.setAircraft = function (code) {
     this.aircraft = code;
+};
+flightSchema.methods.setDuration = function (duration) {
+    this.duration = duration;
 };
 function getSchema() { return flightSchema; }
 let flightModel;

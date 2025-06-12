@@ -39,34 +39,33 @@ export function Inizializzazione(app){
         (count) => { //dati di test per tutti i documenti
             if (count-1 == 0) {
                 console.log("Adding some test users into the database");
-                let m1 = Users
-                    .getModel()
-                    .create({
-                        username: "micbos71",
-                        passportID: "KS2718281",
-                        mail: "mic.bos.71@project_flight.it",
-                        roles: "passenger"
-                    });
-                let m2 = Users
-                    .getModel()
-                    .create({
-                        username: "bordjack47",
-                        passportID: "VY3141592",
-                        mail: "bordjack47@project_flight.it",
-                        roles: "passenger"
-                    });
-                let m3 = Users
-                    .getModel()
-                    .create({
-                        username: "tito_paul",
-                        passportID: "GK1618033",
-                        mail: "paul.tito@project_flight.it",
-                        roles: "passenger"
-                    });
-                return Promise.all([m1, m2, m3]);
+                let m1 = Users.newUser({
+                    username: "micbos71",
+                    passportID: "KS2718281",
+                    mail: "mic.bos.71@project_flight.it",
+                    roles: "passenger"
+                });
+                m1.setPassword("123456");
+                m1.save();
+                let m2 = Users.newUser({
+                    username: "bordjack47",
+                    passportID: "VY3141592",
+                    mail: "bordjack47@project_flight.it",
+                    roles: "passenger"
+                });
+                m2.setPassword("7891011");
+                m2.save();
+                let m3 = Users.newUser({
+                    username: "tito_paul",
+                    passportID: "GK1618033",
+                    mail: "paul.tito@project_flight.it",
+                    roles: "passenger"
+                });
+                m3.setPassword("abdef");
+                m3.save();
             }
         }).then(() => {
-                return Tickets.getModel().countDocuments({})
+            return Tickets.getModel().countDocuments({})
         }
         ).then( async (count) => { //dati di test per tutti i documenti
             if (count == 0) {
@@ -159,26 +158,26 @@ export function Inizializzazione(app){
                        _signature : "ITA",
                        name : "ITA Airways",
                        revenue : 10,
-                       aircrafts : [{_numAircraft : "1", seats: [{_numSeat : "A1", class : "Economy", legroom : false, isFree : true}, {_numSeat : "A2", class : "Business", legroom : true, isFree : true}, {_numSeat : "A3", class : "First", legroom : true, isFree : false}], modello : "Boing737"}],
-                       duration : 60
+                       mail : "ITA.airways@flight_project.it",
+                       aircrafts : [{_numAircraft : "1", seats: [{_numSeat : "A1", class : "Economy", legroom : false, isFree : true}, {_numSeat : "A2", class : "Business", legroom : true, isFree : true}, {_numSeat : "A3", class : "First", legroom : true, isFree : false}], modello : "Boing737"}]
                     });
                 let air2 = Airlines
                     .getModel()
                     .create({
                        _signature : "LH",
                        name : "Lufthansa",
+                       mail : "lufthansa@project_flight.it",
                        revenue : 100,
-                       aircrafts : [{_numAircraft : "2", seats: [{_numSeat : "B1", class : "Business", legroom : true, isFree : false}, {_numSeat : "B2", class : "First", legroom : true, isFree : true}, {_numSeat : "B3", class : "Economy", legroom : false, isFree : false}], modello : "Boing747"}],
-                       duration : 50
+                       aircrafts : [{_numAircraft : "2", seats: [{_numSeat : "B1", class : "Business", legroom : true, isFree : false}, {_numSeat : "B2", class : "First", legroom : true, isFree : true}, {_numSeat : "B3", class : "Economy", legroom : false, isFree : false}], modello : "Boing747"}]
                     });
                     let air3 = Airlines
                     .getModel()
                     .create({
                        _signature : "EK",
                        name : "Emirates",
+                       mail : "emirates@flight_project.it",
                        revenue : 100,
-                       aircrafts : [{_numAircraft : "3", seats: [{_numSeat : "C1", class : "First", legroom : true, isFree : true}, {numSeat : "C2", class : "Economy", legroom : true, isFree : true}, {_numSeat : "C3", class : "Buisness", legroom : false, isFree : true}], modello : "Boing767"}],
-                       duration : 40
+                       aircrafts : [{_numAircraft : "3", seats: [{_numSeat : "C1", class : "First", legroom : true, isFree : true}, {numSeat : "C2", class : "Economy", legroom : true, isFree : true}, {_numSeat : "C3", class : "Buisness", legroom : false, isFree : true}], modello : "Boing767"}]
                     });
                 return Promise.all([air1, air2, air3]);
             }
@@ -275,7 +274,7 @@ export function Inizializzazione(app){
         }
         ).then( async (count) => { //dati di test per tutti i documenti
             if (count == 0) {
-                console.log("Adding some test seat into the database");
+                console.log("Adding some test flight into the database");
                 let route1 = await Routes.getModel().findOne({destination : "JFK", departure : "VCE"});
                 let routeid1 = route1._id
                 let route2 = await Routes.getModel().findOne({destination : "JFK", departure : "FCO"});
@@ -288,28 +287,36 @@ export function Inizializzazione(app){
                       _flightCode : "AB104",
                       dataOra : new Date(2025, 6, 25, 15, 30),
                       route : routeid1,
-                      aircraft : "ITA"
+                      aircraft : "1",
+                      duration : 60
                     });
                 let f2 = Flights
                     .getModel()
                     .create({
                         _flightCode : "AB105",
-                      dataOra : new Date(2025, 6, 15, 5, 30),
+                      dataOra : new Date(2025, 6, 25, 19, 30),
                       route : routeid2,
-                      aircraft : "LH"
+                      aircraft : "2",
+                      duration : 50
                     });
                 let f3 = Flights
                 .getModel()
                 .create({
-                         _flightCode : "AB106",
-                      dataOra : new Date(2025, 9, 25, 18, 0),
+                        _flightCode : "AB106",
+                      dataOra : new Date(2025, 6, 25, 16, 0),
                       route : routeid3,
-                      aircraft : "EK"
+                      aircraft : "3",
+                      duration : 40
                 });
                 return Promise.all([f1, f2, f3]);
             }
         }).then(() => {
-            let server = http.createServer(app);
+            //let server = http.createServer(app);
+
+            let server = https.createServer({
+                key: fs.readFileSync('/keys/key.pem'),
+                cert: fs.readFileSync('/keys/cert.pem')
+            }, app);
 
             ios = io(server, {
                 cors: {
@@ -321,7 +328,7 @@ export function Inizializzazione(app){
                 console.log("Socket.io client connected".green);
             });
 
-            server.listen(8080, () => console.log("HTTP Server started on port 8080".green));
+            server.listen(8443, () => console.log("HTTPS Server started on port 8443".green));
             // To start an HTTPS server we create an https.Server instance
             // passing the express application middleware. Then, we start listening
             // on port 8443

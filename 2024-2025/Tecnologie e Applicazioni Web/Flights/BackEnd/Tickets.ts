@@ -4,21 +4,18 @@ import { Users } from "./Users";
 export interface Tickets extends mongoose.Document{
     readonly _code : string,
     user : mongoose.Schema.Types.ObjectId,
-    seat : mongoose.Schema.Types.String, // oppure string
-    //airline : mongoose.Schema.Types.String, // oppure string
-    flight : mongoose.Schema.Types.String, // oppure string
+    seat : mongoose.Schema.Types.String,
+    flight : mongoose.Schema.Types.String,
     price : number,
     numBag : number,
 
     getUser: () => mongoose.Schema.Types.ObjectId,
     getSeat: () => mongoose.Schema.Types.String,
-    //getAirline: () => mongoose.Schema.Types.String,
     getFlight : () => mongoose.Schema.Types.String,
     getPrice: () => number,
     getNumBag : () => number,
-    setUser: (user: mongoose.Schema.Types.ObjectId) => void
+    setUser: (user: mongoose.Schema.Types.ObjectId) => void,
     setSeat: (seat : mongoose.Schema.Types.String) => void,
-    //setAirline: (airline : mongoose.Schema.Types.String) => void,
     setFlight : (flight : mongoose.Schema.Types.String) => void,
     setPrice: (price : number) => void,
     setNumBag: (numBag: number) => void
@@ -40,11 +37,6 @@ const ticketSchema = new mongoose.Schema<Tickets>({
         ref : "Seats",
         required: true
     },
-    /*airline: {
-        type : mongoose.Schema.Types.String,
-        ref : "Airlines",
-        required: true
-    },*/
     flight : {
         type : mongoose.Schema.Types.String,
         ref : "Flights",

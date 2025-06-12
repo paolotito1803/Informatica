@@ -1,26 +1,30 @@
 import mongoose = require("mongoose");
+import crypto = require("crypto");
 import { Users } from "./Users"
 import { Tickets } from "./Tickets";
 import { Aircrafts } from "./Aircrafts"
 
-export interface Airlines extends Users{
+export interface Airlines extends mongoose.Document{
     readonly _signature : string,
     name: string,
     revenue : number,
+    mail : string,
     //tickets : Tickets[],
     aircrafts : Aircrafts[],
-    duration : number,
+    mustChangePassword: boolean,
+    salt : string,
+    digest : string,
 
     getName: () => string,
     getRevenue: () => number,
     //getTickets: () => Tickets[],
     getAircrafts: () => Aircrafts[],
-    getDurationo : () => number,
     setName: (name: string) => void,
     setRevenue: (revenue : number) => void,
     //setTickets: (tickets : Tickets[]) => void,
     setAircrafts: (aircrafts : Aircrafts[]) => void,
-    setDuration : (duration : number) => void
+    setAirlinePassword: (pwd:string)=>void,
+    validateAirlinePassword: (pwd:string)=>boolean,
 }
 
 const airlineSchema = new mongoose.Schema<Airlines>({
@@ -37,15 +41,25 @@ const airlineSchema = new mongoose.Schema<Airlines>({
         type : mongoose.SchemaTypes.Number,
         default : 0
     },
-    /*tickets : {
-        type: Array.of<Tickets>()
-    },*/
+    mail : {
+        type : mongoose.SchemaTypes.String,
+        ref : "Users",
+        required: true
+    },
+    salt : {
+        type: mongoose.SchemaTypes.String,
+        required: false
+    },
+    digest : {
+        type: mongoose.SchemaTypes.String,
+        required : false
+    },
+    mustChangePassword : {
+        type : mongoose.SchemaTypes.Boolean,
+        default : true
+    },
     aircrafts : {
         type : Array.of<Aircrafts>()
-    },
-    duration : {
-        type : mongoose.Schema.Types.Number,
-        required : true
     }
 });
 
@@ -65,10 +79,6 @@ airlineSchema.methods.getAircrafts = function() : Aircrafts[] {
     return this.aircrafts;
 }
 
-airlineSchema.methods.getDuration = function() : number {
-    return this.duration;
-}
-
 airlineSchema.methods.setName = function(name : string){
     this.name = name;
 }
@@ -84,9 +94,20 @@ airlineSchema.methods.setAircrafts = function(aircrafts : Aircrafts[]){
     this.aircrafts = aircrafts;
 }
 
-airlineSchema.methods.setDuration = function(duration : number) : void {
-    return this.duration;
+airlineSchema.methods.setAirlinePassword = function(pwd:string){
+    this.salt = crypto.randomBytes(16).toString('hex');
+    const hmac = crypto.createHmac('sha512', this.salt );
+    hmac.update( pwd );
+    this.digest = hmac.digest('hex');
 }
+
+airlineSchema.methods.validateAirlinePassword = function( pwd:string ):boolean {
+    const hmac = crypto.createHmac('sha512', this.salt );
+    hmac.update(pwd);
+    const digest = hmac.digest('hex');
+    return (this.digest === digest);
+}
+
 
 export function getSchema() {return airlineSchema;}
 

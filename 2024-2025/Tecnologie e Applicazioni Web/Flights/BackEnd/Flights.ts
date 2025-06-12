@@ -5,13 +5,16 @@ export interface Flights extends mongoose.Document{
     dataOra : Date,
     route : mongoose.Schema.Types.ObjectId,
     aircraft : mongoose.Schema.Types.String,
+    duration : number,
 
     getDateOra : () => Date,
     getRoute : () => mongoose.Schema.Types.ObjectId,
     getAircraft : () => mongoose.Schema.Types.String,
+    getDuration : () => number,
     setDataOra : (data : Date) => void,
     setRoute: (code : mongoose.Schema.Types.ObjectId) => void,
     setAircraft: (code : mongoose.Schema.Types.String) => void
+    setDuration: (duration : number) => void
 }
 
 const flightSchema = new mongoose.Schema<Flights>({
@@ -33,6 +36,10 @@ const flightSchema = new mongoose.Schema<Flights>({
         type : mongoose.Schema.Types.String,
         ref : "Aircrafts",
         required : true
+    },
+    duration : {
+        type: mongoose.Schema.Types.Number,
+        required : true
     }
 })
 
@@ -48,6 +55,10 @@ flightSchema.methods.getAircraft = function() : mongoose.Schema.Types.String {
     return this.aircraft;
 }
 
+flightSchema.methods.getDuration = function() : number {
+    return this.duration;
+}
+
 flightSchema.methods.setOraData = function(data : Date) : void {
     this.dataOra = data;
 }
@@ -58,6 +69,10 @@ flightSchema.methods.setRoute = function(route : mongoose.Schema.Types.ObjectId)
 
 flightSchema.methods.setAircraft = function(code : mongoose.Schema.Types.String) : void {
     this.aircraft = code;
+}
+
+flightSchema.methods.setDuration = function(duration : number) : void {
+    this.duration = duration;
 }
 
 export function getSchema() {return flightSchema;}

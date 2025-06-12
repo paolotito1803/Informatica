@@ -20,11 +20,6 @@ const ticketSchema = new mongoose.Schema({
         ref: "Seats",
         required: true
     },
-    /*airline: {
-        type : mongoose.Schema.Types.String,
-        ref : "Airlines",
-        required: true
-    },*/
     flight: {
         type: mongoose.Schema.Types.String,
         ref: "Flights",
