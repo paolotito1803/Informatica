@@ -313,7 +313,7 @@ mongoose.connect('mongodb://mymongo:27017/postmessages')
     ios.on('connection', function (client) {
         console.log("Socket.io client connected".green);
     });
-    //server.listen(8080, () => console.log("HTTP Server started on port 8080".green));
+    server.listen(8080, () => console.log("HTTP Server started on port 8080".green));
     // To start an HTTPS server we create an https.Server instance 
     // passing the express application middleware. Then, we start listening
     // on port 8443
