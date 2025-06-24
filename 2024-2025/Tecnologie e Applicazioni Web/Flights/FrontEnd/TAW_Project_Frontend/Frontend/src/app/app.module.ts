@@ -11,14 +11,17 @@ import { UserHttpService } from './user-http.service';
 import { UserLoginComponent } from './user-login/user-login.component';
 import { AppRoutingModule } from './/app-routing.module';
 import { UserSignupComponent } from './user-signup/user-signup.component';
+import { FlightSearchComponent } from './pages/search/search.component';
 import { SocketioService } from './socketio.service';
+import { FlightSearchService } from './services/search.service';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     UserLoginComponent,
-    UserSignupComponent
+    UserSignupComponent,
+    FlightSearchComponent
   ],
   imports: [
     BrowserModule,
@@ -28,7 +31,8 @@ import { SocketioService } from './socketio.service';
   ],
   providers: [
     {provide: UserHttpService, useClass: UserHttpService },
-    {provide: SocketioService, useClass: SocketioService }
+    {provide: SocketioService, useClass: SocketioService },
+    {provide: FlightSearchService, useClass: FlightSearchService}
   ],
   bootstrap: [AppComponent]
 })
