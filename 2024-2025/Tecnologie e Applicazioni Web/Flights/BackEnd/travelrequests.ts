@@ -310,15 +310,15 @@ app.post("/airlines", auth, async (req, res, next) => {
 
 app.put('/airlines/:id', auth, async (req, res, next) => {
     try {
-        const userId_airlines = req.params.id;
-        const ar = await airlines.getModel().findOne({_signature : userId_airlines});
+        const mail_airline = req.params.id;
+        const ar = await airlines.getModel().findOne({mail : mail_airline});
         //Checks if both password and username are not empty fields
         if (!req.body.name && !req.body.revenue && !req.body.aircrafts) {
             return next({ statusCode: 400, error: true, errormessage: "At least one field must be provided"});
         }
         //If the airline wants to update password
         if (req.body.name) {
-            ar.setName(req.body.name); // Dovresti hashare la password prima di salvarla
+            ar.setName(req.body.name);
         }
         //If the airline wants to update username
         if (req.body.revenue) {
@@ -328,7 +328,7 @@ app.put('/airlines/:id', auth, async (req, res, next) => {
             ar.setAircrafts(req.body.aircrafts);
         }
         //Finds the airline we want to update and do it
-        const updatedAirline = airlines.getModel().findOneAndUpdate({_signature : userId_airlines}, ar).then(() => {
+        const updatedAirline = airlines.getModel().findOneAndUpdate({mail : mail_airline}, ar).then(() => {
             return res.status(200).json({ error: false, errormessage: "", id: updatedAirline._signature });
         }).catch(() => {
             return next({ statusCode: 404, error: true, errormessage: "Airline not found."});
@@ -341,7 +341,7 @@ app.put('/airlines/:id', auth, async (req, res, next) => {
 
 app.put("/airlines/:id/setup", auth, async (req, res, next) => {
     try {
-        const airline = await airlines.getModel().findOne({_signature : req.params.id});
+        const airline = await airlines.getModel().findOne({mail : req.params.id});
         if (!airline) {
             return next({ statusCode: 404, error: true, errormessage: "Airline not found" });
         }
@@ -866,7 +866,13 @@ app.get("/search", async (req, res, next) => {
         // Se non ci sono scali
         if (!route.layoverFuel || route.layoverFuel.length === 0) {
             const directFlights = await flights.getModel().find({ route: route._id });
-            return res.status(200).json(directFlights);
+            const flightRes = [];
+            for(let f of directFlights){
+                let r = await routes.getModel().findOne({_id : f.route});
+                let t = await tickets.getModel().findOne({flight : f._flightCode});
+                flightRes.push({flightCode : f._flightCode, dataOra : f.dataOra, departure : r.departure, destination : r.destination, duration : f.duration, price : t.price});
+            }
+            return res.status(200).json(flightRes);
         }
 
         const validConnections: any[] = [];
@@ -881,22 +887,44 @@ app.get("/search", async (req, res, next) => {
             const firstFlights = await flights.getModel().find({ route: firstLegRoute._id });
             const secondFlights = await flights.getModel().find({ route: secondLegRoute._id });
 
-            firstFlights.forEach(first => {
+            for(let first of firstFlights){
                 const firstArrival = new Date(first.dataOra.getTime() + first.duration * 60000);
 
-                secondFlights.forEach(second => {
+                for(let second of secondFlights){
                     const secondDeparture = new Date(second.dataOra);
                     const diffHours = (secondDeparture.getTime() - firstArrival.getTime()) / (1000 * 60 * 60);
+                    
+                    let r = await routes.getModel().findOne({_id: first.route});
+                    let t = await tickets.getModel().findOne({flight: first._flightCode});
 
+                    let fst = {
+                        flightCode : first._flightCode,
+                        dataOra : first.dataOra,
+                        departure : r.departure, 
+                        destination : r.destination, 
+                        duration : first.duration, 
+                        price : t.price
+                    }
+
+                    let r1 = await routes.getModel().findOne({_id: second.route});
+                    let t1 = await tickets.getModel().findOne({flight: second._flightCode});
+                    let snd = {
+                        flightCode : second._flightCode,
+                        dataOra : second.dataOra,
+                        departure : r1.departure, 
+                        destination : r1.destination, 
+                        duration : second.duration, 
+                        price : t1.price
+                    }
                     if (diffHours >= 2) {
                         validConnections.push({
                             layover,
-                            firstLeg: first,
-                            secondLeg: second
+                            firstLeg: fst,
+                            secondLeg: snd
                         });
                     }
-                });
-            });
+                }
+            }
         }
 
         if (validConnections.length === 0) {

@@ -2,8 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Inizializzazione = Inizializzazione;
 const mongoose = require("mongoose");
-const https = require("https");
-const fs = require("fs");
+const http = require("http");
 const io = require("socket.io");
 const Users = require("./Users");
 const Tickets = require("./Tickets");
@@ -62,6 +61,14 @@ function Inizializzazione(app) {
             });
             m3.setPassword("abdef");
             m3.save();
+            let m4 = Users.newUser({
+                username: "lufthansa",
+                passportID: "AB12345",
+                mail: "lufthansa@project_flight.it",
+                roles: "airline"
+            });
+            m4.setPassword("prova");
+            m4.save();
         }
     }).then(() => {
         return Tickets.getModel().countDocuments({});
@@ -86,14 +93,7 @@ function Inizializzazione(app) {
             });
             let t2 = Tickets
                 .getModel()
-                .create({
-                user: code_user2,
-                seat: "A2",
-                flight: "A102",
-                price: 20,
-                numBag: 2,
-                _code: "2"
-            });
+                .create({ user: code_user2, seat: "A2", flight: "A102", price: 20, numBag: 2, _code: "2" });
             let t3 = Tickets
                 .getModel()
                 .create({
@@ -303,28 +303,16 @@ function Inizializzazione(app) {
             return Promise.all([f1, f2, f3]);
         }
     }).then(() => {
-        //let server = http.createServer(app);
-        let server = https.createServer({
-            key: fs.readFileSync('/keys/key.pem'),
-            cert: fs.readFileSync('/keys/cert.pem')
-        }, app);
+        let server = http.createServer(app);
         ios = io(server, {
             cors: {
-                origin: "http://localhost:4200" // See: https://socket.io/docs/v4/handling-cors/#configuration
+                origin: "http://localhost:4200"
             }
         });
         ios.on('connection', function (client) {
             console.log("Socket.io client connected".green);
         });
-        server.listen(8443, () => console.log("HTTPS Server started on port 8443".green));
-        // To start an HTTPS server we create an https.Server instance
-        // passing the express application middleware. Then, we start listening
-        // on port 8443
-        //
-        /*https.createServer({
-            key: fs.readFileSync('/keys/key.pem'),
-            cert: fs.readFileSync('/keys/cert.pem')
-        }, app).listen(8443);*/
+        server.listen(8080, () => console.log("HTTP Server started on port 8080".green));
     }).catch((err) => {
         console.log("Error Occurred during initialization".red);
         console.log(err);

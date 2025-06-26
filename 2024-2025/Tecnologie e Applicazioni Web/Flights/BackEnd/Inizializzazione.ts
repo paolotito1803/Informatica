@@ -1,9 +1,8 @@
 import mongoose = require("mongoose");
 import http = require("http");
-import https = require("https");
-import fs = require("fs");
+
+
 const io = require("socket.io");
-import crypto = require('crypto');
 import * as Users from "./Users";
 import * as Tickets from "./Tickets";
 import * as Aircrafts from "./Aircrafts"
@@ -36,7 +35,7 @@ export function Inizializzazione(app){
                 return Users.getModel().countDocuments({})
             }
         ).then(
-        (count) => { //dati di test per tutti i documenti
+        (count) => { //dati di test per gli users
             if (count-1 == 0) {
                 console.log("Adding some test users into the database");
                 let m1 = Users.newUser({
@@ -63,11 +62,19 @@ export function Inizializzazione(app){
                 });
                 m3.setPassword("abdef");
                 m3.save();
+                let m4 = Users.newUser({
+                    username: "lufthansa",
+                    passportID : "AB12345",
+                    mail: "lufthansa@project_flight.it",
+                    roles : "airline"
+                });
+                m4.setPassword("prova");
+                m4.save();
             }
         }).then(() => {
             return Tickets.getModel().countDocuments({})
         }
-        ).then( async (count) => { //dati di test per tutti i documenti
+        ).then( async (count) => { //dati di test per i tickets
             if (count == 0) {
                 console.log("Adding some test ticket into the database");
                 let username1 = await Users.getModel().findOne({username : 'micbos71'});
@@ -79,23 +86,16 @@ export function Inizializzazione(app){
                 let t1 = Tickets
                     .getModel()
                     .create({
-                        user: code_user1,
-                        seat: "A1",
-                        flight: "A101",
-                        price: 10,
-                        numBag: 1,
+                        user: code_user1, 
+                        seat: "A1", 
+                        flight: "A101", 
+                        price: 10, 
+                        numBag: 1, 
                         _code: "1"
                     });
                 let t2 = Tickets
                     .getModel()
-                    .create({
-                        user: code_user2,
-                        seat: "A2",
-                        flight: "A102",
-                        price: 20,
-                        numBag: 2,
-                        _code: "2"
-                    });
+                    .create({user: code_user2, seat: "A2", flight: "A102", price: 20, numBag: 2, _code: "2"});
                 let t3 = Tickets
                     .getModel()
                     .create({
@@ -111,7 +111,7 @@ export function Inizializzazione(app){
         }).then(() => {
                 return Aircrafts.getModel().countDocuments({})
         }
-        ).then( (count) => { //dati di test per tutti i documenti
+        ).then( (count) => { //dati di test per gli aircrafts
             if (count == 0) {
                 console.log("Adding some test aircraft into the database");
                 let a1 = Aircrafts
@@ -149,7 +149,7 @@ export function Inizializzazione(app){
         }).then(() => {
                 return Airlines.getModel().countDocuments({})
         }
-        ).then( (count) => { //dati di test per tutti i documenti
+        ).then( (count) => { //dati di test per le airlines
             if (count == 0) {
                 console.log("Adding some test airline into the database");
                 let air1 = Airlines
@@ -184,7 +184,7 @@ export function Inizializzazione(app){
         }).then(() => {
                 return Airports.getModel().countDocuments({})
         }
-        ).then( (count) => { //dati di test per tutti i documenti
+        ).then( (count) => { //dati di test per gli airports
             if (count == 0) {
                 console.log("Adding some test airport into the database");
                 let airp1 = Airports
@@ -213,7 +213,7 @@ export function Inizializzazione(app){
         }).then(() => {
                 return Routes.getModel().countDocuments({})
         }
-        ).then( (count) => { //dati di test per tutti i documenti
+        ).then( (count) => { //dati di test per le routes
             if (count == 0) {
                 console.log("Adding some test route into the database");
                 let r1 = Routes
@@ -240,7 +240,7 @@ export function Inizializzazione(app){
         }).then(() => {
                 return Seats.getModel().countDocuments({})
         }
-        ).then( (count) => { //dati di test per tutti i documenti
+        ).then( (count) => { //dati di test per i seats
             if (count == 0) {
                 console.log("Adding some test seat into the database");
                 let s1 = Seats
@@ -272,7 +272,7 @@ export function Inizializzazione(app){
         }).then(() => {
                 return Flights.getModel().countDocuments({})
         }
-        ).then( async (count) => { //dati di test per tutti i documenti
+        ).then( async (count) => { // dati di test per i voli
             if (count == 0) {
                 console.log("Adding some test flight into the database");
                 let route1 = await Routes.getModel().findOne({destination : "JFK", departure : "VCE"});
@@ -311,16 +311,11 @@ export function Inizializzazione(app){
                 return Promise.all([f1, f2, f3]);
             }
         }).then(() => {
-            //let server = http.createServer(app);
-
-            let server = https.createServer({
-                key: fs.readFileSync('/keys/key.pem'),
-                cert: fs.readFileSync('/keys/cert.pem')
-            }, app);
+            let server = http.createServer(app);
 
             ios = io(server, {
                 cors: {
-                    origin: "http://localhost:4200" // See: https://socket.io/docs/v4/handling-cors/#configuration
+                    origin: "http://localhost:4200"
                 }
             });
 
@@ -328,16 +323,7 @@ export function Inizializzazione(app){
                 console.log("Socket.io client connected".green);
             });
 
-            server.listen(8443, () => console.log("HTTPS Server started on port 8443".green));
-            // To start an HTTPS server we create an https.Server instance
-            // passing the express application middleware. Then, we start listening
-            // on port 8443
-            //
-
-            /*https.createServer({
-                key: fs.readFileSync('/keys/key.pem'),
-                cert: fs.readFileSync('/keys/cert.pem')
-            }, app).listen(8443);*/
+            server.listen(8080, () => console.log("HTTP Server started on port 8080".green));
         }
     ).catch(
         (err) => {

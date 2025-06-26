@@ -13,12 +13,12 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "https://localhost:8443",
-					"protocol": "https",
+					"raw": "http://localhost:8080",
+					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "8443"
+					"port": "8080"
 				}
 			},
 			"response": []
@@ -44,12 +44,12 @@
 					"basic": [
 						{
 							"key": "password",
-							"value": "prova1",
+							"value": "7891011",
 							"type": "string"
 						},
 						{
 							"key": "username",
-							"value": "lufthansa@project_flight.it",
+							"value": "bordjack47@project_flight.it",
 							"type": "string"
 						},
 						{
@@ -67,12 +67,12 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "https://localhost:8443/login",
-					"protocol": "https",
+					"raw": "http://localhost:8080/login",
+					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "8443",
+					"port": "8080",
 					"path": [
 						"login"
 					]
@@ -105,12 +105,12 @@
 					}
 				},
 				"url": {
-					"raw": "https://localhost:8443/users",
-					"protocol": "https",
+					"raw": "http://localhost:8080/users",
+					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "8443",
+					"port": "8080",
 					"path": [
 						"users"
 					]
@@ -134,12 +134,12 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "https://localhost:8443/users/6848096cc77f7b35b95893db",
-					"protocol": "https",
+					"raw": "http://localhost:8080/users/6848096cc77f7b35b95893db",
+					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "8443",
+					"port": "8080",
 					"path": [
 						"users",
 						"6848096cc77f7b35b95893db"
@@ -173,12 +173,12 @@
 					}
 				},
 				"url": {
-					"raw": "https://localhost:8443/users/6847f0305b18f79980837992",
-					"protocol": "https",
+					"raw": "http://localhost:8080/users/6847f0305b18f79980837992",
+					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "8443",
+					"port": "8080",
 					"path": [
 						"users",
 						"6847f0305b18f79980837992"
@@ -212,12 +212,12 @@
 					}
 				},
 				"url": {
-					"raw": "https://localhost:8443/routes",
-					"protocol": "https",
+					"raw": "http://localhost:8080/routes",
+					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "8443",
+					"port": "8080",
 					"path": [
 						"routes"
 					]
@@ -250,12 +250,12 @@
 					}
 				},
 				"url": {
-					"raw": "https://localhost:8443/airlines",
-					"protocol": "https",
+					"raw": "http://localhost:8080/airlines",
+					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "8443",
+					"port": "8080",
 					"path": [
 						"airlines"
 					]
@@ -283,12 +283,12 @@
 					"raw": "{\r\n    \"_signature\" : \"QF\",\r\n    \"name\" : \"Quantas\",\r\n    \"revenue\" : 50000000,\r\n    \"aircrafts\" : [{\"_numAircraft\" : \"1\", \"seats\": [{\"_numSeat\" : \"A1\", \"class\" : \"Economy\", \"legroom\" : false, \"isFree\" : true}, {\"_numSeat\" : \"A2\", \"class\" : \"Business\", \"legroom\" : true, \"isFree\" : true}, {\"_numSeat\" : \"A3\", \"class\" : \"First\", \"legroom\" : true, \"isFree\" : false}], \"modello\" : \"Boing737\"}],\r\n    \"password\" : \"abc123\",\r\n    \"username\" : \"Quantas\",\r\n    \"mail\" : \"quantas@project_flight.it\",\r\n    \"passportID\" : \"AC12345\",\r\n    \"roles\" : \"airline\"\r\n}"
 				},
 				"url": {
-					"raw": "https://localhost:8443/airlines/ITA",
-					"protocol": "https",
+					"raw": "http://localhost:8080/airlines/ITA",
+					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "8443",
+					"port": "8080",
 					"path": [
 						"airlines",
 						"ITA"
@@ -322,12 +322,12 @@
 					}
 				},
 				"url": {
-					"raw": "https://localhost:8443/airlines/LH",
-					"protocol": "https",
+					"raw": "http://localhost:8080/airlines/LH",
+					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "8443",
+					"port": "8080",
 					"path": [
 						"airlines",
 						"LH"
@@ -361,12 +361,12 @@
 					}
 				},
 				"url": {
-					"raw": "https://localhost:8443/routes/6848387187618dcff0704165",
-					"protocol": "https",
+					"raw": "http://localhost:8080/routes/6848387187618dcff0704165",
+					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "8443",
+					"port": "8080",
 					"path": [
 						"routes",
 						"6848387187618dcff0704165"
@@ -395,12 +395,12 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "https://localhost:8443/routes/6848387187618dcff0704165",
-					"protocol": "https",
+					"raw": "http://localhost:8080/routes/6848387187618dcff0704165",
+					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "8443",
+					"port": "8080",
 					"path": [
 						"routes",
 						"6848387187618dcff0704165"
@@ -432,12 +432,12 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "https://localhost:8443/routes",
-					"protocol": "https",
+					"raw": "http://localhost:8080/routes",
+					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "8443",
+					"port": "8080",
 					"path": [
 						"routes"
 					]
@@ -468,12 +468,12 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "https://localhost:8443/aircrafts",
-					"protocol": "https",
+					"raw": "http://localhost:8080/aircrafts",
+					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "8443",
+					"port": "8080",
 					"path": [
 						"aircrafts"
 					]
@@ -504,12 +504,12 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "https://localhost:8443/flights",
-					"protocol": "https",
+					"raw": "http://localhost:8080/flights",
+					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "8443",
+					"port": "8080",
 					"path": [
 						"flights"
 					]
@@ -540,12 +540,12 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "https://localhost:8443/tickets",
-					"protocol": "https",
+					"raw": "http://localhost:8080/tickets",
+					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "8443",
+					"port": "8080",
 					"path": [
 						"tickets"
 					]
@@ -576,12 +576,12 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "https://localhost:8443/airports",
-					"protocol": "https",
+					"raw": "http://localhost:8080/airports",
+					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "8443",
+					"port": "8080",
 					"path": [
 						"airports"
 					]
@@ -612,12 +612,12 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "https://localhost:8443/seats",
-					"protocol": "https",
+					"raw": "http://localhost:8080/seats",
+					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "8443",
+					"port": "8080",
 					"path": [
 						"seats"
 					]
@@ -650,12 +650,12 @@
 					}
 				},
 				"url": {
-					"raw": "https://localhost:8443/aircrafts",
-					"protocol": "https",
+					"raw": "http://localhost:8080/aircrafts",
+					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "8443",
+					"port": "8080",
 					"path": [
 						"aircrafts"
 					]
@@ -688,12 +688,12 @@
 					}
 				},
 				"url": {
-					"raw": "https://localhost:8443/flights",
-					"protocol": "https",
+					"raw": "http://localhost:8080/flights",
+					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "8443",
+					"port": "8080",
 					"path": [
 						"flights"
 					]
@@ -726,12 +726,12 @@
 					}
 				},
 				"url": {
-					"raw": "https://localhost:8443/tickets",
-					"protocol": "https",
+					"raw": "http://localhost:8080/tickets",
+					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "8443",
+					"port": "8080",
 					"path": [
 						"tickets"
 					]
@@ -764,12 +764,12 @@
 					}
 				},
 				"url": {
-					"raw": "https://localhost:8443/airports",
-					"protocol": "https",
+					"raw": "http://localhost:8080/airports",
+					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "8443",
+					"port": "8080",
 					"path": [
 						"airports"
 					]
@@ -802,12 +802,12 @@
 					}
 				},
 				"url": {
-					"raw": "https://localhost:8443/seats",
-					"protocol": "https",
+					"raw": "http://localhost:8080/seats",
+					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "8443",
+					"port": "8080",
 					"path": [
 						"seats"
 					]
@@ -840,12 +840,12 @@
 					}
 				},
 				"url": {
-					"raw": "https://localhost:8443/aircrafts/1",
-					"protocol": "https",
+					"raw": "http://localhost:8080/aircrafts/1",
+					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "8443",
+					"port": "8080",
 					"path": [
 						"aircrafts",
 						"1"
@@ -879,12 +879,12 @@
 					}
 				},
 				"url": {
-					"raw": "https://localhost:8443/flights/AB106",
-					"protocol": "https",
+					"raw": "http://localhost:8080/flights/AB106",
+					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "8443",
+					"port": "8080",
 					"path": [
 						"flights",
 						"AB106"
@@ -910,7 +910,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"seat\" : \"A3\"\r\n}",
+					"raw": "{\r\n    \"flight\" : \"AB105\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -918,15 +918,15 @@
 					}
 				},
 				"url": {
-					"raw": "https://localhost:8443/tickets/20",
-					"protocol": "https",
+					"raw": "http://localhost:8080/tickets/2",
+					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "8443",
+					"port": "8080",
 					"path": [
 						"tickets",
-						"20"
+						"2"
 					]
 				}
 			},
@@ -957,12 +957,12 @@
 					}
 				},
 				"url": {
-					"raw": "https://localhost:8443/airports/013",
-					"protocol": "https",
+					"raw": "http://localhost:8080/airports/013",
+					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "8443",
+					"port": "8080",
 					"path": [
 						"airports",
 						"013"
@@ -996,12 +996,12 @@
 					}
 				},
 				"url": {
-					"raw": "https://localhost:8443/seats/A4",
-					"protocol": "https",
+					"raw": "http://localhost:8080/seats/A4",
+					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "8443",
+					"port": "8080",
 					"path": [
 						"seats",
 						"A4"
@@ -1030,12 +1030,12 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "https://localhost:8443/aircrafts/1",
-					"protocol": "https",
+					"raw": "http://localhost:8080/aircrafts/1",
+					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "8443",
+					"port": "8080",
 					"path": [
 						"aircrafts",
 						"1"
@@ -1064,12 +1064,12 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "https://localhost:8443/flights/5",
-					"protocol": "https",
+					"raw": "http://localhost:8080/flights/5",
+					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "8443",
+					"port": "8080",
 					"path": [
 						"flights",
 						"5"
@@ -1098,12 +1098,12 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "https://localhost:8443/tickets/22",
-					"protocol": "https",
+					"raw": "http://localhost:8080/tickets/22",
+					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "8443",
+					"port": "8080",
 					"path": [
 						"tickets",
 						"22"
@@ -1132,12 +1132,12 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "https://localhost:8443/airports/014",
-					"protocol": "https",
+					"raw": "http://localhost:8080/airports/014",
+					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "8443",
+					"port": "8080",
 					"path": [
 						"airports",
 						"014"
@@ -1159,12 +1159,12 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "https://localhost:8443/search?depart=VCE&destination=JFK",
-					"protocol": "https",
+					"raw": "http://localhost:8080/search?depart=VCE&destination=JFK",
+					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "8443",
+					"port": "8080",
 					"path": [
 						"search"
 					],
@@ -1207,12 +1207,12 @@
 					}
 				},
 				"url": {
-					"raw": "https://localhost:8443/airlines/LH/setup",
-					"protocol": "https",
+					"raw": "http://localhost:8080/airlines/LH/setup",
+					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "8443",
+					"port": "8080",
 					"path": [
 						"airlines",
 						"LH",
