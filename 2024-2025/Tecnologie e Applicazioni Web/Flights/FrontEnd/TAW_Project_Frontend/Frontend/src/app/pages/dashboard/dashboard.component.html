@@ -1,0 +1,17 @@
+<h2>📊 Dashboard </h2>
+
+<div class="auth-buttons" style="position: absolute; top: 20px; right: 20px;">
+  <button (click)='logout()'>Logout</button>
+</div>
+
+<div *ngIf="adminRole === true">
+  <app-user-login></app-user-login>
+</div>
+
+<div *ngIf="airlineRole === true">
+  <app-airlines></app-airlines>
+</div>
+
+<div *ngIf="passengerRole === true">
+  <app-user-login></app-user-login>
+</div>

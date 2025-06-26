@@ -1,0 +1,94 @@
+<div class="container">
+  <h2>Aggiorna Compagnia Aerea</h2>
+
+  <form (ngSubmit)="updateInfo()" #updateForm="ngForm">
+    <div>
+      <label for="name">Nome:</label>
+      <input type="text" id="name" [(ngModel)]="updateData.name" name="name">
+    </div>
+
+    <div>
+      <label for="revenue">Revenue:</label>
+      <input type="number" id="revenue" [(ngModel)]="updateData.revenue" name="revenue">
+    </div>
+
+    <div>
+      <label>Aerei:</label>
+      <div *ngFor="let aircraft of updateData.aircrafts; let i = index" style="border: 1px solid #ccc; margin-bottom: 10px; padding: 10px;">
+        <input type="text" [(ngModel)]="aircraft._numAircraft" name="_numAircraft{{i}}" placeholder="Numero Aereo">
+        <input type="text" [(ngModel)]="aircraft.modello" name="modello{{i}}" placeholder="Modello">
+
+        <div *ngFor="let seat of aircraft.seats; let j = index" style="margin-top: 10px; border-top: 1px dashed #aaa; padding-top: 5px;">
+          <label>Seat {{j + 1}}:</label>
+          <input type="text" [(ngModel)]="seat._numSeat" name="_numSeat{{i}}-{{j}}" placeholder="Numero Seat">
+          <input type="text" [(ngModel)]="seat.class" name="class{{i}}-{{j}}" placeholder="Classe">
+          <label>
+            Legroom:
+            <input type="checkbox" [(ngModel)]="seat.legroom" name="legroom{{i}}-{{j}}">
+          </label>
+          <label>
+            Libero:
+            <input type="checkbox" [(ngModel)]="seat.isFree" name="isFree{{i}}-{{j}}">
+          </label>
+          <button type="button" (click)="removeSeat(i, j)">Rimuovi Seat</button>
+        </div>
+
+        <button type="button" (click)="addSeat(i)">Aggiungi Seat</button>
+        <button type="button" (click)="removeAircraft(i)">Rimuovi Aereo</button>
+      </div>
+      <button type="button" (click)="addAircraft()">Aggiungi Aereo</button>
+    </div>
+
+    <button type="submit" (click)="updateInfo()">Aggiorna</button>
+  </form>
+
+  <hr>
+
+  <h2>Setup Compagnia Aerea</h2>
+
+  <form (ngSubmit)="setupAirline()" #setupForm="ngForm">
+    <div>
+      <label for="setupName">Nome:</label>
+      <input type="text" id="setupName" [(ngModel)]="setupData.name" name="setupName">
+    </div>
+
+    <div>
+      <label for="setupMail">Mail:</label>
+      <input type="email" id="setupMail" [(ngModel)]="setupData.mail" name="setupMail">
+    </div>
+
+    <div>
+      <label for="setupPassword">Password:</label>
+      <input type="password" id="setupPassword" [(ngModel)]="setupData.password" name="setupPassword">
+    </div>
+
+    <div>
+      <label>Aerei:</label>
+      <div *ngFor="let aircraft of setupData.aircrafts; let i = index" style="border: 1px solid #ccc; margin-bottom: 10px; padding: 10px;">
+        <input type="text" [(ngModel)]="aircraft._numAircraft" name="setup_numAircraft{{i}}" placeholder="Numero Aereo">
+        <input type="text" [(ngModel)]="aircraft.modello" name="setup_modello{{i}}" placeholder="Modello">
+
+        <div *ngFor="let seat of aircraft.seats; let j = index" style="margin-top: 10px; border-top: 1px dashed #aaa; padding-top: 5px;">
+          <label>Seat {{j + 1}}:</label>
+          <input type="text" [(ngModel)]="seat._numSeat" name="setup_numSeat{{i}}-{{j}}" placeholder="Numero Seat">
+          <input type="text" [(ngModel)]="seat.class" name="setup_class{{i}}-{{j}}" placeholder="Classe">
+          <label>
+            Legroom:
+            <input type="checkbox" [(ngModel)]="seat.legroom" name="setup_legroom{{i}}-{{j}}">
+          </label>
+          <label>
+            Libero:
+            <input type="checkbox" [(ngModel)]="seat.isFree" name="setup_isFree{{i}}-{{j}}">
+          </label>
+          <button type="button" (click)="removeSetupSeat(i, j)">Rimuovi Seat</button>
+        </div>
+
+        <button type="button" (click)="addSetupSeat(i)">Aggiungi Seat</button>
+        <button type="button" (click)="removeSetupAircraft(i)">Rimuovi Aereo</button>
+      </div>
+      <button type="button" (click)="addSetupAircraft()">Aggiungi Aereo</button>
+    </div>
+
+    <button (click)="setupAirline()">Completa Setup</button>
+  </form>
+</div>
