@@ -276,10 +276,23 @@ app.get('/routes', auth, (req, res, next) => {
 /*
     Airlines
     Steps:
+    - select -> GET     FATTO
     - insert -> POST    FATTO
     - update -> PUT     FATTO
     - delete -> DEL     FATTO
  */
+
+app.get("/airlines/:mail", auth, (req, res, next) =>{
+    if(!users.newUser(req.auth).hasAirlineRole()) {
+        return next({ statusCode: 403, error: true, errormessage: "Unauthorized" });
+    }
+    else{
+        airlines.getModel().find({mail : req.auth.mail}).then((airline) => {
+            return res.status(201).json({ airline });
+        }).catch((err) => {return next({ statusCode: 400, error: true, errormessage: "Error mail" });});
+    }
+});
+
 app.post("/airlines", auth, async (req, res, next) => {
     if (!users.newUser(req.auth).hasAdminRole()) {
         return next({ statusCode: 403, error: true, errormessage: "Unauthorized" });
@@ -329,7 +342,7 @@ app.put('/airlines/:id', auth, async (req, res, next) => {
         }
         //Finds the airline we want to update and do it
         const updatedAirline = airlines.getModel().findOneAndUpdate({mail : mail_airline}, ar).then(() => {
-            return res.status(200).json({ error: false, errormessage: "", id: updatedAirline._signature });
+            return res.status(200).json({ error: false, errormessage: "", id: updatedAirline.mail });
         }).catch(() => {
             return next({ statusCode: 404, error: true, errormessage: "Airline not found."});
         });

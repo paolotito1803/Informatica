@@ -1,20 +1,44 @@
 import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders, HttpParams, HttpErrorResponse } from '@angular/common/http';
+import { UserHttpService } from '../user-http.service';
+import { catchError, Observable, throwError } from 'rxjs';
 
-export interface Tickets{
-  readonly _code : string,
-  user :string,
-  seat : string,
-  flight : string,
-  price : number,
-  numBag : number
+export interface Tickets {
+  readonly _code: string;
+  user: string;
+  seat: string;
+  flight: string;
+  price: number;
+  numBag: number;
 }
 
 @Injectable({
   providedIn: 'root'
 })
-
-
 export class TicketsService {
 
-  constructor() { }
+  constructor(private http: HttpClient, private us: UserHttpService) {}
+
+  private handleError(error: HttpErrorResponse) {
+    console.error('Errore HTTP:', error);
+    return throwError(() => new Error('Errore nella richiesta dei biglietti.'));
+  }
+
+  private create_options(params = {}) {
+    return {
+      headers: new HttpHeaders({
+        authorization: 'Bearer ' + this.us.get_token(),
+        'cache-control': 'no-cache',
+        'Content-Type': 'application/json'
+      }),
+      params: new HttpParams({ fromObject: params })
+    };
+  }
+
+  // Metodo corretto e generico, chiama il backend autenticato
+  getTickets(): Observable<Tickets[]> {
+    return this.http.get<Tickets[]>(this.us.url + '/tickets', this.create_options()).pipe(
+      catchError(this.handleError)
+    );
+  }
 }

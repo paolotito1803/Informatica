@@ -1,94 +1,58 @@
 <div class="container">
-  <h2>Aggiorna Compagnia Aerea</h2>
+  <div *ngIf="!mustChangePassword">
+    <button (click)="switchToUpdate()">Aggiorna Dati Compagnia</button>
+    <button (click)="switchToSetup()">Cambia Password / Setup</button>
+  </div>
 
-  <form (ngSubmit)="updateInfo()" #updateForm="ngForm">
-    <div>
-      <label for="name">Nome:</label>
-      <input type="text" id="name" [(ngModel)]="updateData.name" name="name">
-    </div>
-
-    <div>
-      <label for="revenue">Revenue:</label>
-      <input type="number" id="revenue" [(ngModel)]="updateData.revenue" name="revenue">
-    </div>
-
-    <div>
-      <label>Aerei:</label>
-      <div *ngFor="let aircraft of updateData.aircrafts; let i = index" style="border: 1px solid #ccc; margin-bottom: 10px; padding: 10px;">
-        <input type="text" [(ngModel)]="aircraft._numAircraft" name="_numAircraft{{i}}" placeholder="Numero Aereo">
-        <input type="text" [(ngModel)]="aircraft.modello" name="modello{{i}}" placeholder="Modello">
-
-        <div *ngFor="let seat of aircraft.seats; let j = index" style="margin-top: 10px; border-top: 1px dashed #aaa; padding-top: 5px;">
-          <label>Seat {{j + 1}}:</label>
-          <input type="text" [(ngModel)]="seat._numSeat" name="_numSeat{{i}}-{{j}}" placeholder="Numero Seat">
-          <input type="text" [(ngModel)]="seat.class" name="class{{i}}-{{j}}" placeholder="Classe">
-          <label>
-            Legroom:
-            <input type="checkbox" [(ngModel)]="seat.legroom" name="legroom{{i}}-{{j}}">
-          </label>
-          <label>
-            Libero:
-            <input type="checkbox" [(ngModel)]="seat.isFree" name="isFree{{i}}-{{j}}">
-          </label>
-          <button type="button" (click)="removeSeat(i, j)">Rimuovi Seat</button>
+  <div *ngIf="!showSetup">
+    <h2>Aggiorna Compagnia Aerea</h2>
+    <form>
+      <div><label>Nome:</label><input [(ngModel)]="airlineName" name="airlineName"></div>
+      <div><label>Revenue:</label><input type="number" [(ngModel)]="airlineRevenue" name="airlineRevenue"></div>
+      <div><h4>Aerei</h4>
+        <div *ngFor="let ac of updateData.aircrafts; let i = index" style="border:1px solid #ccc;padding:8px;margin:8px 0;">
+          <input placeholder="Numero Aereo" [(ngModel)]="ac._numAircraft" name="numA_update{{i}}">
+          <input placeholder="Modello" [(ngModel)]="ac.modello" name="modello_update{{i}}">
+          <div *ngFor="let s of ac.seats; let j=index" style="margin:4px 0;">
+            <input placeholder="Numero Seat" [(ngModel)]="s._numSeat" name="seatNum_update{{i}}_{{j}}">
+            <input placeholder="Classe" [(ngModel)]="s.class" name="class_update{{i}}_{{j}}">
+            <label><input type="checkbox" [(ngModel)]="s.legroom" name="leg_update{{i}}_{{j}}"> Legroom</label>
+            <label><input type="checkbox" [(ngModel)]="s.isFree" name="isFree_update{{i}}_{{j}}"> Libero</label>
+            <button type="button" (click)="removeSeat(i,j)">Rimuovi Seat</button>
+          </div>
+          <button type="button" (click)="addSeat(i)">Aggiungi Seat</button>
+          <button type="button" (click)="removeAircraft(i)">Rimuovi Aereo</button>
         </div>
-
-        <button type="button" (click)="addSeat(i)">Aggiungi Seat</button>
-        <button type="button" (click)="removeAircraft(i)">Rimuovi Aereo</button>
+        <button type="button" (click)="updateAirlines()">Aggiorna Dati</button>
+        <button type="button" (click)="addAircraft()">Aggiungi Aereo</button>
       </div>
-      <button type="button" (click)="addAircraft()">Aggiungi Aereo</button>
-    </div>
+      <button type="button" (click)="updateInfo()">Aggiorna Aerei</button>
+    </form>
+  </div>
 
-    <button type="submit" (click)="updateInfo()">Aggiorna</button>
-  </form>
-
-  <hr>
-
-  <h2>Setup Compagnia Aerea</h2>
-
-  <form (ngSubmit)="setupAirline()" #setupForm="ngForm">
-    <div>
-      <label for="setupName">Nome:</label>
-      <input type="text" id="setupName" [(ngModel)]="setupData.name" name="setupName">
-    </div>
-
-    <div>
-      <label for="setupMail">Mail:</label>
-      <input type="email" id="setupMail" [(ngModel)]="setupData.mail" name="setupMail">
-    </div>
-
-    <div>
-      <label for="setupPassword">Password:</label>
-      <input type="password" id="setupPassword" [(ngModel)]="setupData.password" name="setupPassword">
-    </div>
-
-    <div>
-      <label>Aerei:</label>
-      <div *ngFor="let aircraft of setupData.aircrafts; let i = index" style="border: 1px solid #ccc; margin-bottom: 10px; padding: 10px;">
-        <input type="text" [(ngModel)]="aircraft._numAircraft" name="setup_numAircraft{{i}}" placeholder="Numero Aereo">
-        <input type="text" [(ngModel)]="aircraft.modello" name="setup_modello{{i}}" placeholder="Modello">
-
-        <div *ngFor="let seat of aircraft.seats; let j = index" style="margin-top: 10px; border-top: 1px dashed #aaa; padding-top: 5px;">
-          <label>Seat {{j + 1}}:</label>
-          <input type="text" [(ngModel)]="seat._numSeat" name="setup_numSeat{{i}}-{{j}}" placeholder="Numero Seat">
-          <input type="text" [(ngModel)]="seat.class" name="setup_class{{i}}-{{j}}" placeholder="Classe">
-          <label>
-            Legroom:
-            <input type="checkbox" [(ngModel)]="seat.legroom" name="setup_legroom{{i}}-{{j}}">
-          </label>
-          <label>
-            Libero:
-            <input type="checkbox" [(ngModel)]="seat.isFree" name="setup_isFree{{i}}-{{j}}">
-          </label>
-          <button type="button" (click)="removeSetupSeat(i, j)">Rimuovi Seat</button>
+  <div *ngIf="showSetup">
+    <h2>{{ mustChangePassword ? 'Primo accesso: completa il setup' : 'Setup / Cambia Password' }}</h2>
+    <form>
+      <div><label>Nome:</label><input [(ngModel)]="setupData.name" name="name_s"></div>
+      <div><label>Mail:</label><input type="email" [(ngModel)]="setupData.mail" name="mail_s"></div>
+      <div><label>Password:</label><input type="password" [(ngModel)]="setupData.password" name="pwd_s"></div>
+      <div><h4>Aerei</h4>
+        <div *ngFor="let ac of setupData.aircrafts; let i=index" style="border:1px solid #ccc;padding:8px;margin:8px 0;">
+          <input placeholder="Numero Aereo" [(ngModel)]="ac._numAircraft" name="numA_s{{i}}">
+          <input placeholder="Modello" [(ngModel)]="ac.modello" name="modello_s{{i}}">
+          <div *ngFor="let s of ac.seats; let j=index" style="margin:4px 0;">
+            <input placeholder="Numero Seat" [(ngModel)]="s._numSeat" name="seatNum_s{{i}}_{{j}}">
+            <input placeholder="Classe" [(ngModel)]="s.class" name="class_s{{i}}_{{j}}">
+            <label><input type="checkbox" [(ngModel)]="s.legroom" name="leg_s{{i}}_{{j}}"> Legroom</label>
+            <label><input type="checkbox" [(ngModel)]="s.isFree" name="free_s{{i}}_{{j}}"> Libero</label>
+            <button type="button" (click)="removeSetupSeat(i,j)">Rimuovi Seat</button>
+          </div>
+          <button type="button" (click)="addSetupSeat(i)">Aggiungi Seat</button>
+          <button type="button" (click)="removeSetupAircraft(i)">Rimuovi Aereo</button>
         </div>
-
-        <button type="button" (click)="addSetupSeat(i)">Aggiungi Seat</button>
-        <button type="button" (click)="removeSetupAircraft(i)">Rimuovi Aereo</button>
+        <button type="button" (click)="addSetupAircraft()">Aggiungi Aereo</button>
       </div>
-      <button type="button" (click)="addSetupAircraft()">Aggiungi Aereo</button>
-    </div>
-
-    <button (click)="setupAirline()">Completa Setup</button>
-  </form>
+      <button type="button" (click)="setupAirline()">Completa Setup</button>
+    </form>
+  </div>
 </div>

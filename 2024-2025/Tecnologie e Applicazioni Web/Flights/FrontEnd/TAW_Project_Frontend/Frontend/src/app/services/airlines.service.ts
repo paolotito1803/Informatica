@@ -66,4 +66,16 @@ export class AirlinesService {
       catchError(this.handleError)
     );
   }
+
+  getAirlineByMail(mail : string) : Observable<Airlines>{
+    return this.http.get<Airlines>(this.us.url + '/airlines/' + mail, this.create_options()).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  getAircraft() : Observable<Aircrafts[]>{
+    return this.http.get<Aircrafts[]>(this.us.url + '/aircrafts', this.create_options()).pipe(
+      catchError(this.handleError)
+    );
+  }
 }

@@ -1,17 +1,52 @@
-<h2>📊 Dashboard </h2>
+<h2>📊 Dashboard</h2>
 
-<div class="auth-buttons" style="position: absolute; top: 20px; right: 20px;">
-  <button (click)='logout()'>Logout</button>
+<div class="auth-buttons" style="position:absolute; top:20px; right:20px;">
+  <button (click)="logout()">Logout</button>
 </div>
 
-<div *ngIf="adminRole === true">
+<div *ngIf="adminRole">
   <app-user-login></app-user-login>
 </div>
 
-<div *ngIf="airlineRole === true">
+<div *ngIf="airlineRole">
   <app-airlines></app-airlines>
+
+  <section style="margin-top:20px;">
+   <h3>I tuoi Aerei</h3>
+   <pre>{{ updateData.aircrafts | json }}</pre>
+<div *ngIf="aircrafts.length > 0; else noAircraft">
+  <div *ngFor="let ac of aircrafts" style="border:1px solid #ddd;padding:10px;margin-bottom:10px;">
+    <p><strong>Modello:</strong> {{ac.modello}}</p>
+    <p><strong>Numero Aereo:</strong> {{ac._numAircraft}}</p>
+    <ul>
+      <li *ngFor="let seat of ac.seats">
+        Seat: {{seat._numSeat}} | Classe: {{seat.class}} | Legroom: {{seat.legroom ? 'Sì' : 'No'}} | Libero: {{seat.isFree ? 'Sì' : 'No'}}
+      </li>
+    </ul>
+  </div>
+</div>
+<ng-template #noAircraft>
+  <p>Non hai ancora aerei registrati.</p>
+</ng-template>
+
+    <h3>I tuoi Biglietti</h3>
+
+    <div *ngIf="tickets.length; else noTickets">
+      <div *ngFor="let t of tickets" style="border:1px dashed #ccc; padding:10px; margin-bottom:10px;">
+        <p><strong>Codice:</strong> {{t._code}}</p>
+        <p><strong>Utente:</strong> {{t.user}}</p>
+        <p><strong>Volo:</strong> {{t.flight}}</p>
+        <p><strong>Posto:</strong> {{t.seat}}</p>
+        <p><strong>Prezzo:</strong> {{t.price}}€</p>
+        <p><strong>Bagagli:</strong> {{t.numBag}}</p>
+      </div>
+    </div>
+    <ng-template #noTickets>
+      <p>Non ci sono ancora biglietti emessi.</p>
+    </ng-template>
+  </section>
 </div>
 
-<div *ngIf="passengerRole === true">
+<div *ngIf="passengerRole">
   <app-user-login></app-user-login>
 </div>
