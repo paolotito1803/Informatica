@@ -89,8 +89,31 @@ app.post('/users', (req, res, next) => {
         return next({ statusCode: 400, error: true, errormessage: "Password field missing" });
     }
     u.setPassword(req.body.password);
-    u.save().then((data) => {
-        return res.status(200).json({ error: false, errormessage: "", id: data._id });
+    u.save().then((savedUser) => {
+        if (req.body.roles === 'airline') {
+            const { name, mail, aircrafts, _signature } = req.body;
+            const airline = airlines.newAirline({
+                name,
+                mail,
+                aircrafts,
+                _signature,
+                mustChangePassword: true
+            });
+            airline.setAirlinePassword(req.body.password);
+            airline.save().then((savedAirline) => {
+                return res.status(200).json({
+                    error: false,
+                    errormessage: "",
+                    userId: savedUser._id,
+                    airlineId: savedAirline._signature
+                });
+            }).catch((err) => {
+                return next({ statusCode: 500, error: true, errormessage: "Airline DB error: " + err.message });
+            });
+        }
+        else {
+            return res.status(200).json({ error: false, errormessage: "", id: savedUser._id });
+        }
     }).catch((reason) => {
         if (reason.code === 11000)
             return next({ statusCode: 409, error: true, errormessage: "User already exists" });
@@ -240,10 +263,26 @@ app.get("/airlines/:mail", auth, (req, res, next) => {
         return next({ statusCode: 403, error: true, errormessage: "Unauthorized" });
     }
     else {
-        airlines.getModel().find({ mail: req.auth.mail }).then((airline) => {
-            return res.status(201).json({ airline });
+        airlines.getModel().findOne({ mail: req.auth.mail }).then((airline) => {
+            return res.status(200).json(airline);
         }).catch((err) => { return next({ statusCode: 400, error: true, errormessage: "Error mail" }); });
     }
+});
+app.get("/airlines/:mail/aircrafts", auth, (req, res, next) => {
+    if (!users.newUser(req.auth).hasAirlineRole()) {
+        return next({ statusCode: 403, error: true, errormessage: "Unauthorized" });
+    }
+    airlines.getModel().findOne({ mail: req.auth.mail }).then((airline) => {
+        if (!airline) {
+            return next({ statusCode: 404, error: true, errormessage: "Airline not found" });
+        }
+        // Restituisce SOLO l'array degli aircrafts
+        return res.status(200).json(airline.aircrafts);
+    })
+        .catch((err) => {
+        console.error(err);
+        return next({ statusCode: 500, error: true, errormessage: "Error retrieving aircrafts" });
+    });
 });
 app.post("/airlines", auth, async (req, res, next) => {
     if (!users.newUser(req.auth).hasAdminRole()) {
@@ -342,9 +381,14 @@ app.delete('/airlines/:id', auth, (req, res, next) => {
     if (!users.newUser(req.auth).hasAdminRole()) {
         return next({ statusCode: 404, error: true, errormessage: "Unauthorized: user is not an administrator." });
     }
+    let mail = "";
+    airlines.getModel().findOne({ _signature: req.params.id }).then((data) => mail = data.mail);
     airlines.getModel().deleteOne({ _signature: req.params.id }).then((q) => {
-        if (q.deletedCount > 0)
-            return res.status(200).json({ error: false, errormessage: "" });
+        if (q.deletedCount > 0) {
+            users.getModel().deleteOne({ mail: mail }).then(() => {
+                return res.status(200).json({ error: false, errormessage: "" });
+            });
+        }
         else
             return res.status(404).json({ error: true, errormessage: "Invalid airline signature" });
     }).catch((reason) => {
@@ -447,7 +491,7 @@ app.post('/flights', auth, (req, res, next) => {
                 return next({ statuscode: 409, error: true, errormessage: "Flight already exists" });
             }
             else {
-                return next({ statudcode: 404, error: true, errormessage: "DB error" + reason.errmsg });
+                return next({ statudcode: 404, error: true, errormessage: "DB error " + reason });
             }
         });
     }
@@ -644,7 +688,7 @@ app.put('/tickets/:id', auth, async (req, res, next) => {
     Search -> GET       -> FATTO
  */
 app.post("/airports", auth, (req, res, next) => {
-    if (!users.newUser(req.auth).hasAirlineRole())
+    if (!users.newUser(req.auth).hasAdminRole())
         return next({ statuscode: 403, error: true, errormessage: "Unauthorized" });
     let ap = airports.newAirport(req.body);
     ap.save().then((data) => {
@@ -660,7 +704,7 @@ app.post("/airports", auth, (req, res, next) => {
 });
 app.put("/airports/:id", auth, async (req, res, next) => {
     try {
-        if (!users.newUser(req.auth).hasAirlineRole())
+        if (!users.newUser(req.auth).hasAdminRole())
             return next({ statuscode: 403, error: true, errormessage: "Access denied! Unauthorized to alter the airport " + req.params.id });
         if (!req.body.city && !req.body.name)
             return next({ statuscode: 400, error: true, errormessage: "At least one field must be provided" });
@@ -682,7 +726,7 @@ app.put("/airports/:id", auth, async (req, res, next) => {
     }
 });
 app.delete("/airports/:id", auth, (req, res, next) => {
-    if (!users.newUser(req.auth).hasAirlineRole())
+    if (!users.newUser(req.auth).hasAdminRole())
         return next({ statuscode: 403, error: true, errormessage: "Access denied! Unauthorized user" });
     airports.getModel().deleteOne({ _code: req.params.id }).then((q) => {
         if (q.deletedCount > 0)
@@ -694,8 +738,6 @@ app.delete("/airports/:id", auth, (req, res, next) => {
     });
 });
 app.get("/airports", auth, (req, res, next) => {
-    if (!users.newUser(req.auth).hasPassangerRole() && !users.newUser(req.auth).hasAirlineRole())
-        return next({ statuscode: 403, error: true, errormessage: "Unauthorized." });
     airports.getModel().find({}).then((airport) => {
         return res.status(200).json(airport);
     }).catch((reason) => {

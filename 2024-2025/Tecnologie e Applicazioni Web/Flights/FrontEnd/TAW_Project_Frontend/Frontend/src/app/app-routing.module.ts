@@ -13,6 +13,9 @@ import { FlightsComponent } from './pages/flights/flights.component';
 import { RoutesComponent } from './pages/routes/routes.component';
 import { SeatsComponent } from './pages/seats/seats.component';
 import { TicketsComponent } from './pages/tickets/tickets.component';
+import { PassengersComponent } from './pages/passengers/passengers.component';
+import  { AdminComponent } from './pages/admin/admin.component';
+import { ChangePasswordComponent } from './change-password/change-password.component';
 
 const routes: Routes = [
   { path: 'login', component: UserLoginComponent },
@@ -28,8 +31,16 @@ const routes: Routes = [
   //{ path: 'dashboard-compagnia', component: CompagniaDashboardComponent },
   { path: 'search', component: FlightSearchComponent },
   { path: 'dashboard', component: DashboardComponent},
-  { path: '', redirectTo: 'search', pathMatch: 'full' }
-  /*{ path: 'search', loadChildren: () => import('./pages/search/search.module').then(m => m.SearchModule)},
+  { path: '', redirectTo: 'search', pathMatch: 'full' },
+  { path: 'passangers', component: PassengersComponent},
+  {path: 'admin', component: AdminComponent},
+  {path: 'change-password', component: ChangePasswordComponent}
+  /*{ path: 'passengers', loadChildren: () => import('./pages/passengers/passengers.module').then(m => m.PassengersModule) },
+  { path: 'admin', loadChildren: () => import('./pages/admin/admin.module').then(m => m.AdminModule) },
+  { path: 'passengers', loadChildren: () => import('./pages/passengers/passengers.module').then(m => m.PassengersModule) },
+  { path: 'admin', loadChildren: () => import('./pages/admin/admin.module').then(m => m.AdminModule) }
+
+  { path: 'search', loadChildren: () => import('./pages/search/search.module').then(m => m.SearchModule)},
   { path: 'flights', loadChildren: () => import('./pages/flights/flights.module').then(m => m.FlightsModule) },
   { path: 'aircrafts', loadChildren: () => import('./pages/aircrafts/aircrafts.module').then(m => m.AircraftsModule) },
   { path: 'airlines', loadChildren: () => import('./pages/airlines/airlines.module').then(m => m.AirlinesModule) },

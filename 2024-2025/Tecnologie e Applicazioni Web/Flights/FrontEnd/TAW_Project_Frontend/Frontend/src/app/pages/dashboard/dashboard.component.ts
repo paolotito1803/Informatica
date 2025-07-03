@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { UserHttpService } from 'src/app/user-http.service';
-import { AirlinesService } from 'src/app/services/airlines.service';
+import { AirlinesService, Airlines } from 'src/app/services/airlines.service';
 import { TicketsService, Tickets } from 'src/app/services/tickets.service';
 import { Aircrafts } from 'src/app/services/aircrafts.service';
 import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-dashboard',
@@ -14,11 +15,13 @@ export class DashboardComponent implements OnInit {
   adminRole = false;
   airlineRole = false;
   passengerRole = false;
+  addticket = true;
+  username: string = '';
 
   aircrafts: Aircrafts[] = [];
-  tickets: Tickets[] = [];
+  tickets: (Tickets & { editing?: boolean })[] = [];
 
-updateData: {
+  updateData: {
     name: string,
     revenue: number,
     aircrafts: Aircrafts[]
@@ -33,57 +36,65 @@ updateData: {
     private us: UserHttpService,
     private airlinesService: AirlinesService,
     private ticketsService: TicketsService,
-    private router: Router
+    private router: Router,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
     this.adminRole = this.us.is_admin();
     this.airlineRole = this.us.is_airline();
     this.passengerRole = this.us.is_passenger();
+    this.username = this.us.get_username();
+
+    console.log('Admin?', this.adminRole);
+    console.log('Airline?', this.airlineRole);
+    console.log('Passenger?', this.passengerRole);
+    console.log('Username?', this.username);
 
     if (this.airlineRole) {
+      console.log("Compagnia");
       const email = this.us.get_mail();
-       /*this.airlinesService.getAirlineByMail(email).subscribe({
-        next: res => {
-          console.log("Airline data:", res);
-          this.aircrafts = res.aircrafts || [];
-        },
-        error: err => {
-          console.error("Errore caricamento airline:", err);
-        }
-      });*/
-      /*this.airlinesService.getAircraft().subscribe(res => {
-        this.aircrafts = res;
-      })*/
+
       this.airlinesService.getAirlineByMail(email).subscribe({
         next: res => {
-          console.log("Airline data:", res);
-          this.updateData = {
-            name: res.name || '',
-            revenue: res.revenue || 0,
-            aircrafts: res.aircrafts || []
-          };
-          this.aircrafts = res.aircrafts || [];
-        },
-        error: err => {
-          console.error("Errore caricamento airline:", err);
-        }
-      });
+          console.log(res);
+          console.log(res.mustChangePassword);
+          if (res.mustChangePassword) {
+            console.log("Devo cambiare password" + res.mustChangePassword);
+            this.router.navigate(['/change-password']);
+            return;
+          }
 
-      this.ticketsService.getTickets().subscribe(res => {
-        console.log('Biglietti ricevuti:', res); // Debug temporaneo
-        this.tickets = res;
+          // Popola dati aggiornamento
+          /*this.updateData.name = res.name;
+          this.updateData.revenue = res.revenue;
+          this.updateData.aircrafts = res.aircrafts;*/
+
+          // Carica aircraft
+          this.airlinesService.getAircraftByMail(email).subscribe({
+            next: aircrafts => {
+              this.aircrafts = aircrafts;
+              console.log("Aerei Ricevuti", aircrafts);
+            },
+            error: err => console.error('Errore nel recupero aerei:', err)
+          });
+
+          // Carica tickets
+          this.ticketsService.getTickets().subscribe({
+            next: tickets => {
+              this.tickets = tickets.map(t => ({ ...t, editing: false }));
+              console.log('Biglietti ricevuti:', tickets);
+            },
+            error: err => console.error('Errore nel recupero biglietti:', err)
+          });
+        },
+        error: err => console.error('Errore nel recupero compagnia:', err)
       });
     }
   }
 
-  logout() {
-    this.us.logout();
-    this.router.navigate(['/search']);
-  }
-}
-
-  /*updateAirlineInfo() {
+  
+  updateAirlineInfo() {
     const email = this.us.get_mail();
     const data = {
       name: this.updateData.name,
@@ -101,4 +112,61 @@ updateData: {
         console.error('Errore aggiornamento airline:', err);
       }
     });
-  }*/
+  }
+
+    // ----- Gestione Biglietti -----
+
+  aggiungiBiglietto() {
+    this.tickets.push({
+      _code: '',
+      user: '',
+      flight: '',
+      seat: '',
+      price: 0,
+      numBag: 0,
+      editing: true
+    });
+  }
+
+  salvaBiglietto(index: number) {
+    const ticket = this.tickets[index];
+    if (!ticket.flight || !ticket.seat) {
+      alert('Inserisci almeno volo e posto.');
+      return;
+    }
+    this.addTicketToBackend(ticket, index);
+  }
+
+ addTicketToBackend(ticket: Tickets, index: number) {
+    this.ticketsService.addTickets(ticket).subscribe({
+      next: res => {
+        console.log(`Biglietto per volo ${ticket.flight} aggiunto con ID ${res.id}`);
+        this.tickets[index] = { ...ticket, _code: res.id, editing: false };
+      },
+      error: err => {
+        console.error('Errore salvataggio biglietto:', err);
+      }
+    });
+  }
+
+  deleteTickets(ticket : Tickets){
+    this.ticketsService.deleteTickets(ticket._code).subscribe({
+      next : res => {
+        console.log(`Biglietto per volo ${ticket.flight} cancellato`);
+        this.tickets = this.tickets.filter(t => t._code !== ticket._code);
+      },
+      error: err => {
+        console.error('Errore cancellazione biglietto:', err);
+      }
+    })
+  }
+
+  logout() {
+    this.us.logout();
+    this.router.navigate(['/search']);
+  }
+}
+
+
+
+

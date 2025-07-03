@@ -85,7 +85,10 @@ export function getModel() : mongoose.Model<Flights> {
     return flightModel;
 }
 
-export function newFlight(data) : Flights {
-    let _flightModel = getModel();
+export function newFlight(data): Flights {
+    const _flightModel = getModel();
+    if (typeof data.dataOra === "string") {
+        data.dataOra = new Date(data.dataOra);
+    }
     return new _flightModel(data);
 }

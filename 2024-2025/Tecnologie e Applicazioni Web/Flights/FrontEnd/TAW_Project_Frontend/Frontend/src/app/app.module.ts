@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 
 
@@ -22,15 +22,25 @@ import { FlightsComponent } from './pages/flights/flights.component';
 import { AirportsComponent } from './pages/airports/airports.component';
 import { RoutesComponent } from './pages/routes/routes.component';
 import { SeatsComponent } from './pages/seats/seats.component';
+import { PassengersComponent } from './pages/passengers/passengers.component';
+import { AdminComponent } from './pages/admin/admin.component';
+import { PassangersService } from './services/passangers.service';
+import { AdminService } from './services/admin.service';
 import { AirlinesService } from './services/airlines.service';
+import { ChangePasswordComponent } from './change-password/change-password.component';
+/*import { AdminModule } from './pages/admin/admin.module';
+import { PassengersModule } from './pages/passengers/passengers.module';*/
+
 
 
 @NgModule({
-  declarations: [
+declarations: [
     AppComponent,
     UserLoginComponent,
     UserSignupComponent,
     AirlinesComponent,
+    PassengersComponent,
+    AdminComponent,
     AircraftsComponent,
     AirportsComponent,
     FlightsComponent,
@@ -38,19 +48,25 @@ import { AirlinesService } from './services/airlines.service';
     SeatsComponent,
     FlightSearchComponent,
     DashboardComponent,
-    TicketsComponent
-  ],
+    TicketsComponent,
+    ChangePasswordComponent
+],
   imports: [
     BrowserModule,
     FormsModule,
     HttpClientModule,
-    AppRoutingModule
+    AppRoutingModule,
+    ReactiveFormsModule
+    /*AdminModule,
+    PassengersModule*/
   ],
   providers: [
     {provide: UserHttpService, useClass: UserHttpService },
     {provide: SocketioService, useClass: SocketioService },
     {provide: FlightSearchService, useClass: FlightSearchService},
-    {provide: AirlinesComponent, useClass: AirlinesService}
+    {provide: AirlinesService, useClass: AirlinesService},
+    {provide: PassangersService, useClass: PassangersService},
+    {provide: AdminService, useClass: AdminService}
   ],
   bootstrap: [AppComponent]
 })

@@ -1,0 +1,61 @@
+<div class="admin-container">
+
+  <!-- ✉️ INVITO COMPAGNIA -->
+  <section class="card">
+    <h2>Invita Compagnia Aerea</h2>
+    <form [formGroup]="inviteForm" (ngSubmit)="inviteCompany()">
+        <input formControlName="_signature" placeholder="Signature" />
+        <input formControlName="username" placeholder="Username" />
+        <input formControlName="name" placeholder="Nome compagnia" />
+        <input formControlName="mail" placeholder="Email amministratore" />
+        <input formControlName="passportID" placeholder="passport ID" />
+        <input formControlName="password" placeholder="Password" />
+        <button type="submit" [disabled]="inviteForm.invalid">Invita</button>
+    </form>
+  </section>
+
+  <!-- 🛫 GESTIONE AEROPORTI -->
+  <section class="card">
+    <h2>Aeroporti</h2>
+    <form [formGroup]="airportForm" (ngSubmit)="addAirport()" class="inline-form">
+      <input formControlName="_code" placeholder="Codice (es. FCO)" />
+      <input formControlName="name" placeholder="Nome aeroporto" />
+      <input formControlName="city" placeholder="Città" />
+      <button type="submit" [disabled]="airportForm.invalid">Aggiungi</button>
+    </form>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Codice</th>
+          <th>Nome</th>
+          <th>Città</th>
+          <th>Azioni</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let a of airports">
+          <ng-container *ngIf="!editing[a._code!]; else editTpl">
+            <td>{{ a._code }}</td>
+            <td>{{ a.name }}</td>
+            <td>{{ a.city }}</td>
+            <td class="actions">
+              <button (click)="startEdit(a)">✏️</button>
+              <button (click)="deleteAirport(a._code!)">🗑️</button>
+            </td>
+          </ng-container>
+          <ng-template #editTpl>
+            <td><input [(ngModel)]="editBuffer[a._code!]._code" /></td>
+            <td><input [(ngModel)]="editBuffer[a._code!].name" /></td>
+            <td><input [(ngModel)]="editBuffer[a._code!].city" /></td>
+            <td class="actions">
+              <button (click)="saveEdit(a._code!)">💾</button>
+              <button (click)="cancelEdit(a._code!)">❌</button>
+            </td>
+          </ng-template>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+</div>
+

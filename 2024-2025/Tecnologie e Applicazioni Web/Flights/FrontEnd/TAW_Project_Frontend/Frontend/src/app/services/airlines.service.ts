@@ -50,7 +50,7 @@ export class AirlinesService {
 
   }
     
-  updateAirlines(id : string, data: any) : Observable<any>{
+  updateAirlines(id : string, data: {name?: string, revenue?: number}) : Observable<any>{
     return this.http.put(this.us.url + '/airlines/'+ id, data, this.create_options()).pipe(
       catchError(this.handleError)
     );
@@ -73,8 +73,8 @@ export class AirlinesService {
     );
   }
 
-  getAircraft() : Observable<Aircrafts[]>{
-    return this.http.get<Aircrafts[]>(this.us.url + '/aircrafts', this.create_options()).pipe(
+  getAircraftByMail(mail : string) : Observable<Aircrafts[]>{
+    return this.http.get<Aircrafts[]>(this.us.url + '/airlines/' + mail + '/aircrafts', this.create_options()).pipe(
       catchError(this.handleError)
     );
   }

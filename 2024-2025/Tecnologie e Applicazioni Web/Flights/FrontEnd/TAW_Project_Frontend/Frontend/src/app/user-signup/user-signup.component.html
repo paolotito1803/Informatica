@@ -38,6 +38,26 @@
     Password is required
   </div>
 
+  <div class="form-group">
+    <label for="inputRoles">Ruolo</label>
+    <input type="text" #roles="ngModel" required name="roles" [(ngModel)]="user.roles" class="form-control" id="inputRoles" placeholder="Enter roles">
+  </div>
+
+  <div [hidden]="roles.valid || roles.pristine"
+      class="alert alert-danger">
+    Role is required
+  </div>
+
+  <div class="form-group">
+    <label for="inputPassportID">PassportID</label>
+    <input type="text" #passportID="ngModel" required name="passportID" [(ngModel)]="user.passportID" class="form-control" id="inputPassportID" placeholder="Enter passportID">
+  </div>
+
+  <div [hidden]="passportID.valid || passportID.pristine"
+      class="alert alert-danger">
+    PassportID is required
+  </div>
+
   <div *ngIf="errmessage" class="alert alert-danger" role="alert">
     Signup error: {{errmessage}}
   </div>

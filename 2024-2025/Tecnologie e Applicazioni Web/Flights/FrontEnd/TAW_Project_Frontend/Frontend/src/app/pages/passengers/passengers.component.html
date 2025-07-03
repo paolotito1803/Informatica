@@ -1,0 +1,43 @@
+<div class="auth-buttons" style="position:absolute; top:20px; left:20px;">
+  <button *ngIf="!editingUserData" (click)="startEdit()">Aggiorna Dati</button>
+
+  <div *ngIf="editingUserData" style="background:#f8f8f8; padding:10px; border:1px solid #ccc; border-radius:5px;">
+    <label>Username: <input [(ngModel)]="editUsername" /></label><br>
+    <label>Email: <input [(ngModel)]="editMail" /></label><br>
+    <label>Password: <input type="password" [(ngModel)]="editPassword" /></label><br><br>
+    <label>PassportID: <input type="passportID" [(ngModel)]="editPassportID" /></label><br><br>
+
+    <button (click)="updatePassangers()">Conferma</button>
+    <button (click)="cancelUpdate()">Annulla</button>
+    <button (click)="deletePassangers()" style="background-color:#d9534f; color:white;">Rimuovi Utente</button>
+  </div>
+</div>
+
+<section style="margin-top: 20px;">
+  <h3>I tuoi Biglietti</h3>
+
+  <div *ngIf="tickets.length > 0; else noTickets">
+    <div *ngFor="let t of tickets" class="ticket-card">
+      <p><strong>Codice:</strong> {{ t._code }}</p>
+      <p><strong>Utente:</strong> {{ t.user }}</p>
+      <p><strong>Volo:</strong> {{ t.flight }}</p>
+      <p><strong>Posto:</strong> {{ t.seat }}</p>
+      <p><strong>Prezzo:</strong> {{ t.price }}€</p>
+      <p><strong>Bagagli:</strong> {{ t.numBag }}</p>
+      <button (click)="deleteTickets(t)">Rimuovi Biglietto</button>
+    </div>
+  </div>
+
+  <ng-template #noTickets>
+    <p>Non ci sono biglietti</p>
+  </ng-template>
+
+  <div *ngIf="newTicket" style="margin-top: 20px; border: 1px solid #ccc; padding: 10px;">
+    <h4>Completa l'acquisto del biglietto</h4>
+    <label>Volo: <input [(ngModel)]="newTicket.flight" disabled /></label><br />
+    <label>Posto: <input [(ngModel)]="newTicket.seat" placeholder="Numero posto" /></label><br />
+    <label>Prezzo: <input type="number" [(ngModel)]="newTicket.price" disabled /></label><br />
+    <label>Bagagli: <input type="number" [(ngModel)]="newTicket.numBag" min="0" /></label><br />
+    <button (click)="acquistaBiglietto()">Conferma Acquisto</button>
+  </div>
+</section>

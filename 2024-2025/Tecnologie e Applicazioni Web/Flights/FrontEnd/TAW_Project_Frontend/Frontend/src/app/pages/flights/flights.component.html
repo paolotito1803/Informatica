@@ -1,1 +1,50 @@
-<p>flights works!</p>
+<div class="container">
+  <h2>Add Flight</h2>
+  <form (submit)="addFlight(); $event.preventDefault()">
+    <input [(ngModel)]="newFlight._flightCode" name="flightCode" placeholder="Flight Code" required>
+    <input [(ngModel)]="newFlight.route" name="route" placeholder="Route ID" required>
+    <input [(ngModel)]="newFlight.aircraft" name="aircraft" placeholder="Aircraft Code" required>
+    <input [(ngModel)]="newFlight.duration" name="duration" type="number" placeholder="Duration (min)" required>
+    <input [(ngModel)]="newFlight.dataOra" name="dataOra" type="datetime-local" required>
+    <button type="submit">Add Flight</button>
+  </form>
+
+  <h2>Flights List</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Flight Code</th>
+        <th>Route</th>
+        <th>Aircraft</th>
+        <th>Duration</th>
+        <th>Date & Time</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let flight of flights">
+        <td>{{ flight._flightCode }}</td>
+        <td>{{ flight.route }}</td>
+        <td>{{ flight.aircraft }}</td>
+        <td>{{ flight.duration }}</td>
+        <td>{{ flight.dataOra | date: 'yyyy-MM-dd HH:mm' }}</td>
+        <td>
+          <button (click)="editFlight(flight)">Edit</button>
+          <button (click)="deleteFlight(flight._flightCode)">Delete</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div *ngIf="editedFlight">
+    <h2>Edit Flight</h2>
+    <form (submit)="saveFlightChanges(); $event.preventDefault()">
+      <input [(ngModel)]="editedFlight.route" name="editRoute" placeholder="Route ID" required>
+      <input [(ngModel)]="editedFlight.aircraft" name="editAircraft" placeholder="Aircraft Code" required>
+      <input [(ngModel)]="editedFlight.duration" name="editDuration" type="number" placeholder="Duration (min)" required>
+      <input [(ngModel)]="editedFlight.dataOra" name="editDataOra" type="datetime-local" required>
+      <button type="submit">Save</button>
+      <button type="button" (click)="cancelEdit()">Cancel</button>
+    </form>
+  </div>
+</div>

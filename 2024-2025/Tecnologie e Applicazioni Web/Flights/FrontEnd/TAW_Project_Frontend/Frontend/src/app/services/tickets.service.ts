@@ -2,9 +2,10 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams, HttpErrorResponse } from '@angular/common/http';
 import { UserHttpService } from '../user-http.service';
 import { catchError, Observable, throwError } from 'rxjs';
+import { identifierName } from '@angular/compiler';
 
 export interface Tickets {
-  readonly _code: string;
+ _code: string;
   user: string;
   seat: string;
   flight: string;
@@ -41,4 +42,16 @@ export class TicketsService {
       catchError(this.handleError)
     );
   }
+
+  deleteTickets(id : string): Observable<any> {
+    return this.http.delete(this.us.url + '/tickets/' + id, this.create_options()).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  addTickets(ticketData: { flight: string, seat: string, price: number, numBag: number }): Observable<any> {
+    return this.http.post(this.us.url + '/tickets', ticketData, this.create_options()).pipe(
+      catchError(this.handleError)
+    );
+}
 }

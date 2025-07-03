@@ -18,7 +18,6 @@ export class UserSignupComponent implements OnInit {
   }
 
   signup() {
-
     this.us.register( this.user ).subscribe( {
       next: (d) => {
       console.log('Registration ok: ' + JSON.stringify(d) );

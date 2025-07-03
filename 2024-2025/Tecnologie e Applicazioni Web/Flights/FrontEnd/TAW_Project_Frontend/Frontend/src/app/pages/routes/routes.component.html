@@ -1,1 +1,70 @@
-<p>routes works!</p>
+<div class="routes-container">
+  <h2>Routes</h2>
+
+  <table>
+    <thead>
+      <tr>
+        <th>id</th>
+        <th>departure</th>
+        <th>arrival</th>
+        <th>layover</th>
+        <th class="actions">actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let r of routes">
+        <!-- DISPLAY MODE -->
+        <ng-container *ngIf="!editing[r._id]; else editTpl">
+          <td>{{ r._id }}</td>
+          <td>{{ r.departure }}</td>
+          <td>{{ r.destination }}</td>
+          <td>{{ toCSV(r.layoverFuel) }}</td>
+          <td class="actions">
+            <button (click)="startEdit(r)">edit</button>
+            <button (click)="remove(r._id)">delete</button>
+          </td>
+        </ng-container>
+
+        <!-- EDIT MODE -->
+        <ng-template #editTpl>
+          <td>{{ r._id }}</td>
+          <td>
+            <input [(ngModel)]="editBuffer[r._id].departure" />
+          </td>
+          <td>
+            <input [(ngModel)]="editBuffer[r._id].destination" />
+          </td>
+          <td>
+            <input
+              [(ngModel)]="editBuffer[r._id].layoverFuel"
+              [ngModelOptions]="{ standalone: true }"
+              placeholder="es: FCO, CDG, LHR"
+            />
+          </td>
+          <td class="actions">
+            <button (click)="saveEdit(r._id)">save</button>
+            <button (click)="cancelEdit(r._id)">cancel</button>
+          </td>
+        </ng-template>
+      </tr>
+      <!-- FORM PER AGGIUNTA -->
+      <tr class="new-route">
+        <td>--</td>
+        <td><input [(ngModel)]="newRoute.departure" placeholder="departure" /></td>
+        <td><input [(ngModel)]="newRoute.destination" placeholder="arrival" /></td>
+        <td>
+          <input
+            [(ngModel)]="newRoute.layoverFuel"
+            [ngModelOptions]="{ standalone: true }"
+            placeholder="es: MXP, AMS"
+          />
+        </td>
+        <td class="actions">
+          <button (click)="add()">add</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+

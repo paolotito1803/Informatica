@@ -1,45 +1,42 @@
-<!-- Logo della pagina -->
-<div style="text-align: center; padding-top: 20px;">
-  <img src="assets/logo.jpeg" alt="Logo" style="height: 200px;">
-</div>
-
-<!-- Pulsanti login/registrazione -->
-<div class="auth-buttons" style="position: absolute; top: 20px; right: 20px;">
-  <button routerLink="/login">Login</button>
-  <button routerLink="/signup">Registrati</button>
-</div>
-
-<!-- Contenitore centrale per la ricerca -->
-<div class="search-container" style="display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh;">
-  <h2>Ricerca Voli</h2>
-  <input [(ngModel)]="depart" placeholder="Partenza" style="margin: 5px;" />
-  <input [(ngModel)]="destination" placeholder="Destinazione" style="margin: 5px;" />
-  <button (click)="search()" style="margin: 10px;">Cerca voli</button>
-
-  <div *ngIf="loading">Caricamento...</div>
-  <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
-
-  <!-- Voli Diretti -->
-  <div *ngIf="directFlights.length > 0">
-    <h3>Voli diretti trovati:</h3>
-    <div *ngFor="let flight of directFlights" class="flight-card" style="border: 1px solid #ccc; border-radius: 10px; padding: 15px; margin: 10px; width: 80%; box-shadow: 2px 2px 8px rgba(0,0,0,0.1);">
-      <p>✈️ Da: {{flight.departure}} → A: {{flight.destination}}</p>
-      <p>Partenza: {{ flight.dataOra | date:'short' }}</p>
-      <p>Durata: {{ flight.duration }} min</p>
-      <p>Prezzo: {{ flight.price }} €</p>
-      <button routerLink="/login">Acquista</button>
-    </div>
+<div class="background" style="background: url('assets/logo.png') no-repeat center center fixed; background-size: cover;">
+  <!-- Pulsanti login/registrazione -->
+  <div class="auth-buttons" style="position: absolute; top: 20px; right: 20px;">
+    <button routerLink="/login">Login</button>
+    <button routerLink="/signup">Registrati</button>
   </div>
 
-  <!-- Voli con Scalo -->
-  <div *ngIf="layoverConnections.length > 0">
-    <h3>Voli con scalo trovati:</h3>
-    <div *ngFor="let conn of layoverConnections" class="flight-card" style="border: 1px solid #ccc; border-radius: 10px; padding: 15px; margin: 10px; width: 80%; box-shadow: 2px 2px 8px rgba(0,0,0,0.1);">
-      <p>Scalo a: {{conn.layover}}</p>
-      <p>✈️ Primo volo: {{conn.firstLeg.departure}} → {{conn.firstLeg.destination}}, Partenza: {{conn.firstLeg.dataOra | date:'short'}}, Prezzo: {{conn.firstLeg.price}} €, Durata: {{conn.firstLeg.duration}} min</p>
-      <p>🛬 Secondo volo: {{conn.secondLeg.departure}} → {{conn.secondLeg.destination}}, Partenza: {{conn.secondLeg.dataOra | date:'short'}}, Prezzo: {{conn.secondLeg.price}} €, Durata: {{conn.secondLeg.duration}} min</p>
-      <p><strong>Totale:</strong> Prezzo: {{conn.firstLeg.price + conn.secondLeg.price}} €, Durata: {{conn.firstLeg.duration + conn.secondLeg.duration}} min</p>
-      <button routerLink="/login">Acquista</button>
+  <!-- Contenitore centrale per la ricerca -->
+  <div class="search-container" style="display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh;">
+    <h2>Ricerca Voli</h2>
+    <input [(ngModel)]="depart" placeholder="Partenza" style="margin: 5px;" />
+    <input [(ngModel)]="destination" placeholder="Destinazione" style="margin: 5px;" />
+    <button (click)="search()" style="margin: 10px;">Cerca voli</button>
+
+    <div *ngIf="loading">Caricamento...</div>
+    <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
+
+    <!-- Voli Diretti -->
+    <div *ngIf="directFlights.length > 0">
+      <h3>Voli diretti trovati:</h3>
+      <div *ngFor="let flight of directFlights" class="flight-card" style="border: 1px solid #ccc; border-radius: 10px; padding: 15px; margin: 10px; width: 80%; box-shadow: 2px 2px 8px rgba(0,0,0,0.1);">
+        <p>✈️ Da: {{flight.departure}} → A: {{flight.destination}}</p>
+        <p>Partenza: {{ flight.dataOra | date:'short' }}</p>
+        <p>Durata: {{ flight.duration }} min</p>
+        <p>Prezzo: {{ flight.price }} €</p>
+        <button (click) = 'acquistaVolo(flight)'>Acquista</button>
+      </div>
+    </div>
+
+    <!-- Voli con Scalo -->
+    <div *ngIf="layoverConnections.length > 0">
+      <h3>Voli con scalo trovati:</h3>
+      <div *ngFor="let conn of layoverConnections" class="flight-card" style="border: 1px solid #ccc; border-radius: 10px; padding: 15px; margin: 10px; width: 80%; box-shadow: 2px 2px 8px rgba(0,0,0,0.1);">
+        <p>Scalo a: {{conn.layover}}</p>
+        <p>✈️ Primo volo: {{conn.firstLeg.departure}} → {{conn.firstLeg.destination}}, Partenza: {{conn.firstLeg.dataOra | date:'short'}}, Prezzo: {{conn.firstLeg.price}} €, Durata: {{conn.firstLeg.duration}} min</p>
+        <p>🛬 Secondo volo: {{conn.secondLeg.departure}} → {{conn.secondLeg.destination}}, Partenza: {{conn.secondLeg.dataOra | date:'short'}}, Prezzo: {{conn.secondLeg.price}} €, Durata: {{conn.secondLeg.duration}} min</p>
+        <p><strong>Totale:</strong> Prezzo: {{conn.firstLeg.price + conn.secondLeg.price}} €, Durata: {{conn.firstLeg.duration + conn.secondLeg.duration}} min</p>
+        <button (click) = 'acquistaEntrambiVoli(conn)'>Acquista</button>
+      </div>
     </div>
   </div>
 </div>
