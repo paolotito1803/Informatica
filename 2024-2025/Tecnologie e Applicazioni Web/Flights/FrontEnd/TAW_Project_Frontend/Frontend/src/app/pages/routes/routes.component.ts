@@ -38,6 +38,7 @@ export class RoutesComponent implements OnInit {
       next: created => {
         this.routes.push(created);
         this.newRoute = { departure: '', destination: '', layoverFuel: [] };
+        this.loadAll();
       },
       error: err => console.error('Add failed', err)
     });
@@ -46,7 +47,10 @@ export class RoutesComponent implements OnInit {
   // DELETE
   remove(id: string): void {
     this.svc.deleteRoute(id).subscribe({
-      next: () => this.routes = this.routes.filter(r => r._id !== id),
+      next: () => {
+        this.routes = this.routes.filter(r => r._id !== id);
+        this.loadAll();
+      },
       error: err => console.error('Delete failed', err)
     });
   }
@@ -69,6 +73,7 @@ export class RoutesComponent implements OnInit {
         const idx = this.routes.findIndex(r => r._id === id);
         if (idx > -1) this.routes[idx] = updated;
         this.cancelEdit(id);
+        this.loadAll();
       },
       error: err => console.error('Edit failed', err)
     });

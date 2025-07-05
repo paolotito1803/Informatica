@@ -10,6 +10,7 @@
     <h2>Ricerca Voli</h2>
     <input [(ngModel)]="depart" placeholder="Partenza" style="margin: 5px;" />
     <input [(ngModel)]="destination" placeholder="Destinazione" style="margin: 5px;" />
+    <input [(ngModel)]="dataOra" name="dataOra" type="datetime-local" style="margin: 5px;">
     <button (click)="search()" style="margin: 10px;">Cerca voli</button>
 
     <div *ngIf="loading">Caricamento...</div>
@@ -18,7 +19,7 @@
     <!-- Voli Diretti -->
     <div *ngIf="directFlights.length > 0">
       <h3>Voli diretti trovati:</h3>
-      <div *ngFor="let flight of directFlights" class="flight-card" style="border: 1px solid #ccc; border-radius: 10px; padding: 15px; margin: 10px; width: 80%; box-shadow: 2px 2px 8px rgba(0,0,0,0.1);">
+      <div *ngFor="let flight of directFlights" class="flight-card" style="background-color:white; border: 1px solid #ccc; border-radius: 10px; padding: 15px; margin: 10px; width: 80%; box-shadow: 2px 2px 8px rgba(0,0,0,0.1);">
         <p>✈️ Da: {{flight.departure}} → A: {{flight.destination}}</p>
         <p>Partenza: {{ flight.dataOra | date:'short' }}</p>
         <p>Durata: {{ flight.duration }} min</p>
@@ -30,7 +31,7 @@
     <!-- Voli con Scalo -->
     <div *ngIf="layoverConnections.length > 0">
       <h3>Voli con scalo trovati:</h3>
-      <div *ngFor="let conn of layoverConnections" class="flight-card" style="border: 1px solid #ccc; border-radius: 10px; padding: 15px; margin: 10px; width: 80%; box-shadow: 2px 2px 8px rgba(0,0,0,0.1);">
+      <div *ngFor="let conn of layoverConnections" class="flight-card" style="background-color:white; border: 1px solid #ccc; border-radius: 10px; padding: 15px; margin: 10px; width: 80%; box-shadow: 2px 2px 8px rgba(0,0,0,0.1);">
         <p>Scalo a: {{conn.layover}}</p>
         <p>✈️ Primo volo: {{conn.firstLeg.departure}} → {{conn.firstLeg.destination}}, Partenza: {{conn.firstLeg.dataOra | date:'short'}}, Prezzo: {{conn.firstLeg.price}} €, Durata: {{conn.firstLeg.duration}} min</p>
         <p>🛬 Secondo volo: {{conn.secondLeg.departure}} → {{conn.secondLeg.destination}}, Partenza: {{conn.secondLeg.dataOra | date:'short'}}, Prezzo: {{conn.secondLeg.price}} €, Durata: {{conn.secondLeg.duration}} min</p>

@@ -62,10 +62,9 @@ function getModel() {
     return flightModel;
 }
 function newFlight(data) {
-    const _flightModel = getModel();
-    if (typeof data.dataOra === "string") {
+    let _flightModel = getModel();
+    if (typeof data.dataOra === "string")
         data.dataOra = new Date(data.dataOra);
-    }
     return new _flightModel(data);
 }
 //# sourceMappingURL=Flights.js.map

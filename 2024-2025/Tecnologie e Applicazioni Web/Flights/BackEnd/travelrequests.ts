@@ -8,11 +8,7 @@ if( !process.env.JWT_SECRETS ) {
     process.exit(-1);
 }
 
-import fs = require('fs');
-import http = require('http');                  // HTTP module
-import https = require('https');                // HTTPS module
 import colors = require('colors');
-import mongoose = require('mongoose');
 colors.enabled = true;
 import * as users from './Users';
 import * as routes from './Routes';
@@ -26,15 +22,13 @@ import {Airports} from "./Airports";
 import * as airports from './Airports';
 
 import express = require('express');
-import passport = require('passport');           // authentication middleware for Express
-import passportHTTP = require('passport-http');  // implements Basic and Digest authentication for HTTP (used for /login endpoint)
-import jsonwebtoken = require('jsonwebtoken');  // JWT generation
-import cors = require('cors');                  // Enable CORS middleware
-import { Inizializzazione } from './Inizializzazione';
-const io = require('socket.io');               // Socket.io websocket library
+import passport = require('passport');           
+import passportHTTP = require('passport-http');  
+import jsonwebtoken = require('jsonwebtoken');
+import cors = require('cors');                  
+import { Inizializzazione } from './Inizializzazione';          
 
-
-const { expressjwt: jwt } = require('express-jwt');// JWT parsing middleware for express
+const { expressjwt: jwt } = require('express-jwt');
 
 let app = express();
 let auth = jwt( {
@@ -77,16 +71,8 @@ Inizializzazione(app);
 app.get("/", (req,res) => {
     res.status(200).json( { api_version: "1.0",
         endpoints: [ "/users", "/airlines", "/login", "/search", "/seats", "/aircrafts", "/airports", "/routes", "/flights", "/tickets"]
-    } ); // json method sends a JSON response (setting the correct Content-Type) to the client
+    } );
 });
-
-/*
-Utenti -> users:
-login -> get            FATTO
-registrazione -> post   FATTO
-delete -> del           FATTO
-modifica dati -> put    FATTO
- */
 
 passport.use( new passportHTTP.BasicStrategy(
     function(username, password, done) {
@@ -178,11 +164,6 @@ app.delete('/users/:id', auth, (req,res,next) => {
 });
 
 //user data modifications
-/*
-Into the profile page, the user may alter its data such as:
-- password
-- username
- */
 app.put('/users/:id', auth, async (req, res, next) => {
     try {
         const userId = req.params.id;
@@ -217,15 +198,6 @@ app.put('/users/:id', auth, async (req, res, next) => {
     }
 });
 
-/*
-    Routes
-    In this section we have to insert/update/delete routes.
-    Note: only an airline may insert a route!
-    Steps:
-    - insert -> POST    FATTO
-    - update -> PUT     FATTO
-    - delete -> DEL     FATTO
- */
 app.post('/routes', auth, (req,res,next) => {
     let r = routes.newRoute(req.body);
     let a = users.newUser(req.auth).hasAirlineRole();
@@ -296,15 +268,6 @@ app.get('/routes', auth, (req, res, next) => {
         return next({statuscode: 404, error: true, errormessage: "DB error" + reason});
     });
 });
-
-/*
-    Airlines
-    Steps:
-    - select -> GET     FATTO
-    - insert -> POST    FATTO
-    - update -> PUT     FATTO
-    - delete -> DEL     FATTO
- */
 
 app.get("/airlines/:mail", auth, (req, res, next) =>{
     if(!users.newUser(req.auth).hasAirlineRole()) {
@@ -459,14 +422,6 @@ app.delete('/airlines/:id', auth, (req,res,next) => {
     })
 });
 
-/*
-    Aircrafts
-    Steps:
-    - insert -> POST    FATTO
-    - update -> PUT     FATTO
-    - delete -> DEL     FATTO
-    - search -> GET     FATTO
- */
 app.post('/aircrafts', auth, (req, res, next) => {
     let u = users.newUser(req.auth).hasAirlineRole();
     let aircraft = aircrafts.newAircraft(req.body);
@@ -538,14 +493,6 @@ app.get('/aircrafts', auth, (req, res, next) => {
    })
 });
 
-/*
-Flights
-    Steps:
-    - insert -> POST    FATTO
-    - update -> PUT     FATTO
-    - delete -> DEL     FATTO
-    - ritorno-> GET     FATTO
- */
 app.post('/flights', auth, (req, res, next) => {
     if(!users.newUser(req.auth).hasAirlineRole()) {
         return next({statuscode: 403, error: true, errormessage: "Unauthorized."} );
@@ -561,17 +508,19 @@ app.post('/flights', auth, (req, res, next) => {
         });
     }
 });
-app.get('/flights', (req, res, next) => {
-    flights.getModel().find({}).then((flights) => {
-       return res.status(200).json(flights);
-    }).catch((reason) => {
-        return next({
-            statuscode: 404,
-            error: true,
-            errormessage: "DB error" + reason
+
+app.get('/flights', auth, (req, res, next) => {
+    airlines.getModel().findOne({mail : req.auth.mail}).then((airline) => {
+        const aircraftCodes = airline.aircrafts.map(a => a._numAircraft);
+        flights.getModel().find({aircraft: { $in: aircraftCodes }}).then((flightsList) => {
+            return res.status(200).json(flightsList);
+        }).catch((reason) => {
+            return next({ statuscode: 404, error: true, errormessage: "DB error: " + reason});
         });
+    }).catch((error) => {
+        return res.status(404).json({error: true, errormessage: `Airline with mail ${req.auth.mail} not found.`});
     });
-});
+})
 
 app.delete('/flights/:id', auth, (req, res, next) => {
     if(!users.newUser(req.auth).hasAirlineRole()){
@@ -622,14 +571,6 @@ app.put('/flights/:id', auth, async (req, res, next) =>{
     }
 });
 
-/*
-Tickets
-    Steps:
-    - insert -> POST    FATTO
-    - update -> PUT     FATTO
-    - delete -> DEL     FATTO
-    - ritorno-> GET     FATTO
- */
 app.post('/tickets', auth, async (req, res, next) => {
     const user = users.newUser(req.auth);
 
@@ -733,7 +674,6 @@ app.delete('/tickets/:id', auth, async (req, res, next) => {
     }
 });
 
-
 app.put('/tickets/:id', auth, async (req, res, next) =>{
     try {
         const userId_tickets = req.params.id;
@@ -770,14 +710,6 @@ app.put('/tickets/:id', auth, async (req, res, next) =>{
     }
 });
 
-/*
-    Airports
-
-    Insert -> POST      -> FATTO
-    Update -> PUT       -> FATTO
-    Delete -> DEL       -> FATTO
-    Search -> GET       -> FATTO
- */
 app.post("/airports", auth, (req, res, next) => {
     if(!users.newUser(req.auth).hasAdminRole())
         return next({ statuscode: 403, error: true, errormessage: "Unauthorized"});
@@ -841,13 +773,6 @@ app.get("/airports", auth, (req, res, next) => {
     });
 })
 
-/*
-    Seats
-
-    Insert -> POST      -> FATTO
-    Update -> PUT       -> FATTO
-    Search -> GET       -> FATTO
- */
 app.post("/seats", auth, (req, res, next) => {
     if(!users.newUser(req.auth).hasAirlineRole())
         return next({statuscode: 403, error: true, errormessage: "Unauthorized"});
@@ -903,16 +828,11 @@ app.get("/seats", auth, (req, res, next) => {
     });
 })
 
-/*
-    Features:
-    - Filtered research of flights
-        - Departing airport
-        - Arriving airport
-*/
 app.get("/search", async (req, res, next) => {
     const search: any = {
         depart: req.query.depart,
-        destination: req.query.destination
+        destination: req.query.destination,
+        dataOra: req.query.dataOra
     };
 
     try {
@@ -924,7 +844,7 @@ app.get("/search", async (req, res, next) => {
 
         // Se non ci sono scali
         if (!route.layoverFuel || route.layoverFuel.length === 0) {
-            const directFlights = await flights.getModel().find({ route: route._id });
+            const directFlights = await flights.getModel().find({ route: route._id, dataOra: { $gte : new Date(search.dataOra)}});
             const flightRes = [];
             for(let f of directFlights){
                 let r = await routes.getModel().findOne({_id : f.route});
@@ -943,7 +863,7 @@ app.get("/search", async (req, res, next) => {
 
             //if (!firstLegRoute || !secondLegRoute) continue;
 
-            const firstFlights = await flights.getModel().find({ route: firstLegRoute._id });
+            const firstFlights = await flights.getModel().find({ route: firstLegRoute._id, dataOra: { $gte : new Date(search.dataOra)} });
             const secondFlights = await flights.getModel().find({ route: secondLegRoute._id });
 
             for(let first of firstFlights){

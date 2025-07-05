@@ -80,6 +80,7 @@ export class AdminComponent implements OnInit {
       next: a => {
         this.airports.push(a);
         this.airportForm.reset();
+        this.loadAirports();
       },
       error: err => alert('Errore creazione aeroporto')
     });
@@ -97,6 +98,7 @@ export class AdminComponent implements OnInit {
         const idx = this.airports.findIndex(a => a._code === id);
         if (idx > -1) this.airports[idx] = updated;
         this.cancelEdit(id);
+        this.loadAirports();
       },
       error: err => alert('Errore aggiornamento aeroporto')
     });
@@ -109,7 +111,10 @@ export class AdminComponent implements OnInit {
 
   deleteAirport(id: string): void {
     this.adminSvc.deleteAirport(id).subscribe({
-      next: () => this.airports = this.airports.filter(a => a._code !== id),
+      next: () => {
+        this.airports = this.airports.filter(a => a._code !== id);
+        this.loadAirports();
+      },
       error: err => alert('Errore eliminazione aeroporto')
     });
   }

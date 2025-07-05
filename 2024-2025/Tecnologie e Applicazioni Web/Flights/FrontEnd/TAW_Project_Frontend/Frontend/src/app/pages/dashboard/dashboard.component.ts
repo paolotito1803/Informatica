@@ -82,7 +82,9 @@ export class DashboardComponent implements OnInit {
           // Carica tickets
           this.ticketsService.getTickets().subscribe({
             next: tickets => {
-              this.tickets = tickets.map(t => ({ ...t, editing: false }));
+              this.tickets = tickets.map(t => ({_code : t._code, user : this.us.get_mail(), 
+                                                flight : t.flight, seat : t.seat, 
+                                                price : t.price, numBag : t.numBag, editing: false}));
               console.log('Biglietti ricevuti:', tickets);
             },
             error: err => console.error('Errore nel recupero biglietti:', err)

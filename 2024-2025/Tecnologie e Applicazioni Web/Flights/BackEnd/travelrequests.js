@@ -20,13 +20,12 @@ const seats = require("./Seats");
 const tickets = require("./Tickets");
 const airports = require("./Airports");
 const express = require("express");
-const passport = require("passport"); // authentication middleware for Express
-const passportHTTP = require("passport-http"); // implements Basic and Digest authentication for HTTP (used for /login endpoint)
-const jsonwebtoken = require("jsonwebtoken"); // JWT generation
-const cors = require("cors"); // Enable CORS middleware
+const passport = require("passport");
+const passportHTTP = require("passport-http");
+const jsonwebtoken = require("jsonwebtoken");
+const cors = require("cors");
 const Inizializzazione_1 = require("./Inizializzazione");
-const io = require('socket.io'); // Socket.io websocket library
-const { expressjwt: jwt } = require('express-jwt'); // JWT parsing middleware for express
+const { expressjwt: jwt } = require('express-jwt');
 let app = express();
 let auth = jwt({
     secret: process.env.JWT_SECRETS,
@@ -44,15 +43,8 @@ app.use((req, res, next) => {
 app.get("/", (req, res) => {
     res.status(200).json({ api_version: "1.0",
         endpoints: ["/users", "/airlines", "/login", "/search", "/seats", "/aircrafts", "/airports", "/routes", "/flights", "/tickets"]
-    }); // json method sends a JSON response (setting the correct Content-Type) to the client
+    });
 });
-/*
-Utenti -> users:
-login -> get            FATTO
-registrazione -> post   FATTO
-delete -> del           FATTO
-modifica dati -> put    FATTO
- */
 passport.use(new passportHTTP.BasicStrategy(function (username, password, done) {
     console.log("New login attempt from ".green + username);
     users.getModel().findOne({ mail: username }).then((user) => {
@@ -135,11 +127,6 @@ app.delete('/users/:id', auth, (req, res, next) => {
     });
 });
 //user data modifications
-/*
-Into the profile page, the user may alter its data such as:
-- password
-- username
- */
 app.put('/users/:id', auth, async (req, res, next) => {
     try {
         const userId = req.params.id;
@@ -174,15 +161,6 @@ app.put('/users/:id', auth, async (req, res, next) => {
         return next({ statusCode: 500, error: true, errormessage: "DB error: " + error.message });
     }
 });
-/*
-    Routes
-    In this section we have to insert/update/delete routes.
-    Note: only an airline may insert a route!
-    Steps:
-    - insert -> POST    FATTO
-    - update -> PUT     FATTO
-    - delete -> DEL     FATTO
- */
 app.post('/routes', auth, (req, res, next) => {
     let r = routes.newRoute(req.body);
     let a = users.newUser(req.auth).hasAirlineRole();
@@ -250,14 +228,6 @@ app.get('/routes', auth, (req, res, next) => {
         return next({ statuscode: 404, error: true, errormessage: "DB error" + reason });
     });
 });
-/*
-    Airlines
-    Steps:
-    - select -> GET     FATTO
-    - insert -> POST    FATTO
-    - update -> PUT     FATTO
-    - delete -> DEL     FATTO
- */
 app.get("/airlines/:mail", auth, (req, res, next) => {
     if (!users.newUser(req.auth).hasAirlineRole()) {
         return next({ statusCode: 403, error: true, errormessage: "Unauthorized" });
@@ -395,14 +365,6 @@ app.delete('/airlines/:id', auth, (req, res, next) => {
         return next({ statusCode: 404, error: true, errormessage: "DB error: " + reason });
     });
 });
-/*
-    Aircrafts
-    Steps:
-    - insert -> POST    FATTO
-    - update -> PUT     FATTO
-    - delete -> DEL     FATTO
-    - search -> GET     FATTO
- */
 app.post('/aircrafts', auth, (req, res, next) => {
     let u = users.newUser(req.auth).hasAirlineRole();
     let aircraft = aircrafts.newAircraft(req.body);
@@ -470,14 +432,6 @@ app.get('/aircrafts', auth, (req, res, next) => {
         return next({ statuscode: 404, error: true, errormessage: "DB error" + reason });
     });
 });
-/*
-Flights
-    Steps:
-    - insert -> POST    FATTO
-    - update -> PUT     FATTO
-    - delete -> DEL     FATTO
-    - ritorno-> GET     FATTO
- */
 app.post('/flights', auth, (req, res, next) => {
     if (!users.newUser(req.auth).hasAirlineRole()) {
         return next({ statuscode: 403, error: true, errormessage: "Unauthorized." });
@@ -496,15 +450,16 @@ app.post('/flights', auth, (req, res, next) => {
         });
     }
 });
-app.get('/flights', (req, res, next) => {
-    flights.getModel().find({}).then((flights) => {
-        return res.status(200).json(flights);
-    }).catch((reason) => {
-        return next({
-            statuscode: 404,
-            error: true,
-            errormessage: "DB error" + reason
+app.get('/flights', auth, (req, res, next) => {
+    airlines.getModel().findOne({ mail: req.auth.mail }).then((airline) => {
+        const aircraftCodes = airline.aircrafts.map(a => a._numAircraft);
+        flights.getModel().find({ aircraft: { $in: aircraftCodes } }).then((flightsList) => {
+            return res.status(200).json(flightsList);
+        }).catch((reason) => {
+            return next({ statuscode: 404, error: true, errormessage: "DB error: " + reason });
         });
+    }).catch((error) => {
+        return res.status(404).json({ error: true, errormessage: `Airline with mail ${req.auth.mail} not found.` });
     });
 });
 app.delete('/flights/:id', auth, (req, res, next) => {
@@ -553,14 +508,6 @@ app.put('/flights/:id', auth, async (req, res, next) => {
         return next({ statusCode: 500, error: true, errormessage: "DB error: " + error.message });
     }
 });
-/*
-Tickets
-    Steps:
-    - insert -> POST    FATTO
-    - update -> PUT     FATTO
-    - delete -> DEL     FATTO
-    - ritorno-> GET     FATTO
- */
 app.post('/tickets', auth, async (req, res, next) => {
     const user = users.newUser(req.auth);
     try {
@@ -679,14 +626,6 @@ app.put('/tickets/:id', auth, async (req, res, next) => {
         return next({ statusCode: 500, error: true, errormessage: "DB error: " + error.message });
     }
 });
-/*
-    Airports
-
-    Insert -> POST      -> FATTO
-    Update -> PUT       -> FATTO
-    Delete -> DEL       -> FATTO
-    Search -> GET       -> FATTO
- */
 app.post("/airports", auth, (req, res, next) => {
     if (!users.newUser(req.auth).hasAdminRole())
         return next({ statuscode: 403, error: true, errormessage: "Unauthorized" });
@@ -744,13 +683,6 @@ app.get("/airports", auth, (req, res, next) => {
         return next({ statuscode: 404, error: true, errormessage: "DB error" + reason });
     });
 });
-/*
-    Seats
-
-    Insert -> POST      -> FATTO
-    Update -> PUT       -> FATTO
-    Search -> GET       -> FATTO
- */
 app.post("/seats", auth, (req, res, next) => {
     if (!users.newUser(req.auth).hasAirlineRole())
         return next({ statuscode: 403, error: true, errormessage: "Unauthorized" });
@@ -800,16 +732,11 @@ app.get("/seats", auth, (req, res, next) => {
         return next({ statuscode: 404, error: true, errormessage: "DB error" + reason });
     });
 });
-/*
-    Features:
-    - Filtered research of flights
-        - Departing airport
-        - Arriving airport
-*/
 app.get("/search", async (req, res, next) => {
     const search = {
         depart: req.query.depart,
-        destination: req.query.destination
+        destination: req.query.destination,
+        dataOra: req.query.dataOra
     };
     try {
         const route = await routes.getModel().findOne({ departure: search.depart, destination: search.destination });
@@ -818,7 +745,7 @@ app.get("/search", async (req, res, next) => {
         }
         // Se non ci sono scali
         if (!route.layoverFuel || route.layoverFuel.length === 0) {
-            const directFlights = await flights.getModel().find({ route: route._id });
+            const directFlights = await flights.getModel().find({ route: route._id, dataOra: { $gte: new Date(search.dataOra) } });
             const flightRes = [];
             for (let f of directFlights) {
                 let r = await routes.getModel().findOne({ _id: f.route });
@@ -832,7 +759,7 @@ app.get("/search", async (req, res, next) => {
             const firstLegRoute = await routes.getModel().findOne({ departure: search.depart, destination: layover });
             const secondLegRoute = await routes.getModel().findOne({ departure: layover, destination: search.destination });
             //if (!firstLegRoute || !secondLegRoute) continue;
-            const firstFlights = await flights.getModel().find({ route: firstLegRoute._id });
+            const firstFlights = await flights.getModel().find({ route: firstLegRoute._id, dataOra: { $gte: new Date(search.dataOra) } });
             const secondFlights = await flights.getModel().find({ route: secondLegRoute._id });
             for (let first of firstFlights) {
                 const firstArrival = new Date(first.dataOra.getTime() + first.duration * 60000);

@@ -33,7 +33,9 @@ export class PassengersComponent implements OnInit {
     this.ticketsService.getTickets().subscribe(res => {
       console.log('Biglietti ricevuti:', res); // Debug temporaneo
       //this.tickets = res;
-      this.tickets = res.map(t => ({ ...t, editing: false }));
+      this.tickets = res.map(t => ({_code : t._code, user : this.us.get_mail(), 
+                                    flight : t.flight, seat : t.seat, 
+                                    price : t.price, numBag : t.numBag, editing: false}));
     });
   }
 

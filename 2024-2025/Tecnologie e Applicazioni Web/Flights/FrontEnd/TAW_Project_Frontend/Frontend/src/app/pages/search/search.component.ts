@@ -13,6 +13,7 @@ import { Router } from '@angular/router';
 export class FlightSearchComponent {
   depart: string = '';
   destination: string = '';
+  dataOra: string = '';
   
 
   loading = false;
@@ -32,7 +33,7 @@ export class FlightSearchComponent {
     this.directFlights = [];
     this.layoverConnections = [];
 
-    this.flightSearchService.searchFlights(this.depart, this.destination).subscribe({
+    this.flightSearchService.searchFlights(this.depart, this.destination, this.dataOra).subscribe({
       next: (results) => {
         console.log("Ricerca avvenuta");
         this.loading = false;

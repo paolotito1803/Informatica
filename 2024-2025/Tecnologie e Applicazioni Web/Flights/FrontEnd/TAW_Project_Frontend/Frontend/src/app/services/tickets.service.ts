@@ -53,5 +53,5 @@ export class TicketsService {
     return this.http.post(this.us.url + '/tickets', ticketData, this.create_options()).pipe(
       catchError(this.handleError)
     );
-}
+  }
 }

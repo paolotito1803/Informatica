@@ -43,10 +43,11 @@ export class FlightSearchService {
   }
 
 
-  searchFlights(depart: string, destination: string): Observable<any[]> {
+  searchFlights(depart: string, destination: string, dataOra: string): Observable<any[]> {
     let params = new HttpParams()
       .set('depart', depart)
-      .set('destination', destination);
+      .set('destination', destination)
+      .set('dataOra', dataOra);
 
     return this.http.get<any[]>(this.us.url + '/search', { params }).pipe(
       catchError(this.handleError)

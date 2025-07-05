@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-//import { Flights } from 'src/app/models/flights.interface';
 import { FlightsService, Flights } from 'src/app/services/flights.service';
 
 @Component({

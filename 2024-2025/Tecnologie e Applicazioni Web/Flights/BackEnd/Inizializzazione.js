@@ -41,7 +41,8 @@ function Inizializzazione(app) {
                 username: "micbos71",
                 passportID: "KS2718281",
                 mail: "mic.bos.71@project_flight.it",
-                roles: "passenger"
+                roles: "passenger",
+                tickets: []
             });
             m1.setPassword("123456");
             m1.save();
@@ -49,7 +50,8 @@ function Inizializzazione(app) {
                 username: "bordjack47",
                 passportID: "VY3141592",
                 mail: "bordjack47@project_flight.it",
-                roles: "passenger"
+                roles: "passenger",
+                tickets: []
             });
             m2.setPassword("7891011");
             m2.save();
@@ -57,7 +59,8 @@ function Inizializzazione(app) {
                 username: "tito_paul",
                 passportID: "GK1618033",
                 mail: "paul.tito@project_flight.it",
-                roles: "passenger"
+                roles: "passenger",
+                tickets: []
             });
             m3.setPassword("abdef");
             m3.save();
@@ -65,10 +68,29 @@ function Inizializzazione(app) {
                 username: "lufthansa",
                 passportID: "AB12345",
                 mail: "lufthansa@project_flight.it",
-                roles: "airline"
+                roles: "airline",
+                tickets: []
             });
             m4.setPassword("prova");
             m4.save();
+            let m5 = Users.newUser({
+                username: "emirates",
+                passportID: "EM6754",
+                mail: "emirates@project_flight.it",
+                roles: "airline",
+                tickets: []
+            });
+            m5.setPassword("ek12345");
+            m5.save();
+            let m6 = Users.newUser({
+                username: "ITA Airways",
+                passportID: "IT2025",
+                mail: "ITA.airways@flight_project.it",
+                roles: "airline",
+                tickets: []
+            });
+            m6.setPassword("provaI");
+            m6.save();
         }
     }).then(() => {
         return Tickets.getModel().countDocuments({});
@@ -81,30 +103,79 @@ function Inizializzazione(app) {
             let code_user2 = username2._id;
             let username3 = await Users.getModel().findOne({ username: 'tito_paul' });
             let code_user3 = username3._id;
-            let t1 = Tickets
-                .getModel()
-                .create({
+            let username4 = await Users.getModel().findOne({ username: 'lufthansa' });
+            let code_user4 = username4._id;
+            let username5 = await Users.getModel().findOne({ username: 'emirates' });
+            let code_user5 = username5._id;
+            let username6 = await Users.getModel().findOne({ username: 'ITA Airways' });
+            let code_user6 = username6._id;
+            let t1 = Tickets.getModel().create({
                 user: code_user1,
                 seat: "A1",
-                flight: "A101",
+                flight: "AB104",
                 price: 10,
                 numBag: 1,
                 _code: "1"
+            }).then(ticket => {
+                username1.tickets.push(ticket);
+                username1.save();
             });
-            let t2 = Tickets
-                .getModel()
-                .create({ user: code_user2, seat: "A2", flight: "A102", price: 20, numBag: 2, _code: "2" });
-            let t3 = Tickets
-                .getModel()
-                .create({
+            let t2 = Tickets.getModel().create({
+                user: code_user2,
+                seat: "A2",
+                flight: "AB105",
+                price: 20,
+                numBag: 2,
+                _code: "2"
+            }).then((ticket) => {
+                username2.tickets.push(ticket);
+                username2.save();
+            });
+            let t3 = Tickets.getModel().create({
                 user: code_user3,
                 seat: "A3",
-                flight: "A103",
+                flight: "AB106",
                 price: 30,
                 numBag: 3,
                 _code: "3"
+            }).then((ticket) => {
+                username3.tickets.push(ticket);
+                username3.save();
             });
-            return Promise.all([t1, t2, t3]);
+            let t4 = Tickets.getModel().create({
+                user: code_user4,
+                seat: "A3",
+                flight: "AB105",
+                price: 1000,
+                numBag: 1,
+                _code: "4"
+            }).then((ticket) => {
+                username4.tickets.push(ticket);
+                username4.save();
+            });
+            let t5 = Tickets.getModel().create({
+                user: code_user5,
+                seat: "A3",
+                flight: "AB106",
+                price: 30,
+                numBag: 1,
+                _code: "5"
+            }).then((ticket) => {
+                username5.tickets.push(ticket);
+                username5.save();
+            });
+            let t6 = Tickets.getModel().create({
+                user: code_user6,
+                seat: "A3",
+                flight: "AB104",
+                price: 10,
+                numBag: 3,
+                _code: "6"
+            }).then((ticket) => {
+                username6.tickets.push(ticket);
+                username6.save();
+            });
+            return Promise.all([t1, t2, t3, t4, t5, t6]);
         }
     }).then(() => {
         return Aircrafts.getModel().countDocuments({});
@@ -194,7 +265,7 @@ function Inizializzazione(app) {
                 .create({
                 _code: "012",
                 name: "JFK",
-                city: "Ney York"
+                city: "New York"
             });
             let airp3 = Airports
                 .getModel()
@@ -229,7 +300,26 @@ function Inizializzazione(app) {
                 destination: "JFK",
                 departure: "FCO",
             });
-            return Promise.all([r1, r2, r3]);
+            let r4 = Routes
+                .getModel()
+                .create({
+                destination: "VCE",
+                departure: "JFK",
+                layoverFuel: ["FCO"]
+            });
+            let r5 = Routes
+                .getModel()
+                .create({
+                destination: "VCE",
+                departure: "FCO",
+            });
+            let r6 = Routes
+                .getModel()
+                .create({
+                destination: "FCO",
+                departure: "JFK",
+            });
+            return Promise.all([r1, r2, r3, r4, r5, r6]);
         }
     }).then(() => {
         return Seats.getModel().countDocuments({});
@@ -273,6 +363,12 @@ function Inizializzazione(app) {
             let routeid2 = route2._id;
             let route3 = await Routes.getModel().findOne({ destination: "FCO", departure: "VCE" });
             let routeid3 = route3._id;
+            let route4 = await Routes.getModel().findOne({ destination: "VCE", departure: "JFK" });
+            let routeid4 = route4._id;
+            let route5 = await Routes.getModel().findOne({ destination: "FCO", departure: "JFK" });
+            let routeid5 = route5._id;
+            let route6 = await Routes.getModel().findOne({ destination: "VCE", departure: "FCO" });
+            let routeid6 = route6._id;
             let f1 = Flights
                 .getModel()
                 .create({
@@ -280,27 +376,54 @@ function Inizializzazione(app) {
                 dataOra: new Date(2025, 6, 25, 15, 30),
                 route: routeid1,
                 aircraft: "1",
-                duration: 60
+                duration: 640 //760
             });
             let f2 = Flights
                 .getModel()
                 .create({
                 _flightCode: "AB105",
-                dataOra: new Date(2025, 6, 25, 19, 30),
+                dataOra: new Date(2025, 6, 26, 1, 30),
                 route: routeid2,
                 aircraft: "2",
-                duration: 50
+                duration: 570
             });
             let f3 = Flights
                 .getModel()
                 .create({
                 _flightCode: "AB106",
-                dataOra: new Date(2025, 6, 25, 16, 0),
+                dataOra: new Date(2025, 6, 25, 15, 30),
                 route: routeid3,
                 aircraft: "3",
-                duration: 40
+                duration: 70
             });
-            return Promise.all([f1, f2, f3]);
+            let f4 = Flights
+                .getModel()
+                .create({
+                _flightCode: "AB107",
+                dataOra: new Date(2025, 7, 25, 12, 30),
+                route: routeid4,
+                aircraft: "1",
+                duration: 640
+            });
+            let f5 = Flights
+                .getModel()
+                .create({
+                _flightCode: "AB108",
+                dataOra: new Date(2025, 7, 25, 12, 30),
+                route: routeid5,
+                aircraft: "2",
+                duration: 570
+            });
+            let f6 = Flights
+                .getModel()
+                .create({
+                _flightCode: "AB109",
+                dataOra: new Date(2025, 7, 26, 0, 0),
+                route: routeid6,
+                aircraft: "3",
+                duration: 70
+            });
+            return Promise.all([f1, f2, f3, f4, f5, f6]);
         }
     }).then(() => {
         let server = http.createServer(app);
