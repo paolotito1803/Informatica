@@ -11,6 +11,7 @@ import * as Airports from "./Airports";
 import * as Routes from "./Routes";
 import * as Seats from "./Seats";
 import * as Flights from "./Flights";
+import { promises } from "dns";
 
 let ios = undefined;
 export function Inizializzazione(app){
@@ -46,7 +47,7 @@ export function Inizializzazione(app){
                     tickets : []
                 });
                 m1.setPassword("123456");
-                m1.save();
+                //m1.save();
                 let m2 = Users.newUser({
                     username: "bordjack47",
                     passportID: "VY3141592",
@@ -55,7 +56,7 @@ export function Inizializzazione(app){
                     tickets : []
                 });
                 m2.setPassword("7891011");
-                m2.save();
+                //m2.save();
                 let m3 = Users.newUser({
                     username: "tito_paul",
                     passportID: "GK1618033",
@@ -64,7 +65,7 @@ export function Inizializzazione(app){
                     tickets : []
                 });
                 m3.setPassword("abdef");
-                m3.save();
+                //m3.save();
                 let m4 = Users.newUser({
                     username: "lufthansa",
                     passportID : "AB12345",
@@ -73,7 +74,7 @@ export function Inizializzazione(app){
                     tickets : []
                 });
                 m4.setPassword("prova");
-                m4.save();
+                //m4.save();
                 let m5 = Users.newUser({
                     username: "emirates",
                     passportID : "EM6754",
@@ -82,16 +83,18 @@ export function Inizializzazione(app){
                     tickets : []
                 });
                 m5.setPassword("ek12345");
-                m5.save();
+                //m5.save();
                 let m6 = Users.newUser({
                     username: "ITA Airways",
                     passportID : "IT2025",
-                    mail: "ITA.airways@flight_project.it",
+                    mail: "ITA.airways@project_flight.it",
                     roles : "airline",
                     tickets : []
                 });
                 m6.setPassword("provaI");
-                m6.save();
+                //m6.save();
+
+                return Promise.all([m1.save(), m2.save(), m3.save(), m4.save(), m5.save(), m6.save()]);
             }
         }).then(() => {
             return Tickets.getModel().countDocuments({})
@@ -99,84 +102,97 @@ export function Inizializzazione(app){
         ).then( async (count) => { //dati di test per i tickets
             if (count == 0) {
                 console.log("Adding some test ticket into the database");
-                let username1 = await Users.getModel().findOne({username : 'micbos71'});
-                let code_user1 = username1._id;
-                let username2 = await Users.getModel().findOne({username : 'bordjack47'});
-                let code_user2 = username2._id;
-                let username3 = await Users.getModel().findOne({username : 'tito_paul'});
-                let code_user3 = username3._id;
-                let username4 = await Users.getModel().findOne({username : 'lufthansa'});
-                let code_user4 = username4._id;
-                let username5 = await Users.getModel().findOne({username : 'emirates'});
-                let code_user5 = username5._id;
-                let username6 = await Users.getModel().findOne({username : 'ITA Airways'});
-                let code_user6 = username6._id;
+
+                // Ora possiamo recuperare gli utenti (sono sicuramente creati)
+                let username1 = Users.getModel().findOne({ username: 'micbos71' });
+                let username2 = Users.getModel().findOne({ username: 'bordjack47' });
+                let username3 = Users.getModel().findOne({ username: 'tito_paul' });
+                let username4 = Users.getModel().findOne({ username: 'lufthansa' });
+                let username5 = Users.getModel().findOne({ username: 'emirates' });
+                let username6 = Users.getModel().findOne({ username: 'ITA Airways' });
+
+                let users = await Promise.all([username1, username2, username3, username4, username5, username6]);
+
+                if (users.some(u => !u)) {
+                    console.error("Uno o più utenti non trovati, salto la creazione dei ticket.");
+                    return;
+                }
+
+                let [u1, u2, u3, u4, u5, u6] = users;
+
+                // Creiamo i biglietti, aspettiamo che siano salvati e associati agli utenti
                 let t1 = Tickets.getModel().create({
-                        user: code_user1, 
-                        seat: "A1", 
-                        flight: "AB104", 
-                        price: 10, 
-                        numBag: 1, 
-                        _code: "1"
-                    }).then(ticket => {
-                        username1.tickets.push(ticket);
-                        username1.save();
-                    });
+                    user: u1._id,
+                    seat: "A1",
+                    flight: "AB104",
+                    price: 10,
+                    numBag: 1,
+                    _code: "1"
+                }).then(ticket => {
+                    u1.tickets.push(ticket);
+                    return u1.save();
+                });
+
                 let t2 = Tickets.getModel().create({
-                        user: code_user2, 
-                        seat: "A2", 
-                        flight: "AB105", 
-                        price: 20, 
-                        numBag: 2,
-                        _code: "2"
-                    }).then((ticket) => {
-                        username2.tickets.push(ticket);
-                        username2.save();
-                    });
+                    user: u2._id,
+                    seat: "A2",
+                    flight: "AB105",
+                    price: 20,
+                    numBag: 2,
+                    _code: "2"
+                }).then(ticket => {
+                    u2.tickets.push(ticket);
+                    return u2.save();
+                });
+
                 let t3 = Tickets.getModel().create({
-                        user: code_user3,
-                        seat: "A3",
-                        flight: "AB106",
-                        price: 30,
-                        numBag: 3,
-                        _code: "3"
-                    }).then((ticket) => {
-                        username3.tickets.push(ticket);
-                        username3.save();
-                    });
+                    user: u3._id,
+                    seat: "A3",
+                    flight: "AB106",
+                    price: 30,
+                    numBag: 3,
+                    _code: "3"
+                }).then(ticket => {
+                    u3.tickets.push(ticket);
+                    return u3.save();
+                });
+
                 let t4 = Tickets.getModel().create({
-                        user: code_user4,
-                        seat: "A3",
-                        flight: "AB105",
-                        price: 1000,
-                        numBag: 1,
-                        _code: "4"
-                    }).then((ticket) => {
-                        username4.tickets.push(ticket);
-                        username4.save();
-                    });
+                    user: u4._id,
+                    seat: "A3",
+                    flight: "AB107",
+                    price: 1000,
+                    numBag: 1,
+                    _code: "4"
+                }).then(ticket => {
+                    u4.tickets.push(ticket);
+                    return u4.save();
+                });
+
                 let t5 = Tickets.getModel().create({
-                        user: code_user5,
-                        seat: "A3",
-                        flight: "AB106",
-                        price: 30,
-                        numBag: 1,
-                        _code: "5"
-                    }).then((ticket) => {
-                        username5.tickets.push(ticket);
-                        username5.save();
-                    });
+                    user: u5._id,
+                    seat: "A3",
+                    flight: "AB108",
+                    price: 30,
+                    numBag: 1,
+                    _code: "5"
+                }).then(ticket => {
+                    u5.tickets.push(ticket);
+                    return u5.save();
+                });
+
                 let t6 = Tickets.getModel().create({
-                        user: code_user6,
-                        seat: "A3",
-                        flight: "AB104",
-                        price: 10,
-                        numBag: 3,
-                        _code: "6"
-                    }).then((ticket) => {
-                        username6.tickets.push(ticket);
-                        username6.save();
-                    });
+                    user: u6._id,
+                    seat: "A3",
+                    flight: "AB109",
+                    price: 10,
+                    numBag: 3,
+                    _code: "6"
+                }).then(ticket => {
+                    u6.tickets.push(ticket);
+                    return u6.save();
+                });
+
                 return Promise.all([t1, t2, t3, t4, t5, t6]);
             }
         }).then(() => {
@@ -188,31 +204,28 @@ export function Inizializzazione(app){
                 let a1 = Aircrafts
                     .getModel()
                     .create({
-                       _numAircraft : "1",
-                       seats: [{_numSeat : "A1", class : "Economy", legroom : false, isFree : true},
-                                {_numSeat : "A2", class : "Business", legroom : true, isFree : true},
-                                {_numSeat : "A3", class : "First", legroom : true, isFree : false}
-                            ],
+                       _numAircraft : "1", 
+                       seats: [{_numSeat : "A1", class : "Economy", legroom : false, isFree : true}, 
+                               {_numSeat : "A2", class : "Business", legroom : true, isFree : true}, 
+                               {_numSeat : "A3", class : "First", legroom : true, isFree : false}], 
                         modello : "Boing737"
                     });
                 let a2 = Aircrafts
                     .getModel()
                     .create({
-                       _numAircraft : "2",
-                       seats: [{_numSeat : "A1", class : "Economy", legroom : false, isFree : true},
-                                {_numSeat : "A2", class : "Business", legroom : true, isFree : true},
-                                {_numSeat : "A3", class : "First", legroom : true, isFree : false}
-                            ],
+                        _numAircraft : "2", 
+                        seats: [{_numSeat : "B1", class : "Business", legroom : true, isFree : false}, 
+                                {_numSeat : "B2", class : "First", legroom : true, isFree : true}, 
+                                {_numSeat : "B3", class : "Economy", legroom : false, isFree : false}], 
                         modello : "Boing747"
                     });
                     let a3 = Aircrafts
                     .getModel()
                     .create({
-                       _numAircraft : "3",
-                       seats: [{_numSeat : "A1", class : "Economy", legroom : false, isFree : true},
-                                {_numSeat : "A2", class : "Business", legroom : true, isFree : true},
-                                {_numSeat : "A3", class : "First", legroom : true, isFree : false}
-                            ],
+                       _numAircraft : "3", 
+                       seats: [{_numSeat : "C1", class : "First", legroom : true, isFree : true}, 
+                               {_numSeat : "C2", class : "Economy", legroom : true, isFree : true}, 
+                               {_numSeat : "C3", class : "Buisness", legroom : false, isFree : true}], 
                         modello : "Boing767"
                     });
                 return Promise.all([a1, a2, a3]);
@@ -229,7 +242,7 @@ export function Inizializzazione(app){
                        _signature : "ITA",
                        name : "ITA Airways",
                        revenue : 10,
-                       mail : "ITA.airways@flight_project.it",
+                       mail : "ITA.airways@project_flight.it",
                        aircrafts : [{_numAircraft : "1", seats: [{_numSeat : "A1", class : "Economy", legroom : false, isFree : true}, {_numSeat : "A2", class : "Business", legroom : true, isFree : true}, {_numSeat : "A3", class : "First", legroom : true, isFree : false}], modello : "Boing737"}]
                     });
                 let air2 = Airlines
@@ -246,9 +259,9 @@ export function Inizializzazione(app){
                     .create({
                        _signature : "EK",
                        name : "Emirates",
-                       mail : "emirates@flight_project.it",
+                       mail : "emirates@project_flight.it",
                        revenue : 100,
-                       aircrafts : [{_numAircraft : "3", seats: [{_numSeat : "C1", class : "First", legroom : true, isFree : true}, {numSeat : "C2", class : "Economy", legroom : true, isFree : true}, {_numSeat : "C3", class : "Buisness", legroom : false, isFree : true}], modello : "Boing767"}]
+                       aircrafts : [{_numAircraft : "3", seats: [{_numSeat : "C1", class : "First", legroom : true, isFree : true}, {_numSeat : "C2", class : "Economy", legroom : true, isFree : true}, {_numSeat : "C3", class : "Buisness", legroom : false, isFree : true}], modello : "Boing767"}]
                     });
                 return Promise.all([air1, air2, air3]);
             }
@@ -357,7 +370,55 @@ export function Inizializzazione(app){
                         legroom : true, 
                         isFree : false
                 });
-                return Promise.all([s1, s2, s3]);
+                let s4 = Seats
+                .getModel()
+                .create({
+                    _numSeat : "B1", 
+                    class : "Business", 
+                    legroom : true, 
+                    isFree : false
+                });
+                let s5 = Seats
+                .getModel()
+                .create({
+                    _numSeat : "B2", 
+                    class : "First", 
+                    legroom : true, 
+                    isFree : true
+                }); 
+                let s6 = Seats
+                .getModel()
+                .create({
+                    _numSeat : "B3", 
+                    class : "Economy", 
+                    legroom : false, 
+                    isFree : false
+                }); 
+                let s7 = Seats
+                .getModel()
+                .create({
+                    _numSeat : "C1", 
+                    class : "First", 
+                    legroom : true, 
+                    isFree : true
+                });
+                let s8 = Seats
+                .getModel()
+                .create({
+                    _numSeat : "C2", 
+                    class : "Economy", 
+                    legroom : true, 
+                    isFree : true
+                }); 
+                let s9 = Seats
+                .getModel()
+                .create({
+                    _numSeat : "C3", 
+                    class : "Buisness", 
+                    legroom : false, 
+                    isFree : true
+                });
+                return Promise.all([s1, s2, s3, s4, s5, s6, s7, s8, s9]);
             }
         }).then(() => {
                 return Flights.getModel().countDocuments({})
@@ -381,7 +442,7 @@ export function Inizializzazione(app){
                     .getModel()
                     .create({
                         _flightCode : "AB104",
-                        dataOra : new Date(2025, 6, 25, 15, 30),
+                        dataOra : new Date(2025, 5, 25, 15, 30),
                         route : routeid1,
                         aircraft : "1",
                         duration : 640 //760
@@ -390,7 +451,7 @@ export function Inizializzazione(app){
                     .getModel()
                     .create({
                         _flightCode : "AB105",
-                        dataOra : new Date(2025, 6, 26, 1, 30),
+                        dataOra : new Date(2025, 5, 26, 1, 30),
                         route : routeid2,
                         aircraft : "2",
                         duration : 570
@@ -399,7 +460,7 @@ export function Inizializzazione(app){
                 .getModel()
                 .create({
                         _flightCode : "AB106",
-                        dataOra : new Date(2025, 6, 25, 15, 30),
+                        dataOra : new Date(2025, 5, 25, 15, 30),
                         route : routeid3,
                         aircraft : "3",
                         duration : 70
@@ -408,7 +469,7 @@ export function Inizializzazione(app){
                     .getModel()
                     .create({
                         _flightCode : "AB107",
-                        dataOra : new Date(2025, 7, 25, 12, 30),
+                        dataOra : new Date(2025, 6, 25, 12, 30),
                         route : routeid4,
                         aircraft : "1",
                         duration : 640
@@ -417,7 +478,7 @@ export function Inizializzazione(app){
                     .getModel()
                     .create({
                         _flightCode : "AB108",
-                        dataOra : new Date(2025, 7, 25, 12, 30),
+                        dataOra : new Date(2025, 6, 25, 12, 30),
                         route : routeid5,
                         aircraft : "2",
                         duration : 570
@@ -426,7 +487,7 @@ export function Inizializzazione(app){
                 .getModel()
                 .create({
                         _flightCode : "AB109",
-                        dataOra : new Date(2025, 7, 26, 0, 0),
+                        dataOra : new Date(2025, 6, 26, 0, 0),
                         route : routeid6,
                         aircraft : "3",
                         duration : 70
