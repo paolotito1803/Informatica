@@ -20,6 +20,8 @@ export class PassengersComponent implements OnInit {
   editPassword = '';
   editPassportID = '';
 
+  isSidebarOpen = false;
+
   constructor(
     private ticketsService: TicketsService,
     private passangersService: PassangersService,
@@ -29,6 +31,7 @@ export class PassengersComponent implements OnInit {
   ngOnInit() {
     this.mail = this.us.get_mail();
     this.username = this.us.get_username();
+    this.isSidebarOpen = false;
     
     this.ticketsService.getTickets().subscribe(res => {
       console.log('Biglietti ricevuti:', res); // Debug temporaneo
@@ -104,6 +107,13 @@ export class PassengersComponent implements OnInit {
     if (removed && removed._code) {
       this.deletePassangersTicketFromBackend(removed._code);
     }
+    this.ticketsService.getTickets().subscribe(res => {
+      console.log('Biglietti ricevuti:', res); // Debug temporaneo
+      //this.tickets = res;
+      this.tickets = res.map(t => ({_code : t._code, user : this.us.get_mail(), 
+                                    flight : t.flight, seat : t.seat, 
+                                    price : t.price, numBag : t.numBag, editing: false}));
+    });
   }
 
   addPassangersTicketToBackend(ticket: Tickets) {
@@ -126,21 +136,6 @@ export class PassengersComponent implements OnInit {
         console.error('Errore eliminazione biglietto:', err);
       }
     });
-  }
-
-  deletePassangers() {
-    if (confirm('Sei sicuro di voler eliminare definitivamente il tuo account e tutti i dati associati?')) {
-      this.passangersService.deletePassangers(this.us.get_id()).subscribe({
-        next: () => {
-          console.log(`Passeggero ${this.mail} eliminato correttamente.`);
-          // Puoi reindirizzare alla pagina di login o home
-          window.location.href = '/';
-        },
-        error: err => {
-          console.error('Errore durante l\'eliminazione del passeggero:', err);
-        }
-      });
-    }
   }
 
   acquistaBiglietto() {
@@ -171,7 +166,9 @@ export class PassengersComponent implements OnInit {
   deleteTickets(ticket: Tickets) {
     this.ticketsService.deleteTickets(ticket._code).subscribe({
       next: () => this.ticketsService.getTickets().subscribe({
-        next: (data) => this.tickets = data,
+        next: (data) => this.tickets = data.map(t => ({_code : t._code, user : this.us.get_mail(), 
+                                    flight : t.flight, seat : t.seat, 
+                                    price : t.price, numBag : t.numBag, editing: false})),
         error: (err) => console.error(err)
       }),
       error: (err) => console.error(err)

@@ -26,4 +26,22 @@ export class AircraftsService {
       })
     });
   }
+
+  deleteAircraft(id: string) : Observable<any> {
+    return this.http.delete(this.us.url + "/aircrafts/" + id, {
+      headers: new HttpHeaders({
+        authorization: 'Bearer ' + this.us.get_token(),
+        'Content-Type': 'application/json'
+      })
+    });
+  }
+
+  updateAircraft(id: string, data: {_numAircraft: string, modello: string, seats: Seats[], editing: boolean}) : Observable<any> {
+    return this.http.put(this.us.url + "/aircrafts/" + id, data,{
+      headers: new HttpHeaders({
+        authorization: 'Bearer ' + this.us.get_token(),
+        'Content-Type': 'application/json'
+      })
+    });
+  }
 }

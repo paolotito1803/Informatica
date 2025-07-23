@@ -54,4 +54,11 @@ export class TicketsService {
       catchError(this.handleError)
     );
   }
+
+  updateTickets(id: string, data:{seat? : string, price?:number, numBag?:number}) : Observable<{error: boolean, errormessage: string, ticket:Tickets}>{
+    return this.http.put<{error: boolean, errormessage: string, ticket:Tickets}>(this.us.url + "/tickets/" + id, data, this.create_options()).pipe(
+      catchError(this.handleError)
+    );
+  }
+
 }

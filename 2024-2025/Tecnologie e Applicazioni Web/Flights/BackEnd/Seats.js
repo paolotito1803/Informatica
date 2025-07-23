@@ -40,8 +40,8 @@ seatSchema.methods.setClass = function (clas) {
 seatSchema.methods.setLegroom = function (legroom) {
     this.legroom = legroom;
 };
-seatSchema.methods.setIsFree = function () {
-    this.isFree = !this.isFree;
+seatSchema.methods.setIsFree = function (isFree) {
+    this.isFree = isFree;
 };
 function getSchema() { return seatSchema; }
 // Mongoose Model

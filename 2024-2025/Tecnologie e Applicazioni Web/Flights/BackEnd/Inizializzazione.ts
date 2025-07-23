@@ -97,105 +97,6 @@ export function Inizializzazione(app){
                 return Promise.all([m1.save(), m2.save(), m3.save(), m4.save(), m5.save(), m6.save()]);
             }
         }).then(() => {
-            return Tickets.getModel().countDocuments({})
-        }
-        ).then( async (count) => { //dati di test per i tickets
-            if (count == 0) {
-                console.log("Adding some test ticket into the database");
-
-                // Ora possiamo recuperare gli utenti (sono sicuramente creati)
-                let username1 = Users.getModel().findOne({ username: 'micbos71' });
-                let username2 = Users.getModel().findOne({ username: 'bordjack47' });
-                let username3 = Users.getModel().findOne({ username: 'tito_paul' });
-                let username4 = Users.getModel().findOne({ username: 'lufthansa' });
-                let username5 = Users.getModel().findOne({ username: 'emirates' });
-                let username6 = Users.getModel().findOne({ username: 'ITA Airways' });
-
-                let users = await Promise.all([username1, username2, username3, username4, username5, username6]);
-
-                if (users.some(u => !u)) {
-                    console.error("Uno o più utenti non trovati, salto la creazione dei ticket.");
-                    return;
-                }
-
-                let [u1, u2, u3, u4, u5, u6] = users;
-
-                // Creiamo i biglietti, aspettiamo che siano salvati e associati agli utenti
-                let t1 = Tickets.getModel().create({
-                    user: u1._id,
-                    seat: "A1",
-                    flight: "AB104",
-                    price: 10,
-                    numBag: 1,
-                    _code: "1"
-                }).then(ticket => {
-                    u1.tickets.push(ticket);
-                    return u1.save();
-                });
-
-                let t2 = Tickets.getModel().create({
-                    user: u2._id,
-                    seat: "A2",
-                    flight: "AB105",
-                    price: 20,
-                    numBag: 2,
-                    _code: "2"
-                }).then(ticket => {
-                    u2.tickets.push(ticket);
-                    return u2.save();
-                });
-
-                let t3 = Tickets.getModel().create({
-                    user: u3._id,
-                    seat: "A3",
-                    flight: "AB106",
-                    price: 30,
-                    numBag: 3,
-                    _code: "3"
-                }).then(ticket => {
-                    u3.tickets.push(ticket);
-                    return u3.save();
-                });
-
-                let t4 = Tickets.getModel().create({
-                    user: u4._id,
-                    seat: "A3",
-                    flight: "AB107",
-                    price: 1000,
-                    numBag: 1,
-                    _code: "4"
-                }).then(ticket => {
-                    u4.tickets.push(ticket);
-                    return u4.save();
-                });
-
-                let t5 = Tickets.getModel().create({
-                    user: u5._id,
-                    seat: "A3",
-                    flight: "AB108",
-                    price: 30,
-                    numBag: 1,
-                    _code: "5"
-                }).then(ticket => {
-                    u5.tickets.push(ticket);
-                    return u5.save();
-                });
-
-                let t6 = Tickets.getModel().create({
-                    user: u6._id,
-                    seat: "A3",
-                    flight: "AB109",
-                    price: 10,
-                    numBag: 3,
-                    _code: "6"
-                }).then(ticket => {
-                    u6.tickets.push(ticket);
-                    return u6.save();
-                });
-
-                return Promise.all([t1, t2, t3, t4, t5, t6]);
-            }
-        }).then(() => {
             return Aircrafts.getModel().countDocuments({})
         }
         ).then( (count) => { //dati di test per gli aircrafts
@@ -225,10 +126,37 @@ export function Inizializzazione(app){
                        _numAircraft : "3", 
                        seats: [{_numSeat : "C1", class : "First", legroom : true, isFree : true}, 
                                {_numSeat : "C2", class : "Economy", legroom : true, isFree : true}, 
-                               {_numSeat : "C3", class : "Buisness", legroom : false, isFree : true}], 
+                               {_numSeat : "C3", class : "Business", legroom : false, isFree : true}], 
                         modello : "Boing767"
                     });
-                return Promise.all([a1, a2, a3]);
+                    let a4 = Aircrafts
+                    .getModel()
+                    .create({
+                       _numAircraft : "4", 
+                       seats: [{_numSeat : "A1", class : "Economy", legroom : false, isFree : true}, 
+                               {_numSeat : "A2", class : "Business", legroom : true, isFree : true}, 
+                               {_numSeat : "A3", class : "First", legroom : false, isFree : false}], 
+                        modello : "Boing737"
+                    });
+                let a5 = Aircrafts
+                    .getModel()
+                    .create({
+                        _numAircraft : "5", 
+                        seats: [{_numSeat : "B1", class : "Business", legroom : true, isFree : false}, 
+                                {_numSeat : "B2", class : "First", legroom : true, isFree : true}, 
+                                {_numSeat : "B3", class : "Economy", legroom : false, isFree : true}], 
+                        modello : "Boing747"
+                    });
+                    let a6 = Aircrafts
+                    .getModel()
+                    .create({
+                       _numAircraft : "6", 
+                       seats: [{_numSeat : "C1", class : "First", legroom : true, isFree : true}, 
+                               {_numSeat : "C2", class : "Economy", legroom : true, isFree : true}, 
+                               {_numSeat : "C3", class : "Business", legroom : true, isFree : true}], 
+                        modello : "Boing767"
+                    });
+                return Promise.all([a1, a2, a3, a4, a5, a6]);
             }
         }).then(() => {
                 return Airlines.getModel().countDocuments({})
@@ -243,7 +171,8 @@ export function Inizializzazione(app){
                        name : "ITA Airways",
                        revenue : 10,
                        mail : "ITA.airways@project_flight.it",
-                       aircrafts : [{_numAircraft : "1", seats: [{_numSeat : "A1", class : "Economy", legroom : false, isFree : true}, {_numSeat : "A2", class : "Business", legroom : true, isFree : true}, {_numSeat : "A3", class : "First", legroom : true, isFree : false}], modello : "Boing737"}]
+                       aircrafts : [{_numAircraft : "1", seats: [{_numSeat : "A1", class : "Economy", legroom : false, isFree : false}, {_numSeat : "A2", class : "Business", legroom : true, isFree : true}, {_numSeat : "A3", class : "First", legroom : true, isFree : false}], modello : "Boing737"},
+                                    {_numAircraft : "4", seats: [{_numSeat : "A1", class : "Economy", legroom : false, isFree : true}, {_numSeat : "A2", class : "Business", legroom : true, isFree : true}, {_numSeat : "A3", class : "First", legroom : false, isFree : false}], modello : "Boing737"}]
                     });
                 let air2 = Airlines
                     .getModel()
@@ -252,7 +181,8 @@ export function Inizializzazione(app){
                        name : "Lufthansa",
                        mail : "lufthansa@project_flight.it",
                        revenue : 100,
-                       aircrafts : [{_numAircraft : "2", seats: [{_numSeat : "B1", class : "Business", legroom : true, isFree : false}, {_numSeat : "B2", class : "First", legroom : true, isFree : true}, {_numSeat : "B3", class : "Economy", legroom : false, isFree : false}], modello : "Boing747"}]
+                       aircrafts : [{_numAircraft : "2", seats: [{_numSeat : "B1", class : "Business", legroom : true, isFree : false}, {_numSeat : "B2", class : "First", legroom : true, isFree : false}, {_numSeat : "B3", class : "Economy", legroom : false, isFree : false}], modello : "Boing747"},
+                                    {_numAircraft : "5", seats: [{_numSeat : "B1", class : "Business", legroom : true, isFree : false}, {_numSeat : "B2", class : "First", legroom : true, isFree : true}, {_numSeat : "B3", class : "Economy", legroom : false, isFree : true}], modello : "Boing747"}]
                     });
                     let air3 = Airlines
                     .getModel()
@@ -261,7 +191,8 @@ export function Inizializzazione(app){
                        name : "Emirates",
                        mail : "emirates@project_flight.it",
                        revenue : 100,
-                       aircrafts : [{_numAircraft : "3", seats: [{_numSeat : "C1", class : "First", legroom : true, isFree : true}, {_numSeat : "C2", class : "Economy", legroom : true, isFree : true}, {_numSeat : "C3", class : "Buisness", legroom : false, isFree : true}], modello : "Boing767"}]
+                       aircrafts : [{_numAircraft : "3", seats: [{_numSeat : "C1", class : "First", legroom : true, isFree : true}, {_numSeat : "C2", class : "Economy", legroom : true, isFree : true}, {_numSeat : "C3", class : "Business", legroom : false, isFree : true}], modello : "Boing767"},
+                                    {_numAircraft : "6", seats: [{_numSeat : "C1", class : "First", legroom : true, isFree : true}, {_numSeat : "C2", class : "Economy", legroom : true, isFree : true}, {_numSeat : "C3", class : "Business", legroom : true, isFree : true}], modello : "Boing767"}]
                     });
                 return Promise.all([air1, air2, air3]);
             }
@@ -414,14 +345,14 @@ export function Inizializzazione(app){
                 .getModel()
                 .create({
                     _numSeat : "C3", 
-                    class : "Buisness", 
+                    class : "Business", 
                     legroom : false, 
                     isFree : true
                 });
                 return Promise.all([s1, s2, s3, s4, s5, s6, s7, s8, s9]);
             }
         }).then(() => {
-                return Flights.getModel().countDocuments({})
+            return Flights.getModel().countDocuments({})
         }
         ).then( async (count) => { // dati di test per i voli
             if (count == 0) {
@@ -471,7 +402,7 @@ export function Inizializzazione(app){
                         _flightCode : "AB107",
                         dataOra : new Date(2025, 6, 25, 12, 30),
                         route : routeid4,
-                        aircraft : "1",
+                        aircraft : "4",
                         duration : 640
                     });
                 let f5 = Flights
@@ -480,7 +411,7 @@ export function Inizializzazione(app){
                         _flightCode : "AB108",
                         dataOra : new Date(2025, 6, 25, 12, 30),
                         route : routeid5,
-                        aircraft : "2",
+                        aircraft : "5",
                         duration : 570
                     });
                 let f6 = Flights
@@ -489,11 +420,178 @@ export function Inizializzazione(app){
                         _flightCode : "AB109",
                         dataOra : new Date(2025, 6, 26, 0, 0),
                         route : routeid6,
-                        aircraft : "3",
+                        aircraft : "6",
                         duration : 70
                 });
                 return Promise.all([f1, f2, f3, f4, f5, f6]);
             }
+        }).then(() => {
+            return Tickets.getModel().countDocuments({})
+        }).then( async (count) => { //dati di test per i tickets
+            if (count == 0) {
+                console.log("Adding some test ticket into the database");
+
+                // Recupera utenti
+                let username1 = Users.getModel().findOne({ username: 'micbos71' });
+                let username2 = Users.getModel().findOne({ username: 'bordjack47' });
+                let username3 = Users.getModel().findOne({ username: 'tito_paul' });
+                let username4 = Users.getModel().findOne({ username: 'lufthansa' });
+                let username5 = Users.getModel().findOne({ username: 'emirates' });
+                let username6 = Users.getModel().findOne({ username: 'ITA Airways' });
+
+                let users = await Promise.all([username1, username2, username3, username4, username5, username6]);
+
+                if (users.some(u => !u)) {
+                    console.error("Uno o più utenti non trovati, salto la creazione dei ticket.");
+                    return;
+                }
+
+                // Recupera voli
+                const flights = await Flights.getModel().find({});
+                const aircraftMap = new Map();
+                for (const f of flights) {
+                    const aircraft = await Aircrafts.getModel().findOne({ _numAircraft: f.aircraft });
+                    if (!aircraft) continue;
+                    aircraftMap.set(f._flightCode, aircraft);
+                }
+
+                // Funzione per determinare il prezzo
+                const getPriceFromClass = (seatClass) => {
+                    switch (seatClass.toLowerCase()) {
+                        case "economy": return 10;
+                        case "business": return 30;
+                        case "first": return 50;
+                        default: return 20;
+                    }
+                };
+
+                const createTicket = async (user, flightCode, seatCode, numBag, code) => {
+                    const aircraft = aircraftMap.get(flightCode);
+                    if (!aircraft) return;
+
+                    const seat = aircraft.seats.find(s => s._numSeat === seatCode);
+                    if (!seat) {
+                        console.warn(`Seat ${seatCode} non trovato per il volo ${flightCode}`);
+                        return;
+                    }
+
+                    const price = getPriceFromClass(seat.class);
+                    const ticket = await Tickets.getModel().create({
+                        user: user._id,
+                        seat: seat._numSeat,
+                        flight: flightCode,
+                        price: price,
+                        numBag: numBag,
+                        _code: code
+                    });
+
+                    user.tickets.push(ticket);
+                    return user.save();
+                };
+
+                // Associazioni [utente, flightCode, seatCode, numBag, codice]
+                const biglietti = [
+                    [users[0], "AB104", "A2", 1, "1"],
+                    [users[1], "AB105", "B3", 2, "2"],
+                    [users[2], "AB106", "C3", 3, "3"],
+                    [users[3], "AB107", "A2", 1, "4"],
+                    [users[3], "AB107", "A3", 2, "5"],
+                    [users[3], "AB107", "A1", 3, "6"],
+                    [users[3], "AB104", "A3", 1, "7"],
+                    [users[3], "AB104", "A1", 2, "8"],
+                    [users[4], "AB108", "B1", 1, "9"],
+                    [users[4], "AB108", "B2", 2, "10"],
+                    [users[4], "AB108", "B3", 3, "11"],
+                    [users[4], "AB105", "B1", 1, "12"],
+                    [users[4], "AB105", "B2", 2, "13"],
+                    [users[5], "AB109", "C1", 3, "14"],
+                    [users[5], "AB109", "C2", 3, "15"],
+                    [users[5], "AB109", "C3", 3, "16"],
+                    [users[5], "AB106", "C1", 3, "17"],
+                    [users[5], "AB106", "C2", 3, "18"]
+                ];
+
+                for (const [user, flight, seat, numBag, code] of biglietti) {
+                    await createTicket(user, flight, seat, numBag, code);
+                }
+            }
+            /*if (count == 0) {
+                console.log("Adding some test ticket into the database");
+
+                
+                // Ora possiamo recuperare gli utenti (sono sicuramente creati)
+                let username1 = Users.getModel().findOne({ username: 'micbos71' });
+                let username2 = Users.getModel().findOne({ username: 'bordjack47' });
+                let username3 = Users.getModel().findOne({ username: 'tito_paul' });
+                let username4 = Users.getModel().findOne({ username: 'lufthansa' });
+                let username5 = Users.getModel().findOne({ username: 'emirates' });
+                let username6 = Users.getModel().findOne({ username: 'ITA Airways' });
+
+                let users = await Promise.all([username1, username2, username3, username4, username5, username6]);
+
+                if (users.some(u => !u)) {
+                    console.error("Uno o più utenti non trovati, salto la creazione dei ticket.");
+                    return;
+                }
+
+                let [u1, u2, u3, u4, u5, u6] = users;
+
+                let seat = await Seats.getModel().find({});
+                let seatClassMap = new Map();
+                seat.forEach(seat => seatClassMap.set(seat._numSeat, seat.class));
+
+                // Funzione per determinare il prezzo
+                const getPriceFromClass = (seatClass) => {
+                    switch (seatClass.toLowerCase()) {
+                        case "economy": return 10;
+                        case "business": return 30;
+                        case "first": return 50;
+                        default: return 20;
+                    }
+                };
+
+                const createTicket = async (user, seatCode, flightCode, numBag, code) => {
+                    const seatClass = seatClassMap.get(seatCode) || "economy";
+                    const price = getPriceFromClass(seatClass);
+                    const ticket = await Tickets.getModel().create({
+                        user: user._id,
+                        seat: seatCode,
+                        flight: flightCode,
+                        price: price,
+                        numBag: numBag,
+                        _code: code
+                    });
+                    user.tickets.push(ticket);
+                    return user.save();
+                };
+
+                let biglietti = [
+                    [u1, "B1", "AB104", 1, "1"],
+                    [u2, "C2", "AB105", 2, "2"],
+                    [u3, "A3", "AB106", 3, "3"],
+                    [u4, "B1", "AB107", 1, "4"],
+                    [u4, "B2", "AB107", 2, "5"],
+                    [u4, "B3", "AB107", 3, "6"],
+                    //createTicket(u4, "B1", "AB104", 1, "1"),
+                    [u4, "B2", "AB104", 2, "7"],
+                    [u4, "B3", "AB104", 3, "8"],
+                    [u5, "C1", "AB108", 1, "9"],
+                    [u5, "C2", "AB108", 2, "10"],
+                    [u5, "C3", "AB108", 3, "11"],
+                    [u5, "C1", "AB105", 1, "12"],
+                    //createTicket(u5, "C2", "AB105", 2, "2"),
+                    [u5, "C3", "AB105", 3, "13"],
+                    [u6, "A1", "AB109", 3, "14"],
+                    [u6, "A2", "AB109", 3, "15"],
+                    [u6, "A3", "AB109", 3, "16"],
+                    [u6, "A1", "AB106", 3, "17"],
+                    [u6, "A2", "AB106", 3, "18"]
+                    //createTicket(u6, "A3", "AB106", 3, "3")
+                ];
+                for (const [user, seat, flight, numBag, code] of biglietti) { 
+                    await createTicket(user, seat, flight, numBag, code);
+                }
+            }*/
         }).then(() => {
             let server = http.createServer(app);
 

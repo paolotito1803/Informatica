@@ -14,12 +14,38 @@
     </form>
   </section>
 
+  <section class="card">
+    <h2>Compagnie aeree</h2>
+    <table>
+        <thead>
+          <tr>
+            <th>Signature</th>
+            <th>Name</th>
+            <th>Mail</th>
+            <th>Azioni</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let a of airlines">
+            <ng-container>
+              <td>{{ a._signature }}</td>
+              <td>{{ a.name }}</td>
+              <td>{{ a.mail }}</td>
+              <td class="actions">
+                <button (click)="deleteAirline(a._signature!)">🗑️</button>
+              </td>
+            </ng-container>
+          </tr>
+        </tbody>
+    </table>
+  </section>
+
   <!-- 🛫 GESTIONE AEROPORTI -->
   <section class="card">
     <h2>Aeroporti</h2>
     <form [formGroup]="airportForm" (ngSubmit)="addAirport()" class="inline-form">
-      <input formControlName="_code" placeholder="Codice (es. FCO)" />
-      <input formControlName="name" placeholder="Nome aeroporto" />
+      <input formControlName="_code" placeholder="Codice (es. 000)" />
+      <input formControlName="name" placeholder="Nome aeroporto (es. FCO)" />
       <input formControlName="city" placeholder="Città" />
       <button type="submit" [disabled]="airportForm.invalid">Aggiungi</button>
     </form>
@@ -55,6 +81,34 @@
           </ng-template>
         </tr>
       </tbody>
+    </table>
+  </section>
+
+  <section class="card">
+    <h2>Utenti</h2>
+    <table>
+        <thead>
+          <tr>
+            <th>Username</th>
+            <th>Mail</th>
+            <th>passportID</th>
+            <th>Ruolo</th>
+            <th>Azioni</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let u of passengers">
+            <ng-container>
+              <td>{{ u.username }}</td>
+              <td>{{ u.mail }}</td>
+              <td>{{ u.passportID }}</td>
+              <td>{{ u.roles }}</td>
+              <td class="actions">
+                <button (click)="deletePassangers(u.mail)">🗑️</button>
+              </td>
+            </ng-container>
+          </tr>
+        </tbody>
     </table>
   </section>
 </div>

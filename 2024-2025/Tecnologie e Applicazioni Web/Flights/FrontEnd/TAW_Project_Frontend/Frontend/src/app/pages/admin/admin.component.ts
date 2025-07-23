@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AdminService } from '../../services/admin.service';
+import { Airlines, AirlinesService } from 'src/app/services/airlines.service';
+import { User, PassangersService } from 'src/app/services/passangers.service';
+import { UserHttpService } from 'src/app/user-http.service';
 
 interface Airport {
   _code: string;
@@ -17,11 +20,18 @@ export class AdminComponent implements OnInit {
   inviteForm!: FormGroup;
   airportForm!: FormGroup;
 
+  airlines: Airlines[] = [];
   airports: Airport[] = [];
+
   editing: { [id: string]: boolean } = {};
   editBuffer: { [id: string]: Airport } = {};
+  passengers: User[] = [];
 
-  constructor(private fb: FormBuilder, private adminSvc: AdminService) {}
+  constructor(private fb: FormBuilder, 
+              private adminSvc: AdminService, 
+              private airline: AirlinesService, 
+              private passengerSvc : PassangersService,
+              private us : UserHttpService) {}
 
   ngOnInit(): void {
     /*
@@ -52,6 +62,8 @@ export class AdminComponent implements OnInit {
     });
     
     this.loadAirports();
+    this.loadAirlines();
+    this.loadPassengers();
   }
 
   // ✉️ Invita compagnia
@@ -63,6 +75,20 @@ export class AdminComponent implements OnInit {
         this.inviteForm.reset();
       },
       error: err => alert('Errore invio invito: ' + err.message)
+    });
+  }
+
+  loadAirlines(): void {
+    this.airline.getAllAirlines().subscribe({
+      next: list => this.airlines = list,
+      error: err => console.error(err)
+    });
+  }
+
+  loadPassengers(): void {
+    this.passengerSvc.getPassengers().subscribe({
+      next: list => this.passengers = list,
+      error: err => console.error(err)
     });
   }
 
@@ -117,5 +143,29 @@ export class AdminComponent implements OnInit {
       },
       error: err => alert('Errore eliminazione aeroporto')
     });
+  }
+
+  deleteAirline(id: string): void{
+    this.adminSvc.deleteAirline(id).subscribe({
+      next: () => {
+        this.airlines = this.airlines.filter(a => a._signature !== id);
+        this.loadAirlines();
+      },
+      error: err => alert("Errore eliminazione compagnia aerea")
+    });
+  }
+
+  deletePassangers(mail: string) {
+    if (confirm('Sei sicuro di voler eliminare definitivamente il tuo account e tutti i dati associati?')) {
+      this.passengerSvc.deletePassangers(mail).subscribe({
+        next: () => {
+          console.log(`Passeggero ${mail} eliminato correttamente.`);
+          this.loadPassengers();
+        },
+        error: err => {
+          console.error('Errore durante l\'eliminazione del passeggero:', err);
+        }
+      });
+    }
   }
 }

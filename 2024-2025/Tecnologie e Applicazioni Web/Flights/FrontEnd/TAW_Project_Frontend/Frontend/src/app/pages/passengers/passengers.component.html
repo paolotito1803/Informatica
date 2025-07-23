@@ -1,43 +1,175 @@
-<div class="auth-buttons" style="position:absolute; top:20px; left:20px;">
-  <button *ngIf="!editingUserData" (click)="startEdit()">Aggiorna Dati</button>
+<div class="dashboard">
 
-  <div *ngIf="editingUserData" style="background:#f8f8f8; padding:10px; border:1px solid #ccc; border-radius:5px;">
-    <label>Username: <input [(ngModel)]="editUsername" /></label><br>
-    <label>Email: <input [(ngModel)]="editMail" /></label><br>
-    <label>Password: <input type="password" [(ngModel)]="editPassword" /></label><br><br>
-    <label>PassportID: <input type="passportID" [(ngModel)]="editPassportID" /></label><br><br>
+  <!-- Toggle Profilo -->
+  <button
+    *ngIf="!isSidebarOpen"
+    class="toggle-btn"
+    (click)="isSidebarOpen = !isSidebarOpen; startEdit()"
+    aria-label="Apri profilo"
+  >
+    <img
+      src="../../../assets/Interface_icons/user-settings.svg"
+      alt="Profilo"
+      class="field-icon"
+    />
+  </button>
 
-    <button (click)="updatePassangers()">Conferma</button>
-    <button (click)="cancelUpdate()">Annulla</button>
-    <button (click)="deletePassangers()" style="background-color:#d9534f; color:white;">Rimuovi Utente</button>
+  <!-- Overlay per chiusura cliccando fuori -->
+  <div
+    class="overlay"
+    *ngIf="isSidebarOpen"
+    (click)="isSidebarOpen = false"
+  ></div>
+
+  <!-- Sidebar Profilo -->
+  <aside class="sidebar" [class.open]="isSidebarOpen">
+    <header class="sidebar-header">
+      <h4>
+        <img
+          src="../../../assets/Interface_icons/user.svg"
+          alt="Utente"
+          class="field-icon"
+        />
+        Modifica Profilo
+      </h4>
+      <button
+        class="close-btn"
+        (click)="cancelUpdate(); isSidebarOpen = false"
+        aria-label="Chiudi profilo"
+      >
+        <img class="field-icon" src="../../../assets/Interface_icons/cancel.svg" />
+      </button>
+    </header>
+
+    <div class="sidebar-body" *ngIf="editingUserData">
+      <div class="field-group">
+        <img
+          src="../../../assets/Interface_icons/user.svg"
+          alt=""
+          class="icon"
+        />
+        <input
+          type="text"
+          [(ngModel)]="editUsername"
+          placeholder="Username"
+        />
+      </div>
+      <div class="field-group">
+        <img
+          src="../../../assets/Interface_icons/mail.svg"
+          alt=""
+          class="icon"
+        />
+        <input
+          type="email"
+          [(ngModel)]="editMail"
+          placeholder="Email"
+        />
+      </div>
+      <div class="field-group">
+        <img
+          src="../../../assets/Interface_icons/lock.svg"
+          alt=""
+          class="icon"
+        />
+        <input
+          type="password"
+          [(ngModel)]="editPassword"
+          placeholder="Password"
+        />
+      </div>
+      <div class="field-group">
+        <img
+          src="../../../assets/Interface_icons/passport.svg"
+          alt=""
+          class="icon"
+        />
+        <input
+          type="text"
+          [(ngModel)]="editPassportID"
+          placeholder="PassportID"
+        />
+      </div>
+
+      <div class="actions">
+        <button
+          class="btn save"
+          (click)="updatePassangers(); isSidebarOpen = false"
+        >
+          <img
+            src="../../../assets/Interface_icons/save.svg"
+            alt="Conferma"
+            class="field-icon"
+          />
+          Conferma
+        </button>
+      </div>
+    </div>
+  </aside>
+
+  <div class="main-content">
+    <!-- Sezione Biglietti -->
+    <section class="tickets-section">
+      <h3 class="section-title">
+        <img src="../../../assets/Interface_icons/ticket.svg" alt="Ticket" class="field-icon" />
+        I tuoi Biglietti
+      </h3>
+
+      <div *ngIf="tickets.length > 0; else noTickets" class="tickets-list">
+        <div *ngFor="let t of tickets" class="ticket-card">
+          <p><strong>Codice:</strong> {{ t._code }}</p>
+          <p><strong>Utente:</strong> {{ t.user }}</p>
+          <p><strong>Volo:</strong> {{ t.flight }}</p>
+          <p><strong>Posto:</strong> {{ t.seat }}</p>
+          <p><strong>Prezzo:</strong> {{ t.price }}€</p>
+          <p><strong>Bagagli:</strong> {{ t.numBag }}</p>
+          <button class="btn delete-ticket-btn" (click)="deleteTickets(t)">
+            <img src="../../../assets/Interface_icons/delete.svg" alt="Rimuovi" class="field-icon" />
+            Rimuovi Biglietto
+          </button>
+        </div>
+      </div>
+
+      <ng-template #noTickets>
+        <p class="empty-message">Non ci sono biglietti</p>
+      </ng-template>
+
+      <div *ngIf="newTicket" class="purchase-panel">
+        <h4>
+          <img src="../../../assets/Interface_icons/plus.svg" alt="Nuovo" class="field-icon" />
+          Completa l’acquisto
+        </h4>
+
+        <div class="form-field">
+          <label>Volo</label>
+          <input [(ngModel)]="newTicket.flight" disabled />
+        </div>
+
+        <div class="form-field">
+          <label>Posto</label>
+          <input [(ngModel)]="newTicket.seat" placeholder="Numero posto" />
+        </div>
+
+        <div class="form-field">
+          <label>Prezzo</label>
+          <input type="number" [(ngModel)]="newTicket.price" disabled />
+        </div>
+
+        <div class="form-field">
+          <label>Bagagli</label>
+          <input
+            type="number"
+            [(ngModel)]="newTicket.numBag"
+            min="0"
+            placeholder="Numero bagagli"
+          />
+        </div>
+
+        <button class="btn buy-btn" (click)="acquistaBiglietto()">
+          <img src="../../../assets/Interface_icons/buy.svg" alt="Acquista" class="field-icon" />
+          Conferma Acquisto
+        </button>
+      </div>
+    </section>
   </div>
 </div>
-
-<section style="margin-top: 20px;">
-  <h3>I tuoi Biglietti</h3>
-
-  <div *ngIf="tickets.length > 0; else noTickets">
-    <div *ngFor="let t of tickets" class="ticket-card">
-      <p><strong>Codice:</strong> {{ t._code }}</p>
-      <p><strong>Utente:</strong> {{ t.user }}</p>
-      <p><strong>Volo:</strong> {{ t.flight }}</p>
-      <p><strong>Posto:</strong> {{ t.seat }}</p>
-      <p><strong>Prezzo:</strong> {{ t.price }}€</p>
-      <p><strong>Bagagli:</strong> {{ t.numBag }}</p>
-      <button (click)="deleteTickets(t)">Rimuovi Biglietto</button>
-    </div>
-  </div>
-
-  <ng-template #noTickets>
-    <p>Non ci sono biglietti</p>
-  </ng-template>
-
-  <div *ngIf="newTicket" style="margin-top: 20px; border: 1px solid #ccc; padding: 10px;">
-    <h4>Completa l'acquisto del biglietto</h4>
-    <label>Volo: <input [(ngModel)]="newTicket.flight" disabled /></label><br />
-    <label>Posto: <input [(ngModel)]="newTicket.seat" placeholder="Numero posto" /></label><br />
-    <label>Prezzo: <input type="number" [(ngModel)]="newTicket.price" disabled /></label><br />
-    <label>Bagagli: <input type="number" [(ngModel)]="newTicket.numBag" min="0" /></label><br />
-    <button (click)="acquistaBiglietto()">Conferma Acquisto</button>
-  </div>
-</section>

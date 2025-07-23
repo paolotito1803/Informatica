@@ -20,38 +20,43 @@ export class PassangersService {
 
   constructor(private http: HttpClient, private us : UserHttpService) { }
     
-    private handleError(error: HttpErrorResponse) {
-      if (error.error instanceof ErrorEvent) {
-        // A client-side or network error occurred. Handle it accordingly.
-        console.error('An error occurred:', error.error.message);
-      } else {
-        // The backend returned an unsuccessful response code.
-        // The response body may contain clues as to what went wrong,
-        console.error(
-        `Backend returned code ${error.status}, ` +
-        'body was: ' + JSON.stringify(error.error));
-      }
-    
-      return throwError(() => new Error('Something bad happened; please try again later.') );
+  private handleError(error: HttpErrorResponse) {
+    if (error.error instanceof ErrorEvent) {
+      // A client-side or network error occurred. Handle it accordingly.
+      console.error('An error occurred:', error.error.message);
+    } else {
+      // The backend returned an unsuccessful response code.
+      // The response body may contain clues as to what went wrong,
+      console.error(
+      `Backend returned code ${error.status}, ` +
+      'body was: ' + JSON.stringify(error.error));
     }
   
-    private create_options( params = {} ) {
-      return  {
-        headers: new HttpHeaders({
-          authorization: 'Bearer ' + this.us.get_token(),
-          'cache-control': 'no-cache',
-          'Content-Type':  'application/json',
-        }),
-        params: new HttpParams( {fromObject: params} )
-      };
-  
-    }
+    return throwError(() => new Error('Something bad happened; please try again later.') );
+  }
 
-    updatePassangers(id: string, data: {name?: string, mail?: string, password?: string, passportID?: string}) : Observable<any> {
-      return this.http.put(this.us.url + '/users/' + id, data, this.create_options()).pipe(catchError(this.handleError));
-    }
+  private create_options( params = {} ) {
+    return  {
+      headers: new HttpHeaders({
+        authorization: 'Bearer ' + this.us.get_token(),
+        'cache-control': 'no-cache',
+        'Content-Type':  'application/json',
+      }),
+      params: new HttpParams( {fromObject: params} )
+    };
 
-   deletePassangers(id: string): Observable<any> {
+  }
+
+
+  updatePassangers(id: string, data: {name?: string, mail?: string, password?: string, passportID?: string}) : Observable<any> {
+    return this.http.put(this.us.url + '/users/' + id, data, this.create_options()).pipe(catchError(this.handleError));
+  }
+
+  deletePassangers(id: string): Observable<any> {
     return this.http.delete(this.us.url + `/users/` + id, this.create_options()).pipe(catchError(this.handleError));
+  }
+
+  getPassengers() : Observable<User[]> {
+    return this.http.get<User[]>(this.us.url + "/users", this.create_options()).pipe(catchError(this.handleError));
   }
 }

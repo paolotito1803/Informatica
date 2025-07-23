@@ -1,0 +1,279 @@
+:root {
+  --primary:    #3498db;
+  --success:    #2ecc71;
+  --danger:     #e74c3c;
+  --light-bg:   #f8f8f8;
+  --text-dark:  #2c3e50;
+  --text-light: #fff;
+}
+
+/* Reset base */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* Icone */ 
+.field-icon { 
+  width: 20px; 
+  height: 20px; 
+}
+
+.dashboard {
+  display: flex;
+  position: relative;
+  min-height: 100vh;
+  background: var(--light-bg);
+  font-family: 'Segoe UI', sans-serif;
+}
+
+/* Toggle Profilo */
+.toggle-btn {
+  position: fixed;
+  top: 10%;
+  right: 1.5rem;
+  width: 44px;
+  height: 44px;
+  background: var(--primary);
+  border: none;
+  border-radius: 50%;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 120;
+}
+.toggle-btn .icon {
+  width: 22px;
+  height: 22px;
+  filter: invert(1);
+}
+
+/* Overlay per chiudere */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.4);
+  z-index: 110;
+  animation: fadeIn 0.3s ease forwards;
+}
+
+/* Sidebar Profilo */
+.sidebar {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 280px;
+  height: 100vh;
+  /* con questo */
+  background-color: #ffffff;
+  /* oppure, se vuoi mantenere RGBA */
+  /* background: rgba(255, 255, 255, 1); */
+
+  /* assicurati NON ci sia opacity globale */
+  opacity: 1;
+  box-shadow: -4px 0 12px rgba(0,0,0,0.1);
+  transform: translateX(100%);
+  transition: transform 0.3s ease;
+  z-index: 115;
+  display: flex;
+  flex-direction: column;
+}
+.sidebar.open {
+  transform: translateX(0);
+}
+
+/* Header sidebar */
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+  border-bottom: 1px solid #ddd;
+}
+.sidebar-header h4 {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.15rem;
+  color: var(--text-dark);
+}
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  color: var(--text-dark);
+}
+
+/* Corpo form profilo */
+.sidebar-body {
+  padding: 1rem;
+  flex: 1;
+  overflow-y: auto;
+}
+.field-group {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+.field-group .icon {
+  width: 24px;
+  height: 24px;
+}
+.field-group input {
+  flex: 1;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+/* Azioni form */
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1rem;
+}
+.actions .btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  justify-content: center;
+  padding: 0.6rem 1rem;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.btn.save {
+  background: var(--primary);
+  color: var(--text-light);
+}
+.btn.delete {
+  background: var(--danger);
+  color: var(--text-light);
+}
+
+/* Main content */
+.main-content {
+  flex: 1;
+  padding: 2rem;
+  transition: margin-right 0.3s ease;
+}
+
+/* Sposta il main quando sidebar aperta */
+.sidebar.open ~ .main-content {
+  margin-right: 280px;
+}
+
+/* Sezione Biglietti */
+.tickets-section {
+  max-width: 900px;
+  margin: 0 auto;
+}
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+.section-header h3 {
+  font-size: 1.5rem;
+  color: var(--text-dark);
+}
+.section-header .icon {
+  width: 24px;
+  height: 24px;
+}
+
+/* Griglia di card */
+.tickets-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px,1fr));
+  gap: 1rem;
+}
+
+/* Singola card biglietto */
+.ticket-card {
+  background: var(--text-light);
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  border-left: 5px solid #3498db;
+  padding: 1rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.ticket-card .ticket-info p {
+  margin: 0.25rem 0;
+  color: var(--text-dark);
+}
+.btn.remove-ticket {
+  align-self: flex-end;
+  background: var(--danger);
+  color: var(--text-light);
+  border: none;
+  padding: 0.4rem 0.8rem;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+/* Panel acquisto */
+.purchase-panel {
+  margin-top: 2rem;
+  background: var(--text-light);
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  max-width: 400px;
+}
+.purchase-panel h4 {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  color: var(--text-dark);
+}
+.purchase-panel .field-group {
+  flex-direction: column;
+  margin-bottom: 1rem;
+}
+.btn.buy {
+  background: var(--success);
+  color: var(--text-light);
+  width: 100%;
+  padding: 0.6rem 0;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.btn.buy:hover {
+  background: darken(var(--success), 10%);
+}
+
+/* Fade-in overlay */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .sidebar {
+    width: 100%;
+    transform: translateX(100%);
+  }
+  .sidebar.open ~ .main-content {
+    margin-right: 0;
+  }
+  .toggle-btn {
+    top: 1rem;
+    right: 1rem;
+  }
+}

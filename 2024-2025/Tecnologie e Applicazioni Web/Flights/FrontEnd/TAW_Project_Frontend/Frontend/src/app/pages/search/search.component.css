@@ -1,0 +1,218 @@
+/* Video & Overlay */
+.background {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+}
+
+/* YouTube iframe full cover */
+.bg-video {
+  position: fixed;
+  top: 50%; left: 50%;
+  min-width: 100vw;
+  min-height: 100vh;
+  width: 150%;
+  height: 150%;
+  object-fit: cover;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: -200;
+  opacity: 0.6; /* regola l’opacità del video */
+}
+
+/* Velo semitrasparente sopra il video */
+.overlay {
+  position: fixed;
+  top: 0; left: 0;
+  background: rgba(0, 0, 0, 0.3); /* 0.0–1.0 scurisce o schiarisce */
+  z-index: -100;
+  pointer-events: none;
+}
+
+/* Pulsanti auth */
+.auth-buttons {
+  position: fixed;
+  top: 10%; right: 10%;
+  display: flex; gap: 5%;
+  z-index: 100;
+  pointer-events: auto;
+}
+
+.auth-buttons button {
+  background: rgba(255, 255, 255, 0.8);
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.auth-buttons button:hover {
+  background: rgba(255, 255, 255, 1);
+}
+
+
+.search-container {
+  position: absolute;
+  top: 50%;
+  left: 45%;
+  transform: translate(-50%, -50%);
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  text-align: center;
+  color: #fff;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
+  z-index: 1;
+}
+
+
+.search-container h2 {
+  font-size: 2rem;
+}
+
+.search-container input,
+.search-container button {
+  margin: 5px;
+  padding: 0.6rem 1rem;
+  font-size: 1rem;
+  border: none;
+  border-radius: 6px;
+}
+
+.search-container input {
+  min-width: 200px;
+  max-width: 300px;
+}
+
+.search-container button {
+  background: #ff6b6b;
+  color: #fff;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.search-container button:hover {
+  background: #ee5253;
+}
+
+.status {
+  margin-top: 1rem;
+}
+
+.error {
+  margin-top: 1rem;
+  color: #ff7979;
+}
+
+
+/* Risultati voli */
+/* Titolo risultati */
+.results-title {
+  font-size: 1.5rem;
+  color: #ffffff;
+}
+.results{
+  max-height: 500px;
+  overflow-y: auto;
+}
+
+/* Card base per ogni volo */
+.flight-card {
+  background: #ffffff;
+  border-left: 5px solid #2980b9;      /* blu per voli diretti */
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  padding: 1.2rem 1.5rem;
+  transition: transform 0.2s ease;
+  margin: 1rem auto;
+  width: 90%;
+  max-width: 900px;
+}
+.flight-card:hover {
+  transform: translateY(-2px);
+}
+
+/* Override per voli con scalo */
+.flight-card.layover-card {
+  border-left-color: #e67e22;          /* arancio per scali */
+}
+
+/* Header: rotta + prezzo */
+.flight-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #34495e;
+}
+
+/* Colori rotta a seconda del tipo */
+.flight-card .flight-header .route {
+  color: #2980b9;                       /* diretto */
+}
+.flight-card.layover-card .flight-header .route {
+  color: #d35400;                       /* scalo */
+}
+
+/* Prezzo sempre verde */
+.flight-header .price {
+  color: #27ae60;
+  font-size: 1.1rem;
+}
+
+/* Dettagli volo (orario, durata, data…) */
+.flight-details {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  color: #000;
+}
+
+.detail .label {
+  font-size: 0.85rem;
+}
+
+.detail .value {
+  display: block;
+  font-size: 0.95rem;
+  font-weight: 500;
+  margin-top: 0.2rem;
+}
+
+/* Bottone Acquista */
+.btn.purchase {
+  background: #3498db;
+  color: #fff;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.btn.purchase:hover {
+  background: #2980b9;
+}
+
+
+
+
+/* Responsive */
+@media (max-width: 768px) {
+  .search-container h2 {
+    font-size: 1.5rem;
+  }
+  .search-container input {
+    width: 100%;
+    max-width: none;
+  }
+  .flight-card {
+    width: 90%;
+  }
+}

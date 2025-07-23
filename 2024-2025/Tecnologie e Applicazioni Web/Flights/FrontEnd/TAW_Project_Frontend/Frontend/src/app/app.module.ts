@@ -28,8 +28,6 @@ import { PassangersService } from './services/passangers.service';
 import { AdminService } from './services/admin.service';
 import { AirlinesService } from './services/airlines.service';
 import { ChangePasswordComponent } from './change-password/change-password.component';
-/*import { AdminModule } from './pages/admin/admin.module';
-import { PassengersModule } from './pages/passengers/passengers.module';*/
 
 
 
@@ -57,8 +55,6 @@ declarations: [
     HttpClientModule,
     AppRoutingModule,
     ReactiveFormsModule
-    /*AdminModule,
-    PassengersModule*/
   ],
   providers: [
     {provide: UserHttpService, useClass: UserHttpService },

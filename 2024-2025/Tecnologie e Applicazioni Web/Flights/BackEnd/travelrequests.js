@@ -112,16 +112,27 @@ app.post('/users', (req, res, next) => {
         return next({ statusCode: 404, error: true, errormessage: "DB error: " + reason.errmsg });
     });
 });
-//delete user
-app.delete('/users/:id', auth, (req, res, next) => {
+// get all passengers
+app.get('/users', auth, (req, res, next) => {
     if (!users.newUser(req.auth).hasAdminRole()) {
         return next({ statusCode: 404, error: true, errormessage: "Unauthorized: user is not an administrator." });
     }
-    users.getModel().deleteOne({ _id: req.params.id }).then((q) => {
+    users.getModel().find({ roles: 'passenger' }).then((data) => {
+        return res.status(200).json(data);
+    }).catch((reason) => {
+        return next({ statuscode: 404, error: true, errormessage: "DB error " + reason });
+    });
+});
+//delete user
+app.delete('/users/:mail', auth, (req, res, next) => {
+    if (!users.newUser(req.auth).hasAdminRole()) {
+        return next({ statusCode: 404, error: true, errormessage: "Unauthorized: user is not an administrator." });
+    }
+    users.getModel().deleteOne({ mail: req.params.mail }).then((q) => {
         if (q.deletedCount > 0)
             return res.status(200).json({ error: false, errormessage: "" });
         else
-            return res.status(404).json({ error: true, errormessage: "Invalid user ID" });
+            return res.status(404).json({ error: true, errormessage: "Invalid user mail" });
     }).catch((reason) => {
         return next({ statusCode: 404, error: true, errormessage: "DB error: " + reason });
     });
@@ -236,6 +247,16 @@ app.get("/airlines/:mail", auth, (req, res, next) => {
         airlines.getModel().findOne({ mail: req.auth.mail }).then((airline) => {
             return res.status(200).json(airline);
         }).catch((err) => { return next({ statusCode: 400, error: true, errormessage: "Error mail" }); });
+    }
+});
+app.get("/airlines", auth, (req, res, next) => {
+    if (!users.newUser(req.auth).hasAdminRole()) {
+        return next({ statusCode: 403, error: true, errormessage: "Unauthorized" });
+    }
+    else {
+        airlines.getModel().find({}).then((airlines) => {
+            return res.status(200).json(airlines);
+        }).catch((err) => { return next({ statusCode: 400, error: true, errormessage: err.message }); });
     }
 });
 app.get("/airlines/:mail/aircrafts", auth, (req, res, next) => {
@@ -400,6 +421,10 @@ app.put('/aircrafts/:id', auth, async (req, res, next) => {
             if (req.body.seats) {
                 aircraft.seats = req.body.seats;
             }
+            const aereo = await airlines.getModel().findOne({ mail: req.auth.mail });
+            aereo.aircrafts = aereo.aircrafts.filter(a => a._numAircraft !== aircraft._numAircraft);
+            aereo.aircrafts.push(aircraft);
+            await aereo.save();
             const updatedAircraft = aircrafts.getModel().findOneAndUpdate({ _numAircraft: userId_aircrafts }, aircraft).then(() => {
                 return res.status(200).json({ error: false, errormessage: "", id: updatedAircraft._numAircraft });
             }).catch(() => {
@@ -412,10 +437,13 @@ app.put('/aircrafts/:id', auth, async (req, res, next) => {
         return next({ statusCode: 500, error: true, errormessage: "DB error: " + error.message });
     }
 });
-app.delete('/aircrafts/:id', auth, (req, res, next) => {
+app.delete('/aircrafts/:id', auth, async (req, res, next) => {
     if (!users.newUser(req.auth).hasAirlineRole()) {
         return next({ statusCode: 404, error: true, errormessage: "Unauthorized: user is not an administrator." });
     }
+    let airline = await airlines.getModel().findOne({ mail: req.auth.mail });
+    airline.aircrafts = airline.aircrafts.filter(a => a._numAircraft !== req.params.id);
+    await airline.save();
     aircrafts.getModel().deleteOne({ _numAircraft: req.params.id }).then((q) => {
         if (q.deletedCount > 0)
             return res.status(200).json({ error: false, errormessage: "" });
@@ -512,7 +540,9 @@ app.post('/tickets', auth, async (req, res, next) => {
     const user = users.newUser(req.auth);
     try {
         if (user.hasAirlineRole()) {
-            // L'airline crea un biglietto e lo salva nel proprio array
+            // Airline crea un biglietto
+            const owner = await users.getModel().findOne({ mail: req.body.user });
+            req.body.user = owner._id;
             const ticket = tickets.newTicket(req.body);
             await ticket.save();
             const airlineUser = await users.getModel().findOne({ mail: req.auth.mail });
@@ -521,26 +551,50 @@ app.post('/tickets', auth, async (req, res, next) => {
             return res.status(200).json({ error: false, errormessage: "", id: ticket._code });
         }
         if (user.hasPassangerRole()) {
-            // Il passeggero compra un biglietto da un airline
-            const airlineUser = await users.getModel().findOne({ roles: 'airline', tickets: { $exists: true, $not: { $size: 0 } } });
-            if (!airlineUser || airlineUser.tickets.length === 0)
-                return next({ statuscode: 404, error: true, errormessage: "No available tickets from airlines" });
-            const ticketRef = airlineUser.tickets.pop();
-            await airlineUser.save();
-            const ticket = await tickets.getModel().findOne({ _code: ticketRef._code });
-            if (!ticket)
-                return next({ statuscode: 404, error: true, errormessage: "Ticket not found in DB" });
+            const ticket = await tickets.getModel().findOne({
+                flight: req.body.flight,
+                seat: req.body.seat
+            });
+            const airlineUser = await users.getModel().findOne({
+                roles: 'airline',
+                'tickets._code': ticket._code
+            });
+            if (!airlineUser) {
+                return next({ statuscode: 404, error: true, errormessage: "Biglietto non associato a nessuna compagnia" });
+            }
+            const company = await airlines.getModel().findOne({
+                mail: airlineUser.mail
+            });
+            company.revenue += ticket.price;
+            await company.save();
             const passengerUser = await users.getModel().findOne({ mail: req.auth.mail });
             ticket.user = passengerUser._id;
             await ticket.save();
+            airlineUser.tickets = airlineUser.tickets.filter(t => t._code !== ticket._code);
+            await airlineUser.save();
             passengerUser.tickets.push(ticket);
             await passengerUser.save();
-            const seat = await seats.getModel().findOne({ _numSeat: ticket.seat });
-            if (seat) {
-                seat.setIsFree();
-                await seat.save();
+            const flight = await flights.getModel().findOne({ _flightCode: ticket.flight });
+            if (!flight) {
+                return next({ statuscode: 404, error: true, errormessage: "Flight not found" });
             }
-            return res.status(200).json({ error: false, errormessage: '', id: ticket._code });
+            const aircraft = await aircrafts.getModel().findOne({ _numAircraft: flight.aircraft });
+            if (!aircraft) {
+                return next({ statuscode: 404, error: true, errormessage: "Aircraft not found" });
+            }
+            const seat = aircraft.seats.find(s => String(s._numSeat) === String(ticket.seat));
+            if (!seat || seat.isFree === false) {
+                return next({ statuscode: 404, error: true, errormessage: "Seat not available" });
+            }
+            seat.isFree = false;
+            aircraft.markModified('seats');
+            await aircraft.save();
+            return res.status(200).json({ error: false, errormessage: "", id: ticket._code });
+            /*const seat = await seats.getModel().findOne({ _numSeat: ticket.seat, flight: ticket.flight });
+            if (seat) {
+                seat.setIsFree(false);
+                await seat.save();
+            }*/
         }
         return next({ statuscode: 403, error: true, errormessage: "Unauthorized" });
     }
@@ -559,7 +613,7 @@ app.get('/tickets', auth, async (req, res, next) => {
     });
 });
 app.delete('/tickets/:id', auth, async (req, res, next) => {
-    if (!users.newUser(req.auth).hasPassangerRole()) {
+    if (!users.newUser(req.auth).hasPassangerRole() && !users.newUser(req.auth).hasAirlineRole()) {
         return next({ statuscode: 403, error: true, errormessage: "Unauthorized" });
     }
     try {
@@ -567,25 +621,55 @@ app.delete('/tickets/:id', auth, async (req, res, next) => {
         if (!ticket) {
             return res.status(404).json({ error: true, errormessage: `Ticket with code ${req.params.id} not found` });
         }
-        const passenger = await users.getModel().findOne({ mail: req.auth.mail });
-        if (!passenger) {
-            return res.status(404).json({ error: true, errormessage: "Passenger not found" });
+        if (users.newUser(req.auth).hasAirlineRole()) {
+            let user = await users.getModel().findOne({ mail: req.auth.mail });
+            user.tickets = user.tickets.filter(t => t._code !== ticket._code);
+            await user.save();
+            tickets.getModel().deleteOne({ _code: ticket._code }).then((q) => {
+                if (q.deletedCount > 0)
+                    return res.status(200).json({ error: false, errormessage: "" });
+                else
+                    return res.status(404).json({ error: true, errormessage: "Flight with flightCode " + req.params.id + " not found" });
+            }).catch((reason) => {
+                return next({ statuscode: 404, error: true, errormessage: "DB error" + reason });
+            });
         }
-        // Rimuove il ticket dall'array del passeggero
-        passenger.tickets = passenger.tickets.filter(t => t._code !== ticket._code);
-        await passenger.save();
-        // Trova una airline disponibile
-        const airline = await users.getModel().findOne({ roles: 'airline' });
-        if (!airline) {
-            return res.status(404).json({ error: true, errormessage: "No airline available to reassign ticket" });
+        else if (users.newUser(req.auth).hasPassangerRole()) {
+            let user = await users.getModel().findOne({ mail: req.auth.mail });
+            user.tickets = user.tickets.filter(t => t._code !== ticket._code);
+            await user.save();
+            const airline = await users.getModel().findOne({ roles: 'airline' });
+            if (!airline) {
+                return res.status(404).json({ error: true, errormessage: "No airline available to reassign ticket" });
+            }
+            const flight = await flights.getModel().findOne({ _flightCode: ticket.flight });
+            if (!flight) {
+                return next({ statuscode: 404, error: true, errormessage: "Flight not found" });
+            }
+            const aircraft = await aircrafts.getModel().findOne({ _numAircraft: flight.aircraft });
+            if (!aircraft) {
+                return next({ statuscode: 404, error: true, errormessage: "Aircraft not found" });
+            }
+            const seat = await seats.getModel().findOne({ _numSeat: ticket.seat });
+            if (seat) {
+                seat.setIsFree(true);
+                await seat.save();
+            }
+            const seatAir = aircraft.seats.find(s => String(s._numSeat) === String(ticket.seat));
+            if (!seatAir) {
+                return next({ statuscode: 404, error: true, errormessage: "Seat not found on aircraft" });
+            }
+            seatAir.isFree = true;
+            aircraft.markModified('seats'); // Obbligatorio per farlo salvare
+            await aircraft.save();
+            // aggiorna il riferimento
+            ticket.user = airline._id;
+            await ticket.save();
+            // aggiunge il ticket all'airline
+            airline.tickets.push(ticket);
+            await airline.save();
+            return res.status(200).json({ error: false, errormessage: "" });
         }
-        // aggiorna il riferimento
-        ticket.user = airline._id;
-        await ticket.save();
-        // aggiunge il ticket all'airline
-        airline.tickets.push(ticket);
-        await airline.save();
-        return res.status(200).json({ error: false, errormessage: "" });
     }
     catch (err) {
         return next({ statuscode: 500, error: true, errormessage: "DB error: " + err.message });
@@ -595,30 +679,27 @@ app.put('/tickets/:id', auth, async (req, res, next) => {
     try {
         const userId_tickets = req.params.id;
         const ticket = await tickets.getModel().findOne({ _code: userId_tickets });
-        if (users.newUser(req.auth).hasPassangerRole()) {
-            if (!req.body.user && !req.body.seat && !req.body.flight && !req.body.numBag && !req.body.price) {
+        if (users.newUser(req.auth).hasPassangerRole() || users.newUser(req.auth).hasAirlineRole()) {
+            if (!req.body.seat && !req.body.numBag && !req.body.price) {
                 return next({ statusCode: 400, error: true, errormessage: "At least one field must be provided" });
-            }
-            if (req.body.user) {
-                ticket.user = req.body.user;
             }
             if (req.body.seat) {
                 ticket.seat = req.body.seat;
             }
-            if (req.body.flight) {
-                ticket.flight = req.body.flight;
-            }
-            if (req.body.numCabinBag) {
+            if (req.body.numBag) {
                 ticket.numBag = req.body.numBag;
             }
             if (req.body.price) {
                 ticket.price = req.body.price;
             }
-            const updatedTicket = tickets.getModel().findOneAndUpdate({ _code: userId_tickets }, ticket).then(() => {
-                return res.status(200).json({ error: false, errormessage: "", id: updatedTicket._code });
-            }).catch(() => {
-                return next({ statusCode: 404, error: true, errormessage: "Ticket not found." });
-            });
+            await ticket.save();
+            const currentUser = await users.getModel().findOne({ mail: req.auth.mail });
+            if (currentUser) {
+                currentUser.tickets = currentUser.tickets.filter(t => t._code !== ticket._code);
+                currentUser.tickets.push(ticket);
+                await currentUser.save();
+            }
+            return res.status(200).json({ error: false, errormessage: "", ticket: ticket });
         }
     }
     catch (error) {
@@ -739,70 +820,131 @@ app.get("/search", async (req, res, next) => {
         dataOra: req.query.dataOra
     };
     try {
-        const route = await routes.getModel().findOne({ departure: search.depart, destination: search.destination });
-        if (!route) {
-            return next({ statusCode: 404, error: true, errormessage: "Route not found" });
-        }
-        // Se non ci sono scali
-        if (!route.layoverFuel || route.layoverFuel.length === 0) {
-            const directFlights = await flights.getModel().find({ route: route._id, dataOra: { $gte: new Date(search.dataOra) } });
-            const flightRes = [];
-            for (let f of directFlights) {
-                let r = await routes.getModel().findOne({ _id: f.route });
-                let t = await tickets.getModel().findOne({ flight: f._flightCode });
-                flightRes.push({ flightCode: f._flightCode, dataOra: f.dataOra, departure: r.departure, destination: r.destination, duration: f.duration, price: t.price });
+        const routesDirectAndLayover = await routes.getModel().find({
+            departure: search.depart,
+            destination: search.destination
+        });
+        const result = [];
+        // 1️⃣ Cerca **tutti i voli diretti** disponibili
+        for (const route of routesDirectAndLayover) {
+            if (!route.layoverFuel || route.layoverFuel.length === 0) {
+                const directFlights = await flights.getModel().find({
+                    route: route._id,
+                    dataOra: { $gte: new Date(search.dataOra) }
+                });
+                for (let f of directFlights) {
+                    const ticketsList = await tickets.getModel().find({ flight: f._flightCode });
+                    const aircraft = await aircrafts.getModel().findOne({ _numAircraft: f.aircraft });
+                    if (!aircraft)
+                        continue;
+                    const freeSeats = aircraft.seats.filter(s => s.isFree === true);
+                    const availableTickets = ticketsList.filter(ticket => freeSeats.some(seat => String(seat._numSeat) === String(ticket.seat)));
+                    if (availableTickets.length === 0)
+                        continue;
+                    result.push({
+                        flightCode: f._flightCode,
+                        dataOra: f.dataOra,
+                        departure: route.departure,
+                        destination: route.destination,
+                        duration: f.duration,
+                        price: availableTickets[0].price,
+                        seats: freeSeats
+                    });
+                }
             }
-            return res.status(200).json(flightRes);
         }
-        const validConnections = [];
-        for (const layover of route.layoverFuel) {
-            const firstLegRoute = await routes.getModel().findOne({ departure: search.depart, destination: layover });
-            const secondLegRoute = await routes.getModel().findOne({ departure: layover, destination: search.destination });
-            //if (!firstLegRoute || !secondLegRoute) continue;
-            const firstFlights = await flights.getModel().find({ route: firstLegRoute._id, dataOra: { $gte: new Date(search.dataOra) } });
-            const secondFlights = await flights.getModel().find({ route: secondLegRoute._id });
-            for (let first of firstFlights) {
-                const firstArrival = new Date(first.dataOra.getTime() + first.duration * 60000);
-                for (let second of secondFlights) {
-                    const secondDeparture = new Date(second.dataOra);
-                    const diffHours = (secondDeparture.getTime() - firstArrival.getTime()) / (1000 * 60 * 60);
-                    let r = await routes.getModel().findOne({ _id: first.route });
-                    let t = await tickets.getModel().findOne({ flight: first._flightCode });
-                    let fst = {
-                        flightCode: first._flightCode,
-                        dataOra: first.dataOra,
-                        departure: r.departure,
-                        destination: r.destination,
-                        duration: first.duration,
-                        price: t.price
-                    };
-                    let r1 = await routes.getModel().findOne({ _id: second.route });
-                    let t1 = await tickets.getModel().findOne({ flight: second._flightCode });
-                    let snd = {
-                        flightCode: second._flightCode,
-                        dataOra: second.dataOra,
-                        departure: r1.departure,
-                        destination: r1.destination,
-                        duration: second.duration,
-                        price: t1.price
-                    };
-                    if (diffHours >= 2) {
-                        validConnections.push({
-                            layover,
-                            firstLeg: fst,
-                            secondLeg: snd
+        // 2️⃣ Cerca **tutte le combinazioni con scalo** disponibili
+        const routesWithLayover = await routes.getModel().find({
+            departure: search.depart,
+            layoverFuel: { $exists: true, $ne: [] }
+        });
+        for (const route of routesWithLayover) {
+            for (const layover of route.layoverFuel) {
+                const firstLegRoutes = await routes.getModel().find({
+                    departure: search.depart,
+                    destination: layover
+                });
+                const secondLegRoutes = await routes.getModel().find({
+                    departure: layover,
+                    destination: search.destination
+                });
+                for (const firstRoute of firstLegRoutes) {
+                    const firstFlights = await flights.getModel().find({
+                        route: firstRoute._id,
+                        dataOra: { $gte: new Date(search.dataOra) }
+                    });
+                    for (const secondRoute of secondLegRoutes) {
+                        const secondFlights = await flights.getModel().find({
+                            route: secondRoute._id
                         });
+                        for (const first of firstFlights) {
+                            const firstArrival = new Date(first.dataOra.getTime() + first.duration * 60000);
+                            const ticketsFirst = await tickets.getModel().find({ flight: first._flightCode });
+                            const aircraftFirst = await aircrafts.getModel().findOne({ _numAircraft: first.aircraft });
+                            if (!aircraftFirst)
+                                continue;
+                            const freeSeatsFirst = aircraftFirst.seats.filter(seat => seat.isFree);
+                            const availableTicketsFirst = ticketsFirst.filter(ticket => freeSeatsFirst.some(seat => String(seat._numSeat) === String(ticket.seat)));
+                            if (availableTicketsFirst.length === 0)
+                                continue;
+                            for (const second of secondFlights) {
+                                const secondDeparture = new Date(second.dataOra);
+                                const diffHours = (secondDeparture.getTime() - firstArrival.getTime()) / (1000 * 60 * 60);
+                                //if (diffHours < 2) continue; // salto connessioni troppo strette
+                                const ticketsSecond = await tickets.getModel().find({ flight: second._flightCode });
+                                const aircraftSecond = await aircrafts.getModel().findOne({ _numAircraft: second.aircraft });
+                                if (!aircraftSecond)
+                                    continue;
+                                const freeSeatsSecond = aircraftSecond.seats.filter(seat => seat.isFree);
+                                const availableTicketsSecond = ticketsSecond.filter(ticket => freeSeatsSecond.some(seat => String(seat._numSeat) === String(ticket.seat)));
+                                if (availableTicketsSecond.length === 0)
+                                    continue;
+                                const firstLeg = {
+                                    flightCode: first._flightCode,
+                                    dataOra: first.dataOra,
+                                    departure: search.depart,
+                                    destination: layover,
+                                    duration: first.duration,
+                                    price: availableTicketsFirst[0].price,
+                                    seats: freeSeatsFirst
+                                };
+                                const secondLeg = {
+                                    flightCode: second._flightCode,
+                                    dataOra: second.dataOra,
+                                    departure: layover,
+                                    destination: search.destination,
+                                    duration: second.duration,
+                                    price: availableTicketsSecond[0].price,
+                                    seats: freeSeatsSecond
+                                };
+                                if (diffHours >= 2) {
+                                    result.push({
+                                        layover,
+                                        firstLeg,
+                                        secondLeg
+                                    });
+                                }
+                            }
+                        }
                     }
                 }
             }
         }
-        if (validConnections.length === 0) {
-            return next({ statusCode: 404, error: true, errormessage: "No valid layover flights found" });
+        if (result.length === 0) {
+            return next({
+                statusCode: 404,
+                error: true,
+                errormessage: "No available flights found for this search"
+            });
         }
-        return res.status(200).json(validConnections);
+        return res.status(200).json(result);
     }
     catch (reason) {
-        return next({ statusCode: 500, error: true, errormessage: "Server error: " + reason });
+        return next({
+            statusCode: 500,
+            error: true,
+            errormessage: "Server error: " + reason
+        });
     }
 });
 // Add error handling middleware

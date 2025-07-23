@@ -2,16 +2,22 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams, HttpErrorResponse } from '@angular/common/http';
 import { catchError, Observable, throwError } from 'rxjs';
 import { UserHttpService } from '../user-http.service';
+import { Seats } from './seats.service';
 
 
+export interface Airline{
+  _signature: string,
+  name: string,
+}
 
 export interface FlightInfo {
-  _id: string;
+  flightCode: string;
   departure: string;
   dataOra : string;
   destination: string;
   price: number;
   duration: number;
+  seats : Seats[];
 }
 
 export interface LayoverConnection {

@@ -1,43 +1,91 @@
-<div class="background" style="background: url('assets/logo.png') no-repeat center center fixed; background-size: cover;">
-  <!-- Pulsanti login/registrazione -->
-  <div class="auth-buttons" style="position: absolute; top: 20px; right: 20px;">
+<div class="background">
+  <iframe
+    class="bg-video"
+    src="https://www.youtube.com/embed/n7wNMZhL7cI?autoplay=1&mute=1&loop=1&playlist=n7wNMZhL7cI&controls=0&showinfo=0&modestbranding=1"
+    frameborder="0"
+    allow="autoplay"
+  ></iframe>
+  <div class="overlay"></div>
+
+  <div class="auth-buttons">
     <button routerLink="/login">Login</button>
     <button routerLink="/signup">Registrati</button>
   </div>
 
-  <!-- Contenitore centrale per la ricerca -->
-  <div class="search-container" style="display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh;">
+  <div class="search-container">
     <h2>Ricerca Voli</h2>
-    <input [(ngModel)]="depart" placeholder="Partenza" style="margin: 5px;" />
-    <input [(ngModel)]="destination" placeholder="Destinazione" style="margin: 5px;" />
-    <input [(ngModel)]="dataOra" name="dataOra" type="datetime-local" style="margin: 5px;">
-    <button (click)="search()" style="margin: 10px;">Cerca voli</button>
 
-    <div *ngIf="loading">Caricamento...</div>
+    <div class="search-fields">
+      <input type="text" [(ngModel)]="depart" placeholder="Partenza" />
+      <input type="text" [(ngModel)]="destination" placeholder="Destinazione" />
+      <input type="datetime-local" [(ngModel)]="dataOra" />
+      <button (click)="search()">Cerca voli</button>
+    </div>
+
+    <div *ngIf="loading" class="status">Caricamento...</div>
     <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
 
     <!-- Voli Diretti -->
-    <div *ngIf="directFlights.length > 0">
-      <h3>Voli diretti trovati:</h3>
-      <div *ngFor="let flight of directFlights" class="flight-card" style="background-color:white; border: 1px solid #ccc; border-radius: 10px; padding: 15px; margin: 10px; width: 80%; box-shadow: 2px 2px 8px rgba(0,0,0,0.1);">
-        <p>✈️ Da: {{flight.departure}} → A: {{flight.destination}}</p>
-        <p>Partenza: {{ flight.dataOra | date:'short' }}</p>
-        <p>Durata: {{ flight.duration }} min</p>
-        <p>Prezzo: {{ flight.price }} €</p>
-        <button (click) = 'acquistaVolo(flight)'>Acquista</button>
+    <div *ngIf="directFlights.length > 0" class="results">
+  <h3 class="results-title">Biglietti disponibili:</h3>
+  <div *ngFor="let flight of directFlights">
+    <div *ngFor="let seat of flight.seats" class="flight-card">
+      <div class="flight-header">
+        <span class="route">{{ flight.departure }} → {{ flight.destination }}</span>
+        <span class="price">{{ getSeatPrice(seat) | currency:'EUR' }}</span>
       </div>
+      <div class="flight-details">
+        <div class="detail"><span class="label">Partenza:</span> {{ flight.dataOra | date:'shortTime' }}</div>
+        <div class="detail"><span class="label">Durata:</span> {{ flight.duration }} min</div>
+        <div class="detail"><span class="label">Data:</span> {{ flight.dataOra | date:'fullDate' }}</div>
+        <div class="detail"><span class="label">Posto assegnato:</span> {{ seat._numSeat }}</div>
+        <div class="detail"><span class="label">Classe:</span> {{ seat.class }}</div>
+        <div class="detail"><span class="label">Spazio gambe:</span> {{ seat.legroom ? 'Esteso' : 'Standard' }}</div>
+      </div>
+      <button class="btn purchase" (click)="acquistaVolo(flight, seat)">Acquista</button>
     </div>
+  </div>
+</div>
 
     <!-- Voli con Scalo -->
-    <div *ngIf="layoverConnections.length > 0">
-      <h3>Voli con scalo trovati:</h3>
-      <div *ngFor="let conn of layoverConnections" class="flight-card" style="background-color:white; border: 1px solid #ccc; border-radius: 10px; padding: 15px; margin: 10px; width: 80%; box-shadow: 2px 2px 8px rgba(0,0,0,0.1);">
-        <p>Scalo a: {{conn.layover}}</p>
-        <p>✈️ Primo volo: {{conn.firstLeg.departure}} → {{conn.firstLeg.destination}}, Partenza: {{conn.firstLeg.dataOra | date:'short'}}, Prezzo: {{conn.firstLeg.price}} €, Durata: {{conn.firstLeg.duration}} min</p>
-        <p>🛬 Secondo volo: {{conn.secondLeg.departure}} → {{conn.secondLeg.destination}}, Partenza: {{conn.secondLeg.dataOra | date:'short'}}, Prezzo: {{conn.secondLeg.price}} €, Durata: {{conn.secondLeg.duration}} min</p>
-        <p><strong>Totale:</strong> Prezzo: {{conn.firstLeg.price + conn.secondLeg.price}} €, Durata: {{conn.firstLeg.duration + conn.secondLeg.duration}} min</p>
-        <button (click) = 'acquistaEntrambiVoli(conn)'>Acquista</button>
+    <div *ngIf="layoverConnections.length > 0" class="results">
+    <h3 class="results-title">Biglietti con scalo disponibili:</h3>
+
+    <div *ngFor="let conn of layoverConnections">
+      <div *ngFor="let seat1 of conn.firstLeg.seats">
+        <div *ngFor="let seat2 of conn.secondLeg.seats" class="flight-card layover-card">
+          
+          <div class="flight-header">
+            <span class="route">{{ conn.firstLeg.departure }} → {{ conn.firstLeg.destination }}</span>
+            <span class="route">{{ conn.secondLeg.departure }} → {{ conn.secondLeg.destination }}</span>
+            <span class="price">{{ (getSeatPrice(seat1) + getSeatPrice(seat2)) | currency:'EUR' }}</span>
+          </div>
+
+          <div class="flight-details">
+            <div class="detail"><span class="label">Scalo a:</span> {{ conn.layover }}</div>
+
+            <div class="detail">
+              <span class="label">1° volo:</span>
+              {{ conn.firstLeg.dataOra | date:'shortTime' }} • {{ conn.firstLeg.duration }} min • {{ getSeatPrice(seat1)}} €
+            </div>
+            <div class="detail"><span class="label">Posto 1° volo:</span> {{ seat1._numSeat }} – {{ seat1.class }} – {{ seat1.legroom ? 'Legroom' : 'Standard' }}</div>
+
+            <div class="detail">
+              <span class="label">2° volo:</span>
+              {{ conn.secondLeg.dataOra | date:'shortTime' }} • {{ conn.secondLeg.duration }} min • {{ getSeatPrice(seat2)}} €
+            </div>
+            <div class="detail"><span class="label">Posto 2° volo:</span> {{ seat2._numSeat }} – {{ seat2.class }} – {{ seat2.legroom ? 'Legroom' : 'Standard' }}</div>
+
+            <div class="detail">
+              <span class="label">Durata totale:</span> {{ conn.firstLeg.duration + conn.secondLeg.duration }} min
+            </div>
+          </div>
+
+          <button class="btn purchase" (click)="acquistaEntrambiVoli(conn, seat1, seat2)">Acquista</button>
+
+        </div>
       </div>
     </div>
   </div>
+  </div>
 </div>

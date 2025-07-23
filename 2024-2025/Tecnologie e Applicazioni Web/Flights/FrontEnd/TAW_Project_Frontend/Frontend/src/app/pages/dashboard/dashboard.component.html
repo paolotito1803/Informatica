@@ -1,13 +1,23 @@
-<h2>📊 Dashboard {{ username }}</h2>
+<header class="dashboard-header">
+  <h2 class="title">
+    <span class="emoji">📊</span>
+    Dashboard 
+    <span class="username">{{ username }}</span>
+  </h2>
 
-<div class="auth-buttons" style="position:absolute; top:20px; right:20px;">
-  <button (click)="logout()">Logout</button>
-</div>
-
-<!-- Debug state -->
-<!--<p *ngIf="!aircrafts">Aircrafts è undefined</p>
-<p *ngIf="aircrafts && aircrafts.length === 0">Aircrafts è vuoto</p>
-<p *ngIf="aircrafts && aircrafts.length > 0">Aircrafts popolato con {{aircrafts.length}} elementi</p>-->
+  <button
+    class="logout-btn"
+    (click)="logout()"
+    aria-label="Logout"
+    title="Esci dal Dashboard"
+  >
+    <img
+      src="../../../assets/Interface_icons/user-logout.svg"
+      alt="Logout"
+      class="icon"
+    />
+  </button>
+</header>
 
 <div *ngIf="adminRole">
   <app-admin></app-admin>
@@ -16,66 +26,74 @@
 <div *ngIf="airlineRole">
   <app-airlines></app-airlines>
 
-  <section style="margin-top:20px;">
-    <h3>I tuoi Aerei</h3>
+<section class="tickets-section">
+  <h3 class="section-title">🎫 I tuoi Biglietti</h3>
+  <button class="btn add-btn" (click)="aggiungiBiglietto()">➕ Aggiungi Biglietto</button>
 
-    <div *ngIf="aircrafts.length > 0; else noAircraft">
-      <div *ngFor="let ac of aircrafts" style="border:1px solid #ddd;padding:10px;margin-bottom:10px;">
-        <p><strong>Modello:</strong> {{ac.modello || 'N/A'}}</p>
-        <p><strong>Numero Aereo:</strong> {{ac._numAircraft || 'N/A'}}</p>
+  <div *ngIf="tickets.length > 0; else noTickets" class="tickets-list">
+    <div *ngFor="let t of tickets; let i = index" class="ticket-card">
 
-        <ul *ngIf="ac.seats && ac.seats.length; else noSeats">
-          <li *ngFor="let seat of ac.seats">
-            Seat: {{seat._numSeat || 'N/A'}} |
-            Classe: {{seat.class || 'N/A'}} |
-            Legroom: {{seat.legroom ? 'Sì' : 'No'}} |
-            Libero: {{seat.isFree ? 'Sì' : 'No'}}
-          </li>
-        </ul>
-        <ng-template #noSeats>
-          <p>Nessun posto disponibile per questo aereo.</p>
-        </ng-template>
-      </div>
-    </div>
-    <ng-template #noAircraft>
-      <p>Non hai ancora aerei registrati.</p>
-    </ng-template>
-
-    <h3>I tuoi Biglietti</h3>
-
-  <!-- Pulsante Aggiungi Biglietto (solo airline) -->
-  <button (click)="aggiungiBiglietto()">Aggiungi Biglietto</button>
-
-  <div *ngIf="tickets.length > 0; else noTickets">
-    <div *ngFor="let t of tickets; let i = index" style="border:1px dashed #ccc; padding:10px; margin-top:10px;">
-
-      <div *ngIf="t.editing; else showTicket">
-        <label>Codice: <input [(ngModel)]="t._code" placeholder="Codice Biglietto" /></label><br />
-        <label>Volo: <input [(ngModel)]="t.flight" placeholder="Codice volo" /></label><br />
-        <label>Posto: <input [(ngModel)]="t.seat" placeholder="Numero posto" /></label><br />
-        <label>Prezzo: <input type="number" [(ngModel)]="t.price" min="0" /></label><br />
-        <label>Bagagli: <input type="number" [(ngModel)]="t.numBag" min="0" /></label><br />
-        <label>Utente: <input [(ngModel)]="t.user" placeholder="Nome utente" /></label><br />
-        <button (click)="salvaBiglietto(i)">Salva</button>
+      <!-- 3.1) FORM A VIDEO -->
+      <div *ngIf="t.editing; else showTicket" class="ticket-form">
+        <div class="form-field"> 
+          <label>Codice:</label> 
+          <input [(ngModel)]="t._code" placeholder="Codice Biglietto" /> 
+        </div> 
+        <div class="form-field"> 
+          <label>Volo:</label> 
+          <input [(ngModel)]="t.flight" placeholder="Codice volo" /> 
+        </div> 
+        <div class="form-field"> 
+          <label>Posto:</label> 
+          <input [(ngModel)]="t.seat" placeholder="Numero posto" /> 
+        </div> 
+        <div class="form-field"> 
+          <label>Prezzo:</label> 
+          <input type="number" [(ngModel)]="t.price" min="0" /> 
+        </div> <div class="form-field"> 
+          <label>Bagagli:</label> 
+          <input type="number" [(ngModel)]="t.numBag" min="0" /> 
+        </div> <div class="form-field"> <label>Utente:</label> 
+          <input [(ngModel)]="t.user" placeholder="Mail utente" /> 
+        </div>
+        <div class="form-actions">
+          <button class="btn save-btn" (click)="salvaBiglietto(i)">💾 Salva</button>
+          <button class="btn save-change-btn" (click)="updateTickets(t)">💾 Salva Modifiche</button>
+          <button class="btn cancel-btn" (click)="t.editing = false">❌ Annulla</button>
+        </div>
       </div>
 
+      <!-- 3.2) VISTA STATICA -->
       <ng-template #showTicket>
-        <p><strong>Codice:</strong> {{ t._code }}</p>
-        <p><strong>Utente:</strong> {{ t.user }}</p>
-        <p><strong>Volo:</strong> {{ t.flight }}</p>
-        <p><strong>Posto:</strong> {{ t.seat }}</p>
-        <p><strong>Prezzo:</strong> {{ t.price }}€</p>
-        <p><strong>Bagagli:</strong> {{ t.numBag }}</p>
-
+        <div class="ticket-info">
+          <p><strong>Codice:</strong> {{ t._code }}</p> 
+          <p><strong>Utente:</strong> {{ t.user }}</p> 
+          <p><strong>Volo:</strong> {{ t.flight }}</p> 
+          <p><strong>Posto:</strong> {{ t.seat }}</p> 
+          <p><strong>Prezzo:</strong> {{ t.price }}€</p> 
+          <p><strong>Bagagli:</strong> {{ t.numBag }}</p>
+          <div class="form-actions">
+            <button class="btn edit-btn" (click)="t.editing = true">✏️ Modifica</button>
+            <button class="btn delete-btn" (click)="deleteTickets(t)">🗑️ Elimina</button>
+          </div>
+        </div>
       </ng-template>
+
     </div>
   </div>
+
+  <ng-template #noTickets>
+    <p class="empty-message">Non ci sono biglietti disponibili.</p>
+  </ng-template>
+</section>
+
+
+
 
   <ng-template #noTickets>
     <p>Non ci sono biglietti</p>
   </ng-template>
   <app-routes></app-routes>
-  </section>
 </div>
 
 

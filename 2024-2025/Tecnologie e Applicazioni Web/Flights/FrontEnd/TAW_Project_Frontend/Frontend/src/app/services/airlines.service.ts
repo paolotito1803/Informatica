@@ -78,4 +78,9 @@ export class AirlinesService {
       catchError(this.handleError)
     );
   }
+
+  getAllAirlines() : Observable<Airlines[]>{
+    return this.http.get<Airlines[]>(this.us.url + '/airlines', this.create_options()).pipe(
+      catchError(this.handleError));
+  }
 }

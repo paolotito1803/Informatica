@@ -60,4 +60,9 @@ export class AdminService {
     return this.http.delete(this.us.url + '/airports/' + id, this.createOptions())
     .pipe(catchError(this.handleError));
   }
+
+  deleteAirline(id:string): Observable<any> {
+    return this.http.delete(this.us.url + "/airlines/" + id, this.createOptions())
+    .pipe(catchError(this.handleError));
+  }
 }

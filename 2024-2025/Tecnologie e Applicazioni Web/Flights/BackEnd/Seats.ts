@@ -11,7 +11,7 @@ export interface Seats extends mongoose.Document{
     getIsFree : () => boolean,
     setClass : (clas: string) => void,
     setLegroom : (legroom : boolean) => void,
-    setIsFree : () => void
+    setIsFree : (isFree : boolean) => void
 }
 
 const seatSchema = new mongoose.Schema<Seats>({
@@ -56,8 +56,8 @@ seatSchema.methods.setLegroom = function(legroom : boolean){
     this.legroom = legroom;
 }
 
-seatSchema.methods.setIsFree = function(){
-    this.isFree = !this.isFree;
+seatSchema.methods.setIsFree = function(isFree : boolean){
+    this.isFree = isFree;
 }
 
 export function getSchema() { return seatSchema; }

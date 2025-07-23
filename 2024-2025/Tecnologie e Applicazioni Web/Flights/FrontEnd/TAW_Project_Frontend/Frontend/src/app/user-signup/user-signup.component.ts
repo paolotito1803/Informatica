@@ -18,17 +18,18 @@ export class UserSignupComponent implements OnInit {
   }
 
   signup() {
-    this.us.register( this.user ).subscribe( {
-      next: (d) => {
-      console.log('Registration ok: ' + JSON.stringify(d) );
-      this.errmessage = undefined;
-      this.router.navigate(['/login']);
-     },
-     error: (err) => {
-      console.log('Signup error: ' + JSON.stringify(err.error.errormessage) );
-      this.errmessage = err.error.errormessage || err.error.message;
-    }});
-
+    if(this.user.roles !== 'airline'){
+      this.us.register( this.user ).subscribe( {
+        next: (d) => {
+        console.log('Registration ok: ' + JSON.stringify(d) );
+        this.errmessage = undefined;
+        this.router.navigate(['/login']);
+      },
+      error: (err) => {
+        console.log('Signup error: ' + JSON.stringify(err.error.errormessage) );
+        this.errmessage = err.error.errormessage || err.error.message;
+      }});
+    }
   }
 
 }

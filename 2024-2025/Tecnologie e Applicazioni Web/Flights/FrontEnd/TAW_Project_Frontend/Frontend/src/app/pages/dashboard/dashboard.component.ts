@@ -17,6 +17,9 @@ export class DashboardComponent implements OnInit {
   passengerRole = false;
   addticket = true;
   username: string = '';
+  seat: string = '';
+  price: number = 0;
+  numBag: number = 0;
 
   aircrafts: Aircrafts[] = [];
   tickets: (Tickets & { editing?: boolean })[] = [];
@@ -29,6 +32,16 @@ export class DashboardComponent implements OnInit {
     name: '',
     revenue: 0,
     aircrafts: []
+  };
+
+  updateTicketData: {
+    seat: string,
+    price: number,
+    numBag: number
+  } = {
+    seat: '',
+    price: 0,
+    numBag: 0
   };
 
 
@@ -50,6 +63,11 @@ export class DashboardComponent implements OnInit {
     console.log('Airline?', this.airlineRole);
     console.log('Passenger?', this.passengerRole);
     console.log('Username?', this.username);
+
+    if(this.passengerRole){
+      this.handlePendingDirectTicket();
+      this.handlePendingLayoverTickets();
+    }
 
     if (this.airlineRole) {
       console.log("Compagnia");
@@ -116,6 +134,54 @@ export class DashboardComponent implements OnInit {
     });
   }
 
+  handlePendingDirectTicket() {
+    const pendingTicket = localStorage.getItem('pendingTicket');
+    if (pendingTicket) {
+      const ticketData = JSON.parse(pendingTicket);
+      console.log('Acquisto automatico volo diretto:', ticketData);
+      this.ticketsService.addTickets(ticketData).subscribe({
+        next: () => {
+          alert('Biglietto acquistato con successo!');
+          localStorage.removeItem('pendingTicket');
+        },
+        error: err => {
+          console.error('Errore durante l\'acquisto del biglietto:', err);
+          alert('Errore durante l\'acquisto del biglietto.');
+          localStorage.removeItem('pendingTicket');
+        }
+      });
+    }
+  }
+
+  handlePendingLayoverTickets() {
+    const pendingLayover = localStorage.getItem('pendingLayoverTickets');
+    if (pendingLayover) {
+      const [firstTicket, secondTicket] = JSON.parse(pendingLayover);
+      console.log('Acquisto automatico voli con scalo:', firstTicket, secondTicket);
+
+      this.ticketsService.addTickets(firstTicket).subscribe({
+        next: () => {
+          this.ticketsService.addTickets(secondTicket).subscribe({
+            next: () => {
+              alert('Entrambi i voli acquistati con successo!');
+              localStorage.removeItem('pendingLayoverTickets');
+            },
+            error: err => {
+              console.error('Errore acquisto secondo volo:', err);
+              alert('Primo volo acquistato, ma errore sul secondo.');
+              localStorage.removeItem('pendingLayoverTickets');
+            }
+          });
+        },
+        error: err => {
+          console.error('Errore acquisto primo volo:', err);
+          alert('Errore durante l\'acquisto del primo volo.');
+          localStorage.removeItem('pendingLayoverTickets');
+        }
+      });
+    }
+  }
+
     // ----- Gestione Biglietti -----
 
   aggiungiBiglietto() {
@@ -127,6 +193,17 @@ export class DashboardComponent implements OnInit {
       price: 0,
       numBag: 0,
       editing: true
+    });
+  }
+
+  loadTickets(){
+    this.ticketsService.getTickets().subscribe({
+      next: tickets => {
+        this.tickets = tickets.map(t => ({_code : t._code, user : this.us.get_mail(), 
+                                          flight : t.flight, seat : t.seat, 
+                                          price : t.price, numBag : t.numBag, editing: false}));
+            },
+            error: err => console.error('Errore nel recupero biglietti:', err)
     });
   }
 
@@ -155,10 +232,56 @@ export class DashboardComponent implements OnInit {
     this.ticketsService.deleteTickets(ticket._code).subscribe({
       next : res => {
         console.log(`Biglietto per volo ${ticket.flight} cancellato`);
+        this.loadTickets();
         this.tickets = this.tickets.filter(t => t._code !== ticket._code);
       },
       error: err => {
         console.error('Errore cancellazione biglietto:', err);
+      }
+    })
+  }
+
+  updateTicketInfo(){
+    const data = {
+      seat : this.updateTicketData.seat,
+      price : this.updateTicketData.price,
+      numBag : this.updateTicketData.numBag
+
+    }
+  }
+
+ updateTickets(ticket: Tickets & {editing?: boolean}){
+    const data: any = {};
+    if (ticket.seat !== undefined && ticket.seat !== null) data.seat = ticket.seat;
+    if (ticket.price !== undefined && ticket.price !== null) data.price = ticket.price;
+    if (ticket.numBag !== undefined && ticket.numBag !== null) data.numBag = ticket.numBag;
+
+    if (Object.keys(data).length === 0) {
+      alert("Modifica almeno un campo prima di salvare.");
+      return;
+    }
+
+    this.ticketsService.updateTickets(ticket._code, data).subscribe({
+      next: res => {
+        console.log("Biglietto", res);
+
+        const updatedTicket = res.ticket;
+        const idx = this.tickets.findIndex(t => t._code === updatedTicket._code);
+        if(idx !== -1){
+          const currEditing = this.tickets[idx].editing;
+
+          this.tickets[idx] = {
+            ...updatedTicket,
+            editing : currEditing
+          };
+
+        }
+        this.loadTickets();
+        this.updateTicketData = {seat:'', price:0, numBag:0};
+      },
+      error: err => {
+        console.error("Errore aggiornamento biglietto", err);
+        alert("Errore aggiornamento biglietto: " + err.error?.errormessage || err.message);
       }
     })
   }

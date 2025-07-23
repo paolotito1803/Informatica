@@ -20,8 +20,12 @@
           <td>{{ r.destination }}</td>
           <td>{{ toCSV(r.layoverFuel) }}</td>
           <td class="actions">
-            <button (click)="startEdit(r)">edit</button>
-            <button (click)="remove(r._id)">delete</button>
+            <button (click)="startEdit(r)" style="border-radius: 50%; padding: 10px;">
+              <img src="../../../assets/Interface_icons/edit.svg" style="width: 20px; height: 20px; filter: invert(1);">
+            </button>
+            <button (click)="remove(r._id)" style="border-radius: 50%; padding: 10px;">
+              <img src="../../../assets/Interface_icons/delete.svg" style="width: 20px; height: 20px; filter: invert(1);">
+            </button>
           </td>
         </ng-container>
 
@@ -42,8 +46,12 @@
             />
           </td>
           <td class="actions">
-            <button (click)="saveEdit(r._id)">save</button>
-            <button (click)="cancelEdit(r._id)">cancel</button>
+            <button (click)="saveEdit(r._id)" style="border-radius: 50%; padding: 10px;">
+              <img src="../../../assets/Interface_icons/save.svg" style="width: 20px; height: 20px; filter: invert(1);">
+            </button>
+            <button (click)="cancelEdit(r._id)" style="border-radius: 50%; padding: 10px;">
+              <img src="../../../assets/Interface_icons/cancel.svg" style="width: 20px; height: 20px; filter: invert(1);">
+            </button>
           </td>
         </ng-template>
       </tr>
@@ -60,7 +68,9 @@
           />
         </td>
         <td class="actions">
-          <button (click)="add()">add</button>
+          <button (click)="add()" style="border-radius: 50%; padding: 10px;">
+            <img src="../../../assets/Interface_icons/plus.svg" style="width: 20px; height: 20px; filter: invert(1);">
+          </button>
         </td>
       </tr>
     </tbody>

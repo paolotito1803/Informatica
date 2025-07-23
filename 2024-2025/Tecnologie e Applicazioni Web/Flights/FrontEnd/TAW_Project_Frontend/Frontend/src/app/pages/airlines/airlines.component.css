@@ -1,0 +1,257 @@
+.form-container {
+  max-width: 800px;
+  margin: 2rem auto;
+  font-family: 'Segoe UI', sans-serif;
+  color: #333;
+  padding: 1rem;
+}
+
+.field-group {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.field-group label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 600;
+}
+
+.input {
+  flex: 1 1 200px;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.icon {
+  width: 24px;
+  height: 24px;
+}
+
+.aircrafts-section {
+  margin-top: 2rem;
+}
+
+.aircrafts-section h4 {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  border-left: 4px solid #3498db;
+  padding-left: 0.5rem;
+}
+
+.aircraft-card {
+  background: #fafafa;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  transition: transform 0.2s;
+}
+
+.aircraft-card:hover {
+  transform: translateY(-2px);
+}
+
+.aircraft-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+
+.icon-btn {
+  background: transparent;
+  border: none;
+  padding: 0.25rem;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.icon-btn:hover {
+  opacity: 0.7;
+}
+
+.seats-container {
+  border-top: 1px dashed #ddd;
+  padding-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+.seat-row {
+  display: grid;
+  grid-template-columns: auto 1fr 1fr auto auto auto auto;
+  gap: 0.75rem;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.seat-icon {
+  margin-right: 0.25rem;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.9rem;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn.add-seat {
+  background: #2ecc71;
+  color: #fff;
+}
+
+.btn.add-seat:hover {
+  background: #27ae60;
+}
+
+.btn.update-aircraft {
+  background: #f1c40f;
+  color: #fff;
+}
+
+.btn.update-aircraft:hover {
+  background: #d4ac0d;
+}
+
+.btn.add-aircraft {
+  background: #3498db;
+  color: #fff;
+}
+
+.btn.add-aircraft:hover {
+  background: #2980b9;
+}
+
+.aircraft-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.btn.update-all {
+  background: #1abc9c;
+  color: #fff;
+  display: block;
+  margin: 2rem auto 0;
+}
+
+.btn.update-all:hover {
+  background: #16a085;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .seat-row {
+    grid-template-columns: 1fr;
+  }
+  .aircraft-header,
+  .aircraft-actions,
+  .field-group {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .btn.update-all {
+    width: 100%;
+  }
+}
+
+
+.aircraft-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.aircraft-card {
+  background: #f9f9f9;
+  border-left: 5px solid #3498db;
+  border-radius: 8px;
+  padding: 1rem 1.5rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s ease;
+}
+
+.aircraft-card:hover {
+  transform: translateY(-2px);
+}
+
+.aircraft-info p {
+  margin: 0.3rem 0;
+  font-size: 1rem;
+}
+
+.seat-list {
+  list-style: none;
+  padding-left: 0;
+  margin-top: 0.8rem;
+  border-top: 1px dashed #ccc;
+  padding-top: 0.8rem;
+}
+
+.seat-item {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding: 0.4rem 0;
+  font-size: 0.95rem;
+  border-bottom: 1px solid #eee;
+}
+
+.seat-item:last-child {
+  border-bottom: none;
+}
+
+.no-seats,
+.no-aircraft {
+  font-style: italic;
+  color: #888;
+  margin-top: 0.5rem;
+}
+
+.company-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-top: 1rem;
+  margin-bottom: 2rem;
+}
+
+.company-actions .btn.action {
+  background: linear-gradient(145deg, #3498db, #2980b9);
+  color: #fff;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  font-size: 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.company-actions .btn.action:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.25);
+}

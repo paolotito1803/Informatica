@@ -57,26 +57,45 @@ export class FlightSearchComponent {
     });
   }
 
-  acquistaVolo(flight: FlightInfo) {
-    const ticketData = {
-      flight: flight._id,
-      seat: '', // Selezione seat successivamente o gestione automatica
-      price: flight.price || 0,
-      numBag: 0 // Predefinito, potrai modificarlo con input utente
-    };
+  getSeatPrice(seat: any): number {
+    if (!seat || !seat.class) return 0;
 
-    const token = this.us.get_token();
+    const cls = seat.class.toLowerCase();
+    if (cls.includes('economy')) return 10;
+    if (cls.includes('business')) return 30;
+    if (cls.includes('first')) return 50;
 
-    if(!token){
-      localStorage.setItem('pendingTicket', JSON.stringify(ticketData));
-      this.router.navigate(['/login']);
+    return 20; // default
+  }
+
+  acquistaVolo(flight: FlightInfo, seat: any) {
+    console.log("Acquisto volo, ID:", flight.flightCode, "Oggetto:", flight);
+
+    if (!seat || !seat._numSeat) {
+      alert('Dati del posto non validi.');
       return;
     }
 
-    if(this.us.is_passenger()){
-      console.log("Arrivato");
+    const ticketData = {
+      flight: flight.flightCode,
+      seat: seat._numSeat || '',
+      price: this.getSeatPrice(seat) || 0,
+      numBag: 0
+    };
+
+    const token = this.us.get_token();
+    console.log("[DEBUG] Token presente?", !!token);
+    if (!token) {
+      localStorage.setItem('pendingTicket', JSON.stringify(ticketData));
+      console.log("Salvato pendingTicket:", ticketData);
+      this.router.navigate(['/login']);
+      return;
+    }
+    console.log("[DEBUG] Ticket diretto, pronto al post:", ticketData);
+    if (this.us.is_passenger()) {
       this.ticketsService.addTickets(ticketData).subscribe({
-        next: () => {
+        next: (res) => {
+          console.log("Biglietto acquistato per volo ID:", ticketData.flight, "Response:", res);
           alert('Biglietto acquistato con successo!');
         },
         error: (err) => {
@@ -86,25 +105,31 @@ export class FlightSearchComponent {
       });
     }
   }
-
-  acquistaEntrambiVoli(conn: LayoverConnection) {
+  acquistaEntrambiVoli(conn: LayoverConnection, seat1 : any, seat2: any) {
+    if (!seat1?._numSeat || !seat2?._numSeat) {
+      alert('Posti non validi.');
+      return;
+    }
     const firstTicket = {
-      flight: conn.firstLeg._id,
-      seat: '',
+      flight: conn.firstLeg.flightCode,
+      seat: seat1._numSeat || '',
       price: conn.firstLeg.price || 0,
       numBag: 0
     };
 
     const secondTicket = {
-      flight: conn.secondLeg._id,
-      seat: '',
+      flight: conn.secondLeg.flightCode,
+      seat: seat2._numSeat || '',
       price: conn.secondLeg.price || 0,
       numBag: 0
     };
-
+    console.log("[DEBUG] Acquisto con scalo - firstTicket:", firstTicket);
+    console.log("[DEBUG] Acquisto con scalo - secondTicket:", secondTicket);
     const token = this.us.get_token();
 
     if(!token){
+      localStorage.setItem('pendingLayoverTickets', JSON.stringify([firstTicket, secondTicket]));
+      console.log("[DEBUG] pendingLayoverTickets salvati:", [firstTicket, secondTicket]);
       this.router.navigate(['/login']);
       return;
     }
