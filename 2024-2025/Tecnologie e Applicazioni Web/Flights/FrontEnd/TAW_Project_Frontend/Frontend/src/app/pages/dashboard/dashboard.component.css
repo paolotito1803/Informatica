@@ -232,3 +232,10 @@
   height: 20px;
   filter: invert(0.3);
 }
+
+.dashboard-header .company-logo {
+  height: 50px;
+  object-fit: contain;
+  margin-right: 0.5rem;
+  border-radius: 4px;
+}

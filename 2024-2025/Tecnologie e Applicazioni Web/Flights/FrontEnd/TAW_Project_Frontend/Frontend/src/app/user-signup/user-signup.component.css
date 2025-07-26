@@ -1,13 +1,100 @@
-
-.loginlogo {
-    width: 80px;
-    height: 80px;
+/* Container centrale */
+.signup-container {
+  width: 100%;
+  max-width: 400px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+  font-family: sans-serif;
 }
 
-.ng-valid[required], .ng-valid.required  {
-    border-left: 5px solid #42A948; /* green */
-  }
-  
-.ng-invalid:not(form)  {
-border-left: 5px solid #a94442; /* red */
+/* Card principale */
+.signup-card {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+  padding: 2rem 1.5rem;
+  text-align: center;
+}
+
+/* Header con icona */
+.signup-header {
+  margin-bottom: 1.5rem;
+}
+.signup-icon {
+  font-size: 2.5rem;
+  color: #3498db;
+  margin-bottom: 0.5rem;
+}
+.signup-header h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  color: #333;
+}
+
+/* Gruppi di input con icona */
+.form-group {
+  position: relative;
+  margin-bottom: 1rem;
+}
+.input-icon {
+  position: absolute;
+  left: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #aaa;
+  font-size: 1rem;
+}
+.form-control {
+  width: 100%;
+  padding: 0.75rem 0.75rem 0.75rem 2.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1rem;
+  transition: border-color 0.2s;
+}
+.form-control:focus {
+  border-color: #3498db;
+  outline: none;
+}
+
+/* Messaggi di errore inline */
+.error-text {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: #e74c3c;
+  font-size: 0.9rem;
+  text-align: left;
+  margin-top: -0.5rem;
+  margin-bottom: 0.75rem;
+}
+.general-error {
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+/* Pulsante full-width */
+.btn-block {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+}
+.btn-primary {
+  background: #3498db;
+  color: #fff;
+  border: none;
+  padding: 0.75rem;
+  border-radius: 4px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.btn-primary:disabled {
+  background: #aaa;
+  cursor: not-allowed;
+}
+.btn-primary:not(:disabled):hover {
+  background: #2980b9;
 }

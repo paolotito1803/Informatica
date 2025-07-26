@@ -73,6 +73,7 @@ export class AdminComponent implements OnInit {
       next: res => {
         alert(`Invito inviato a ${this.inviteForm.value.mail} con password temporanea: ${this.inviteForm.value.password}`);
         this.inviteForm.reset();
+        this.loadAirlines();
       },
       error: err => alert('Errore invio invito: ' + err.message)
     });

@@ -27,25 +27,94 @@
 
     <!-- Voli Diretti -->
     <div *ngIf="directFlights.length > 0" class="results">
-  <h3 class="results-title">Biglietti disponibili:</h3>
-  <div *ngFor="let flight of directFlights">
-    <div *ngFor="let seat of flight.seats" class="flight-card">
-      <div class="flight-header">
-        <span class="route">{{ flight.departure }} → {{ flight.destination }}</span>
-        <span class="price">{{ getSeatPrice(seat) | currency:'EUR' }}</span>
+      <h3 class="results-title">Biglietti disponibili:</h3>
+      <div *ngFor="let flight of directFlights">
+        <div *ngFor="let seat of flight.seats" class="flight-card direct-card">
+
+          <!-- HEADER: Rotta + Prezzo -->
+          <div class="card-header">
+            <div class="route">
+              <i class="fas fa-plane-departure"></i>
+              {{ flight.departure }} → {{ flight.destination }}
+            </div>
+            <div class="price">
+              {{ getSeatPrice(seat) | currency:'EUR':'symbol':'1.0-0' }}
+            </div>
+          </div>
+
+          <!-- BODY: Dettagli in griglia -->
+          <div class="card-body">
+            <div class="info-item">
+              <i class="fas fa-clock"></i>
+              <div>
+                <div class="info-label">Orario</div>
+                <div class="info-value">
+                  {{ flight.dataOra | date:'shortTime' }}
+                </div>
+              </div>
+            </div>
+
+            <div class="info-item">
+              <i class="fas fa-hourglass-half"></i>
+              <div>
+                <div class="info-label">Durata</div>
+                <div class="info-value">
+                  {{ flight.duration }} min
+                </div>
+              </div>
+            </div>
+
+            <div class="info-item">
+              <i class="fas fa-calendar-alt"></i>
+              <div>
+                <div class="info-label">Data</div>
+                <div class="info-value">
+                  {{ flight.dataOra | date:'fullDate' }}
+                </div>
+              </div>
+            </div>
+
+            <div class="info-item">
+              <i class="fas fa-chair"></i>
+              <div>
+                <div class="info-label">Posto</div>
+                <div class="info-value">
+                  {{ seat._numSeat }}
+                </div>
+              </div>
+            </div>
+
+            <div class="info-item">
+              <i class="fas fa-couch"></i>
+              <div>
+                <div class="info-label">Classe</div>
+                <div class="info-value">
+                  {{ seat.class }}
+                </div>
+              </div>
+            </div>
+
+            <div class="info-item">
+              <i class="fas fa-shoe-prints"></i>
+              <div>
+                <div class="info-label">Spazio gambe</div>
+                <div class="info-value">
+                  {{ seat.legroom ? 'Esteso' : 'Standard' }}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- FOOTER: Pulsante Acquista -->
+          <div class="card-footer">
+            <button class="btn purchase" (click)="acquistaVolo(flight, seat)">
+              <i class="fas fa-shopping-cart"></i> Acquista
+            </button>
+          </div>
+
+        </div>
       </div>
-      <div class="flight-details">
-        <div class="detail"><span class="label">Partenza:</span> {{ flight.dataOra | date:'shortTime' }}</div>
-        <div class="detail"><span class="label">Durata:</span> {{ flight.duration }} min</div>
-        <div class="detail"><span class="label">Data:</span> {{ flight.dataOra | date:'fullDate' }}</div>
-        <div class="detail"><span class="label">Posto assegnato:</span> {{ seat._numSeat }}</div>
-        <div class="detail"><span class="label">Classe:</span> {{ seat.class }}</div>
-        <div class="detail"><span class="label">Spazio gambe:</span> {{ seat.legroom ? 'Esteso' : 'Standard' }}</div>
-      </div>
-      <button class="btn purchase" (click)="acquistaVolo(flight, seat)">Acquista</button>
     </div>
-  </div>
-</div>
 
     <!-- Voli con Scalo -->
     <div *ngIf="layoverConnections.length > 0" class="results">
@@ -54,35 +123,90 @@
     <div *ngFor="let conn of layoverConnections">
       <div *ngFor="let seat1 of conn.firstLeg.seats">
         <div *ngFor="let seat2 of conn.secondLeg.seats" class="flight-card layover-card">
-          
+
+          <!-- Flight Header -->
           <div class="flight-header">
-            <span class="route">{{ conn.firstLeg.departure }} → {{ conn.firstLeg.destination }}</span>
-            <span class="route">{{ conn.secondLeg.departure }} → {{ conn.secondLeg.destination }}</span>
-            <span class="price">{{ (getSeatPrice(seat1) + getSeatPrice(seat2)) | currency:'EUR' }}</span>
+            <div class="route-pair">
+              <span class="route">
+                <i class="fas fa-plane-departure"></i>
+                {{ conn.firstLeg.departure }} → {{ conn.firstLeg.destination }}
+              </span>
+              <span class="route">
+                <i class="fas fa-plane-arrival"></i>
+                {{ conn.secondLeg.departure }} → {{ conn.secondLeg.destination }}
+              </span>
+            </div>
+            <div class="price">
+              {{ (getSeatPrice(seat1) + getSeatPrice(seat2)) | currency:'EUR':'symbol' }}
+            </div>
           </div>
 
+          <!-- Flight Details Grid -->
           <div class="flight-details">
-            <div class="detail"><span class="label">Scalo a:</span> {{ conn.layover }}</div>
 
             <div class="detail">
-              <span class="label">1° volo:</span>
-              {{ conn.firstLeg.dataOra | date:'shortTime' }} • {{ conn.firstLeg.duration }} min • {{ getSeatPrice(seat1)}} €
+              <i class="fas fa-map-marker-alt detail-icon"></i>
+              <div class="detail-content">
+                <span class="label">Scalo a</span>
+                <span class="value">{{ conn.layover }}</span>
+              </div>
             </div>
-            <div class="detail"><span class="label">Posto 1° volo:</span> {{ seat1._numSeat }} – {{ seat1.class }} – {{ seat1.legroom ? 'Legroom' : 'Standard' }}</div>
 
             <div class="detail">
-              <span class="label">2° volo:</span>
-              {{ conn.secondLeg.dataOra | date:'shortTime' }} • {{ conn.secondLeg.duration }} min • {{ getSeatPrice(seat2)}} €
+              <i class="fas fa-clock detail-icon"></i>
+              <div class="detail-content">
+                <span class="label">1° Volo</span>
+                <span class="value">
+                  {{ conn.firstLeg.dataOra | date:'shortTime' }}
+                  &bull; {{conn.firstLeg.dataOra | date:'fullDate'}}
+                  &bull; {{ conn.firstLeg.duration }} min
+                  &bull; {{ getSeatPrice(seat1) }} €
+                </span>
+                <span class="subvalue">
+                  <i class="fas fa-chair"></i>
+                  {{ seat1._numSeat }} &ndash; {{ seat1.class }}
+                  &ndash; {{ seat1.legroom ? 'Legroom' : 'Standard' }}
+                </span>
+              </div>
             </div>
-            <div class="detail"><span class="label">Posto 2° volo:</span> {{ seat2._numSeat }} – {{ seat2.class }} – {{ seat2.legroom ? 'Legroom' : 'Standard' }}</div>
 
             <div class="detail">
-              <span class="label">Durata totale:</span> {{ conn.firstLeg.duration + conn.secondLeg.duration }} min
+              <i class="fas fa-clock detail-icon"></i>
+              <div class="detail-content">
+                <span class="label">2° Volo</span>
+                <span class="value">
+                  {{ conn.secondLeg.dataOra | date:'shortTime' }}
+                  &bull; {{conn.secondLeg.dataOra | date:'fullDate'}}
+                  &bull; {{ conn.secondLeg.duration }} min
+                  &bull; {{ getSeatPrice(seat2) }} €
+                </span>
+                <span class="subvalue">
+                  <i class="fas fa-chair"></i>
+                  {{ seat2._numSeat }} &ndash; {{ seat2.class }}
+                  &ndash; {{ seat2.legroom ? 'Legroom' : 'Standard' }}
+                </span>
+              </div>
             </div>
+
+            <div class="detail">
+              <i class="fas fa-hourglass-half detail-icon"></i>
+              <div class="detail-content">
+                <span class="label">Durata Totale</span>
+                <span class="value">
+                  {{ conn.firstLeg.duration + conn.secondLeg.duration }}
+                  min
+                </span>
+              </div>
+            </div>
+
           </div>
 
-          <button class="btn purchase" (click)="acquistaEntrambiVoli(conn, seat1, seat2)">Acquista</button>
-
+          <!-- Footer with Purchase Button -->
+          <div class="flight-footer">
+            <button class="btn purchase" (click)="acquistaEntrambiVoli(conn, seat1, seat2)">
+              <i class="fas fa-shopping-cart"></i> Acquista
+            </button>
+          </div>
         </div>
       </div>
     </div>

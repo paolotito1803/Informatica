@@ -62,7 +62,9 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-
+  width: 100% !important;
+  max-width: none !important;
+  padding: 0 1rem;            /* un po’ di padding laterale */
   text-align: center;
   color: #fff;
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
@@ -118,6 +120,10 @@
 .results{
   max-height: 500px;
   overflow-y: auto;
+  align-items: stretch;
+  width: 90%;             /* prendiamo sempre il 100% */
+  max-width: none;         /* rimuoviamo eventuali limitazioni */
+  margin: 0 10% 0 10%;     /* niente margini automatici */
 }
 
 /* Card base per ogni volo */
@@ -130,7 +136,7 @@
   transition: transform 0.2s ease;
   margin: 1rem auto;
   width: 90%;
-  max-width: 900px;
+  max-width: auto;
 }
 .flight-card:hover {
   transform: translateY(-2px);
@@ -139,6 +145,15 @@
 /* Override per voli con scalo */
 .flight-card.layover-card {
   border-left-color: #e67e22;          /* arancio per scali */
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  padding: 1.2rem 1.5rem;
+  transition: transform 0.2s ease;
+  width: 100% !important;     /* prendi tutta la larghezza possibile */
+  max-width: none !important; /* cancella ogni max-width */
+  box-sizing: border-box;     /* padding incluso nella larghezza */
+  margin: 0 0 1.5rem 0;        /* spazio sotto ogni card */
+  
 }
 
 /* Header: rotta + prezzo */
@@ -148,7 +163,7 @@
   align-items: center;
   font-size: 1.2rem;
   font-weight: 600;
-  color: #34495e;
+  /*color: #34495e;*/
 }
 
 /* Colori rotta a seconda del tipo */
@@ -165,24 +180,54 @@
   font-size: 1.1rem;
 }
 
-/* Dettagli volo (orario, durata, data…) */
 .flight-details {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.detail {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  background: #f9f9f9;
+  border-radius: 6px;
+  padding: 0.8rem;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+  gap: 0.6rem;
+}
+
+.detail-icon {
+  font-size: 1.4rem;
+  color: #3498db;
+}
+
+.detail-content {
   display: flex;
-  flex-wrap: wrap;
-  gap: 1.5rem;
-  color: #000;
+  flex-direction: column;
 }
 
-.detail .label {
+.label {
   font-size: 0.85rem;
+  color: #555;
+  text-transform: uppercase;
 }
 
-.detail .value {
-  display: block;
+.value {
   font-size: 0.95rem;
   font-weight: 500;
+  color: #222;
   margin-top: 0.2rem;
+  line-height: 1.3;
 }
+
+/* Rimuovo eventuali style inline margin */
+.detail-content[style] {
+  margin: 0 !important;
+}
+
+
 
 /* Bottone Acquista */
 .btn.purchase {
@@ -215,4 +260,188 @@
   .flight-card {
     width: 90%;
   }
+}
+
+.layover-card {
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  overflow: hidden;
+}
+
+.flight-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  /*background: #3498db;*/
+  color: #fff;
+  padding: 1rem;
+}
+
+.flight-header .route-pair {
+  display: flex;
+  gap: 1rem;
+}
+
+.flight-header .route i {
+  margin-right: 0.3rem;
+}
+
+.flight-header .price i {
+  margin-right: 0.3rem;
+}
+
+.flight-details {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1rem;
+  padding: 1rem;
+  background: #f8f9fa;
+}
+
+.detail {
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-start;
+  background: #fff;
+  border-radius: 6px;
+  padding: 0.8rem;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+}
+
+.detail-icon {
+  font-size: 1.4rem;
+  color: #3498db;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.detail-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: #666;
+}
+
+.value {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #333;
+  margin-top: 0.2rem;
+}
+
+.subvalue {
+  font-size: 0.85rem;
+  color: #555;
+  margin-top: 0.4rem;
+}
+
+.flight-footer {
+  padding: 1rem;
+  background: #fff;
+  text-align: right;
+  border-top: 1px solid #e1e1e1;
+}
+
+.btn.purchase {
+  background: #2ecc71;
+  color: #fff;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.btn.purchase i {
+  margin-right: 0.5rem;
+}
+
+.btn.purchase:hover {
+  background: #27ae60;
+}
+
+/* Card volo diretto */
+.direct-card {
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  overflow: hidden;
+  width: 100%;
+}
+
+/* Header */
+.card-header {
+  border-radius: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #3498db;
+  color: #fff;
+  padding: 0.75rem 1rem;
+}
+
+.card-header .route,
+.card-header .price {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-weight: 600;
+}
+
+.card-header i {
+  font-size: 1.2rem;
+}
+
+/* Body */
+.card-body {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem;
+  padding: 1rem;
+  background: #f5f8fa;
+  border-radius: 10px;
+}
+
+.info-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+}
+
+.info-item i {
+  flex-shrink: 0;
+  font-size: 1.4rem;
+  color: #3498db;
+  margin-top: 0.2rem;
+}
+
+.info-label {
+  font-size: 0.75rem;
+  color: #555;
+  text-transform: uppercase;
+  margin-bottom: 0.2rem;
+}
+
+.info-value {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #222;
+}
+
+/* Footer */
+.card-footer {
+  padding: 1rem;
+  background: #fff;
+  text-align: right;
+  border-top: 1px solid #e1e4e8;
 }

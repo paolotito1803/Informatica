@@ -113,14 +113,14 @@ export class FlightSearchComponent {
     const firstTicket = {
       flight: conn.firstLeg.flightCode,
       seat: seat1._numSeat || '',
-      price: conn.firstLeg.price || 0,
+      price: this.getSeatPrice(seat1) || 0,
       numBag: 0
     };
 
     const secondTicket = {
       flight: conn.secondLeg.flightCode,
       seat: seat2._numSeat || '',
-      price: conn.secondLeg.price || 0,
+      price: this.getSeatPrice(seat2) || 0,
       numBag: 0
     };
     console.log("[DEBUG] Acquisto con scalo - firstTicket:", firstTicket);

@@ -1,67 +1,117 @@
-<div class="container" style="width: 400px; margin-top: 20px;" >
-<form class="form-signin"  >
-  
-  <div class="text-center">  
-    <i class="fas fa-envelope loginlogo"></i>
-    <h1 class="h3 mb-3 font-weight-normal">Sign-up</h1>
-  </div>
+<div class="signup-container">
+  <div class="signup-card">
+    <div class="signup-header">
+      <i class="fas fa-user-plus signup-icon"></i>
+      <h2>Sign Up</h2>
+    </div>
 
+    <form #signupForm="ngForm" (ngSubmit)="signup()" novalidate>
+      
+      <!-- Email -->
+      <div class="form-group">
+        <div class="input-icon"><i class="fas fa-envelope"></i></div>
+        <input
+          type="email"
+          name="mail"
+          #mail="ngModel"
+          [(ngModel)]="user.mail"
+          class="form-control"
+          placeholder="Email address"
+          required
+          email
+        />
+      </div>
+      <div *ngIf="mail.invalid && (mail.dirty || mail.touched)" class="error-text">
+        <i class="fas fa-exclamation-circle"></i>
+        Inserisci un indirizzo email valido
+      </div>
 
-  <div class="form-group">
-    <label for="inputEmail">Email address</label>
-    <input type="email" #mail="ngModel" name="mail" [(ngModel)]="user.mail" pattern="[^@\s]+@[^@\s]+\.[^@\s]+" class="form-control" required id="inputEmail" aria-describedby="emailHelp" placeholder="Enter email">
-    <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
-  </div>
+      <!-- Username -->
+      <div class="form-group">
+        <div class="input-icon"><i class="fas fa-user"></i></div>
+        <input
+          type="text"
+          name="username"
+          #username="ngModel"
+          [(ngModel)]="user.username"
+          class="form-control"
+          placeholder="Username"
+          required
+        />
+      </div>
+      <div *ngIf="username.invalid && (username.dirty || username.touched)" class="error-text">
+        <i class="fas fa-exclamation-circle"></i>
+        Username obbligatorio
+      </div>
 
-  <div [hidden]="mail.valid || mail.pristine"
-      class="alert alert-danger">
-    Mail is not valid
-  </div>
-  
-  <div class="form-group">
-    <label for="inputUsername">Username</label>
-    <input type="text" #username="ngModel" required name="username" [(ngModel)]="user.username" class="form-control" id="inputUsername" placeholder="Enter username">
-  </div>
+      <!-- Password -->
+      <div class="form-group">
+        <div class="input-icon"><i class="fas fa-lock"></i></div>
+        <input
+          type="password"
+          name="password"
+          #password="ngModel"
+          [(ngModel)]="user.password"
+          class="form-control"
+          placeholder="Password"
+          required
+        />
+      </div>
+      <div *ngIf="password.invalid && (password.dirty || password.touched)" class="error-text">
+        <i class="fas fa-exclamation-circle"></i>
+        Password obbligatoria
+      </div>
 
-  <div [hidden]="username.valid || username.pristine"
-      class="alert alert-danger">
-    Username is required
-  </div>
+      <!-- Ruolo -->
+      <div class="form-group">
+        <div class="input-icon"><i class="fas fa-user-tag"></i></div>
+        <input
+          type="text"
+          name="roles"
+          #roles="ngModel"
+          [(ngModel)]="user.roles"
+          class="form-control"
+          placeholder="Ruolo"
+          required
+        />
+      </div>
+      <div *ngIf="roles.invalid && (roles.dirty || roles.touched)" class="error-text">
+        <i class="fas fa-exclamation-circle"></i>
+        Ruolo obbligatorio
+      </div>
 
-  <div class="form-group">
-    <label for="inputPassword">Password</label>
-    <input type="password" #password="ngModel" required name="password" [(ngModel)]="user.password" class="form-control" id="inputPassword" placeholder="Password">
-  </div>
+      <!-- PassportID -->
+      <div class="form-group">
+        <div class="input-icon"><i class="fas fa-passport"></i></div>
+        <input
+          type="text"
+          name="passportID"
+          #passportID="ngModel"
+          [(ngModel)]="user.passportID"
+          class="form-control"
+          placeholder="PassportID"
+          required
+        />
+      </div>
+      <div *ngIf="passportID.invalid && (passportID.dirty || passportID.touched)" class="error-text">
+        <i class="fas fa-exclamation-circle"></i>
+        PassportID obbligatorio
+      </div>
 
-  <div [hidden]="password.valid || password.pristine"
-      class="alert alert-danger">
-    Password is required
-  </div>
+      <!-- Messaggio di errore generale -->
+      <div *ngIf="errmessage" class="error-text general-error">
+        <i class="fas fa-exclamation-triangle"></i>
+        Signup error: {{ errmessage }}
+      </div>
 
-  <div class="form-group">
-    <label for="inputRoles">Ruolo</label>
-    <input type="text" #roles="ngModel" required name="roles" [(ngModel)]="user.roles" class="form-control" id="inputRoles" placeholder="Enter roles">
+      <!-- Pulsante -->
+      <button
+        type="submit"
+        class="btn btn-primary btn-block"
+        [disabled]="!signupForm.form.valid"
+      >
+        <i class="fas fa-user-check"></i> Sign Up
+      </button>
+    </form>
   </div>
-
-  <div [hidden]="roles.valid || roles.pristine"
-      class="alert alert-danger">
-    Role is required
-  </div>
-
-  <div class="form-group">
-    <label for="inputPassportID">PassportID</label>
-    <input type="text" #passportID="ngModel" required name="passportID" [(ngModel)]="user.passportID" class="form-control" id="inputPassportID" placeholder="Enter passportID">
-  </div>
-
-  <div [hidden]="passportID.valid || passportID.pristine"
-      class="alert alert-danger">
-    PassportID is required
-  </div>
-
-  <div *ngIf="errmessage" class="alert alert-danger" role="alert">
-    Signup error: {{errmessage}}
-  </div>
-
-  <button class="btn btn-lg btn-primary btn-block" [disabled]=" !mail.valid || !password.valid || !username.valid" (click)="signup();" >Sign up</button>
-</form>
 </div>

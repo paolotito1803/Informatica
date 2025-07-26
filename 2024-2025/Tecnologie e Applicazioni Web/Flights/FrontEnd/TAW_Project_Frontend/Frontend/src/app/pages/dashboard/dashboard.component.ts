@@ -44,13 +44,83 @@ export class DashboardComponent implements OnInit {
     numBag: 0
   };
 
+  airlineName = '';
+  companyLogo = '';
+
+  private logoMap: Record<string,string> = {
+    //Loghi delle compagnie aeree
+    'Aer Lingus':                   '../../../assets/Airlines_logo/AerLingus_Icon.png',
+    'Aeroflot':                     '../../../assets/Airlines_logo/Aeroflot_Icon.png',
+    'Aerolineas Argentinas':        '../../../assets/Airlines_logo/Aerolineas_Argentinas.png',
+    'Aeromexico':                   '../../../assets/Airlines_logo/Aeromexico_Icon.png',
+    'Air China':                    '../../../assets/Airlines_logo/Air China_Icon.png',
+    'Air Canada':                   '../../../assets/Airlines_logo/Air_Canada_Icon.png',
+    'Air France':                   '../../../assets/Airlines_logo/Air_France_Icon.png',
+    'Air India':                    '../../../assets/Airlines_logo/Air_India_Icon.png',
+    'Air New Zealand':              '../../../assets/Airlines_logo/Air_New_Zealand_Icon.png',
+    'AirEuropa':                    '../../../assets/Airlines_logo/AieEuropa_Icon.png',
+    'Alaska Airlines':              '../../../assets/Airlines_logo/Alaska_Airlines_Icon.png',
+    'All Nippon Airways':           '../../../assets/Airlines_logo/All_Nippon_Airways_Icon.png',
+    'American Airlines':            '../../../assets/Airlines_logo/American_Airlines_Icon.png',
+    'Asiana Airlines':              '../../../assets/Airlines_logo/Asiana_Airlines_Icon.png',
+    'Austrian Airlines':            '../../../assets/Airlines_logo/Austrian_Airlines_Icon.png',
+    'Avianca':                      '../../../assets/Airlines_logo/Avianca_Icon.png',
+    'British Airways':              '../../../assets/Airlines_logo/British_Airways_Icon.png',
+    'Brussels Airlines':            '../../../assets/Airlines_logo/Brussels_Airlines_Icon.png',
+    'Cathay Pacific':               '../../../assets/Airlines_logo/Cathay_Pacific_Icon.png',
+    'China Airlines':               '../../../assets/Airlines_logo/China_Airlines_Icon.png',
+    'China Eastern Airlines':       '../../../assets/Airlines_logo/China_Eastern_Airlines_Icon.png',
+    'China Southern Airlines':      '../../../assets/Airlines_logo/China_Southern_Airlines_Icon.png',
+    'Delta Airlines':               '../../../assets/Airlines_logo/Delta_Airlines_Icon.png',
+    'EasyJet':                     '../../../assets/Airlines_logo/EasyJet_Icon.png',
+    'EgyptAir':                    '../../../assets/Airlines_logo/EgyptAir_Icon.png',
+    'Emirates':                    '../../../assets/Airlines_logo/Emirates_Icon.png',
+    'Ethiopian Airlines':          '../../../assets/Airlines_logo/Ethiopian_Airlines_Icon.png',
+    'Etihad Airways':              '../../../assets/Airlines_logo/Etihad_Airways_Icon.png',
+    'EVA Air':                     '../../../assets/Airlines_logo/EVA_Air_Icon.png',
+    'Finnair':                     '../../../assets/Airlines_logo/Finnair_Icon.png',
+    'Garuda Indonesia':            '../../../assets/Airlines_logo/Garuda_Indonesia_Icon.png',
+    'Hainan Airlines':             '../../../assets/Airlines_logo/Hainan_Airlines_Icon.png',
+    'Iberia':                      '../../../assets/Airlines_logo/Iberia_Icon.png',
+    'IndiGo':                      '../../../assets/Airlines_logo/IndiGo_Icon.png',
+    'ITA Airways':                 '../../../assets/Airlines_logo/ITA_Airways_Icon.png',
+    'Japan Airlines':              '../../../assets/Airlines_logo/Japan_Airlines_Icon.png',
+    'JetBlue Airways':             '../../../assets/Airlines_logo/JetBlue.png',
+    'Kenya Airways':               '../../../assets/Airlines_logo/Kenya_Airways_Icon.png',
+    'KLM Royal Dutch Airlines':    '../../../assets/Airlines_logo/KLM.png',
+    'Korean Air':                  '../../../assets/Airlines_logo/Korean_Air_Icon.png',
+    'Kuwait Airways':              '../../../assets/Airlines_logo/Kuwait_Airways_Icon.png',
+    'LATAM Airlines':              '../../../assets/Airlines_logo/Latam_Airlines_Icon.png',
+    'Lufthansa':                   '../../../assets/Airlines_logo/Lufthansa_Icon.png',
+    'Malaysia Airlines':           '../../../assets/Airlines_logo/Malaysia_Airlines_Icon.png',
+    'Qantas Airways':              '../../../assets/Airlines_logo/Qantas_Icon.png',
+    'Qatar Airways':               '../../../assets/Airlines_logo/Qatar_Airways_Icon.png',
+    'Ryanair':                     '../../../assets/Airlines_logo/Ryanair_Icon.png',
+    'SAS Scandinavian Airlines':   '../../../assets/Airlines_logo/SAS.png',
+    'Saudia Airlines':             '../../../assets/Airlines_logo/Saudia_Icon.png',
+    'Singapore Airlines':          '../../../assets/Airlines_logo/Singapore_Airlines_Icon.png',
+    'Southwest Airlines':          '../../../assets/Airlines_logo/Southwest_Icon.png',
+    'Swiss International Air Lines':'../../../assets/Airlines_logo/Swiss_Airlines_Icon.png',
+    'TAP Air Portugal':            '../../../assets/Airlines_logo/TAP_Portugal_Icon.png',
+    'Thai Airways':                '../../../assets/Airlines_logo/Thai_Airways_Icon.png',
+    'Turkish Airlines':            '../../../assets/Airlines_logo/Turkish_Airlines_Icon.png',
+    'United Airlines':             '../../../assets/Airlines_logo/United_Airlines_Icon.png',
+    'Vietnam Airlines':            '../../../assets/Airlines_logo/Vietnam_Airlines_Icon.png',
+    'Virgin Atlantic':             '../../../assets/Airlines_logo/Virgin_Atlantic_Icon.png',
+    'Vueling Airlines':            '../../../assets/Airlines_logo/Vueling.png',
+    'Wizz Air':                    '../../../assets/Airlines_logo/Wizz Air.png',
+    'default-airline':             '../../../assets/Airlines_logo/default.png',
+    //Loghi per altri ruoli
+    'passenger':                   '../../../assets/Interface_icons/passenger.png',
+    'admin':                       '../../../assets/Interface_icons/admin.png'
+  };
+
 
   constructor(
     private us: UserHttpService,
     private airlinesService: AirlinesService,
     private ticketsService: TicketsService,
-    private router: Router,
-    private cdr: ChangeDetectorRef
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -64,7 +134,14 @@ export class DashboardComponent implements OnInit {
     console.log('Passenger?', this.passengerRole);
     console.log('Username?', this.username);
 
+    if(this.adminRole){
+      this.airlineName='admin';
+      this.companyLogo = this.logoMap[this.airlineName];
+    }
+
     if(this.passengerRole){
+      this.airlineName='passenger';
+      this.companyLogo = this.logoMap[this.airlineName];
       this.handlePendingDirectTicket();
       this.handlePendingLayoverTickets();
     }
@@ -87,6 +164,11 @@ export class DashboardComponent implements OnInit {
           /*this.updateData.name = res.name;
           this.updateData.revenue = res.revenue;
           this.updateData.aircrafts = res.aircrafts;*/
+          this.airlineName = res.name;
+
+          this.companyLogo = this.logoMap[this.airlineName];
+          console.log("Nome compagnia: ", this.airlineName);
+          console.log("Logo", this.companyLogo);
 
           // Carica aircraft
           this.airlinesService.getAircraftByMail(email).subscribe({
