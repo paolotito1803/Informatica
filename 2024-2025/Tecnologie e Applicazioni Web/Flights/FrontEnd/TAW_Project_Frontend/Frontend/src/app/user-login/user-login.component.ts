@@ -74,7 +74,7 @@ export class UserLoginComponent implements OnInit {
       if(this.us.is_admin()){
         console.log('Login granted, calling router.navigate(/airlines)');
         this.errmessage = undefined;
-        this.router.navigate(['/dashboard']); // TODO inserire la pagina per l'inserimento compagnie aeree
+        this.router.navigate(['/dashboard']);
       }
     },
     error: (err) => {

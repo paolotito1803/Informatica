@@ -27,29 +27,12 @@ const routes: Routes = [
   { path: 'routes', component : RoutesComponent},
   { path: 'seats', component : SeatsComponent},
   { path: 'tickets', component: TicketsComponent},
-  //{ path: 'dashboard-passeggero', component: PasseggeroDashboardComponent },
-  //{ path: 'dashboard-compagnia', component: CompagniaDashboardComponent },
   { path: 'search', component: FlightSearchComponent },
   { path: 'dashboard', component: DashboardComponent},
   { path: '', redirectTo: 'search', pathMatch: 'full' },
   { path: 'passangers', component: PassengersComponent},
   {path: 'admin', component: AdminComponent},
   {path: 'change-password', component: ChangePasswordComponent}
-  /*{ path: 'passengers', loadChildren: () => import('./pages/passengers/passengers.module').then(m => m.PassengersModule) },
-  { path: 'admin', loadChildren: () => import('./pages/admin/admin.module').then(m => m.AdminModule) },
-  { path: 'passengers', loadChildren: () => import('./pages/passengers/passengers.module').then(m => m.PassengersModule) },
-  { path: 'admin', loadChildren: () => import('./pages/admin/admin.module').then(m => m.AdminModule) }
-
-  { path: 'search', loadChildren: () => import('./pages/search/search.module').then(m => m.SearchModule)},
-  { path: 'flights', loadChildren: () => import('./pages/flights/flights.module').then(m => m.FlightsModule) },
-  { path: 'aircrafts', loadChildren: () => import('./pages/aircrafts/aircrafts.module').then(m => m.AircraftsModule) },
-  { path: 'airlines', loadChildren: () => import('./pages/airlines/airlines.module').then(m => m.AirlinesModule) },
-  { path: 'routes', loadChildren: () => import('./pages/routes/routes.module').then(m => m.RoutesModule) },
-  { path: 'seats', loadChildren: () => import('./pages/seats/seats.module').then(m => m.SeatsModule) },
-  { path: 'tickets', loadChildren: () => import('./pages/tickets/tickets.module').then(m => m.TicketsModule) },
-  { path: 'airports', loadChildren: () => import('./pages/airports/airports.module').then(m => m.AirportsModule) },
-  { path: '', redirectTo: '/search', pathMatch: 'full' }
-  { path: '**', redirectTo: 'flights' }*/
 ];
 
 @NgModule({

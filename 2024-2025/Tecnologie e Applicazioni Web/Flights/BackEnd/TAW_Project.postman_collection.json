@@ -1,10 +1,10 @@
 {
 	"info": {
-		"_postman_id": "08faa92a-385e-431c-bb19-e17255c98b6b",
+		"_postman_id": "cc81bc96-9519-4f0d-84b8-4ddad2185d20",
 		"name": "TAW_Project",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "44275702",
-		"_collection_link": "https://giacomobordignon.postman.co/workspace/Giacomo-Bordignon's-Workspace~564c0b48-0815-4a39-81d5-c4b533f7c271/collection/44275702-08faa92a-385e-431c-bb19-e17255c98b6b?action=share&source=collection_link&creator=44275702"
+		"_exporter_id": "44233066",
+		"_collection_link": "https://paolotitotto.postman.co/workspace/Paolo-Titotto's-Workspace~c60cf3d0-ce0c-4a4b-8abb-e14f82b82524/collection/44233066-cc81bc96-9519-4f0d-84b8-4ddad2185d20?action=share&source=collection_link&creator=44233066"
 	},
 	"item": [
 		{
@@ -13,12 +13,16 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080",
+					"raw": "http://localhost:8080/api/v1",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "8080"
+					"port": "8080",
+					"path": [
+						"api",
+						"v1"
+					]
 				}
 			},
 			"response": []
@@ -44,12 +48,12 @@
 					"basic": [
 						{
 							"key": "password",
-							"value": "7891011",
+							"value": "abdef",
 							"type": "string"
 						},
 						{
 							"key": "username",
-							"value": "bordjack47@project_flight.it",
+							"value": "paul.tito@project_flight.it",
 							"type": "string"
 						},
 						{
@@ -67,13 +71,15 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/login",
+					"raw": "http://localhost:8080/api/v1/login",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
+						"api",
+						"v1",
 						"login"
 					]
 				}
@@ -97,7 +103,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"roles\": \"airline\",\r\n    \"username\": \"lufthansa\",\r\n    \"password\": \"prova\",\r\n    \"mail\": \"lufthansa@project_flight.it\",\r\n    \"passportID\" : \"AB12345\"\r\n}",
+					"raw": "{\r\n    \"roles\": \"airline\",\r\n    \"username\": \"Quantas\",\r\n    \"password\": \"provaQ\",\r\n    \"mail\": \"quantas@flight_project.it\",\r\n    \"passportID\" : \"CD12347\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -105,13 +111,15 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/users",
+					"raw": "http://localhost:8080/api/v1/users",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
+						"api",
+						"v1",
 						"users"
 					]
 				}
@@ -134,15 +142,17 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/users/6848096cc77f7b35b95893db",
+					"raw": "http://localhost:8080/api/v1/users/paul.tito@project_flight.it",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
+						"api",
+						"v1",
 						"users",
-						"6848096cc77f7b35b95893db"
+						"paul.tito@project_flight.it"
 					]
 				}
 			},
@@ -173,13 +183,15 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/users/6847f0305b18f79980837992",
+					"raw": "http://localhost:8080/api/v1/users/6847f0305b18f79980837992",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
+						"api",
+						"v1",
 						"users",
 						"6847f0305b18f79980837992"
 					]
@@ -212,13 +224,15 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/routes",
+					"raw": "http://localhost:8080/api/v1/routes",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
+						"api",
+						"v1",
 						"routes"
 					]
 				}
@@ -242,7 +256,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"_signature\" : \"QF\",\r\n    \"name\" : \"Quantas\",\r\n    \"revenue\" : 50000000,\r\n    \"aircrafts\" : [{\"_numAircraft\" : \"1\", \"seats\": [{\"_numSeat\" : \"A1\", \"class\" : \"Economy\", \"legroom\" : false, \"isFree\" : true}, {\"_numSeat\" : \"A2\", \"class\" : \"Business\", \"legroom\" : true, \"isFree\" : true}, {\"_numSeat\" : \"A3\", \"class\" : \"First\", \"legroom\" : true, \"isFree\" : false}], \"modello\" : \"Boing737\"}]\r\n}",
+					"raw": "{\r\n    \"_signature\" : \"QF\",\r\n    \"name\" : \"Quantas\",\r\n    \"revenue\" : 50000000,\r\n    \"mail\" : \"quantas@flight_project.it\",\r\n    \"tempPassword\" : \"124578\",\r\n    \"aircrafts\" : [{\"_numAircraft\" : \"1\", \"seats\": [{\"_numSeat\" : \"A1\", \"class\" : \"Economy\", \"legroom\" : false, \"isFree\" : true}, {\"_numSeat\" : \"A2\", \"class\" : \"Business\", \"legroom\" : true, \"isFree\" : true}, {\"_numSeat\" : \"A3\", \"class\" : \"First\", \"legroom\" : true, \"isFree\" : false}], \"modello\" : \"Boing737\"}]\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -250,13 +264,15 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/airlines",
+					"raw": "http://localhost:8080/api/v1/airlines",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
+						"api",
+						"v1",
 						"airlines"
 					]
 				}
@@ -283,15 +299,17 @@
 					"raw": "{\r\n    \"_signature\" : \"QF\",\r\n    \"name\" : \"Quantas\",\r\n    \"revenue\" : 50000000,\r\n    \"aircrafts\" : [{\"_numAircraft\" : \"1\", \"seats\": [{\"_numSeat\" : \"A1\", \"class\" : \"Economy\", \"legroom\" : false, \"isFree\" : true}, {\"_numSeat\" : \"A2\", \"class\" : \"Business\", \"legroom\" : true, \"isFree\" : true}, {\"_numSeat\" : \"A3\", \"class\" : \"First\", \"legroom\" : true, \"isFree\" : false}], \"modello\" : \"Boing737\"}],\r\n    \"password\" : \"abc123\",\r\n    \"username\" : \"Quantas\",\r\n    \"mail\" : \"quantas@project_flight.it\",\r\n    \"passportID\" : \"AC12345\",\r\n    \"roles\" : \"airline\"\r\n}"
 				},
 				"url": {
-					"raw": "http://localhost:8080/airlines/ITA",
+					"raw": "http://localhost:8080/api/v1/airlines/LH",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
+						"api",
+						"v1",
 						"airlines",
-						"ITA"
+						"LH"
 					]
 				}
 			},
@@ -314,7 +332,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"revenue\" : 50\r\n}",
+					"raw": "{\r\n    \"name\" : \"Emirates\",\r\n    \"revenue\" : 150\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -322,15 +340,17 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/airlines/LH",
+					"raw": "http://localhost:8080/api/v1/airlines/emirates@flight_project.it",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
+						"api",
+						"v1",
 						"airlines",
-						"LH"
+						"emirates@flight_project.it"
 					]
 				}
 			},
@@ -361,13 +381,15 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/routes/6848387187618dcff0704165",
+					"raw": "http://localhost:8080/api/v1/routes/6848387187618dcff0704165",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
+						"api",
+						"v1",
 						"routes",
 						"6848387187618dcff0704165"
 					]
@@ -395,13 +417,15 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://localhost:8080/routes/6848387187618dcff0704165",
+					"raw": "http://localhost:8080/api/v1/routes/6848387187618dcff0704165",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
+						"api",
+						"v1",
 						"routes",
 						"6848387187618dcff0704165"
 					]
@@ -432,13 +456,15 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://localhost:8080/routes",
+					"raw": "http://localhost:8080/api/v1/routes",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
+						"api",
+						"v1",
 						"routes"
 					]
 				}
@@ -468,13 +494,15 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://localhost:8080/aircrafts",
+					"raw": "http://localhost:8080/api/v1/aircrafts",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
+						"api",
+						"v1",
 						"aircrafts"
 					]
 				}
@@ -504,13 +532,15 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://localhost:8080/flights",
+					"raw": "http://localhost:8080/api/v1/flights",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
+						"api",
+						"v1",
 						"flights"
 					]
 				}
@@ -540,13 +570,15 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://localhost:8080/tickets",
+					"raw": "http://localhost:8080/api/v1/tickets",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
+						"api",
+						"v1",
 						"tickets"
 					]
 				}
@@ -576,13 +608,15 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://localhost:8080/airports",
+					"raw": "http://localhost:8080/api/v1/airports",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
+						"api",
+						"v1",
 						"airports"
 					]
 				}
@@ -612,13 +646,15 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://localhost:8080/seats",
+					"raw": "http://localhost:8080/api/v1/seats",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
+						"api",
+						"v1",
 						"seats"
 					]
 				}
@@ -650,13 +686,15 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/aircrafts",
+					"raw": "http://localhost:8080/api/v1/aircrafts",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
+						"api",
+						"v1",
 						"aircrafts"
 					]
 				}
@@ -688,13 +726,15 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/flights",
+					"raw": "http://localhost:8080/api/v1/flights",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
+						"api",
+						"v1",
 						"flights"
 					]
 				}
@@ -718,7 +758,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"_code\" : \"22\",\r\n    \"user\" : \"68497f685ec03089d2e0686e\",\r\n    \"seat\" : \"A1\",\r\n    \"flight\" : \"AB105\",\r\n    \"price\" : 1000,\r\n    \"numBag\" : 1\r\n}",
+					"raw": "{\r\n    \"_code\" : \"22\",\r\n    \"user\" : \"685d4946d5bccc9978c5b67c\",\r\n    \"seat\" : \"A1\",\r\n    \"flight\" : \"AB105\",\r\n    \"price\" : 1000,\r\n    \"numBag\" : 1\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -726,13 +766,15 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/tickets",
+					"raw": "http://localhost:8080/api/v1/tickets",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
+						"api",
+						"v1",
 						"tickets"
 					]
 				}
@@ -764,13 +806,15 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/airports",
+					"raw": "http://localhost:8080/api/v1/airports",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
+						"api",
+						"v1",
 						"airports"
 					]
 				}
@@ -802,13 +846,15 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/seats",
+					"raw": "http://localhost:8080/api/v1/seats",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
+						"api",
+						"v1",
 						"seats"
 					]
 				}
@@ -840,13 +886,15 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/aircrafts/1",
+					"raw": "http://localhost:8080/api/v1/aircrafts/1",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
+						"api",
+						"v1",
 						"aircrafts",
 						"1"
 					]
@@ -879,13 +927,15 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/flights/AB106",
+					"raw": "http://localhost:8080/api/v1/flights/AB106",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
+						"api",
+						"v1",
 						"flights",
 						"AB106"
 					]
@@ -910,7 +960,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"flight\" : \"AB105\"\r\n}",
+					"raw": "{\r\n    \"seat\" : \"A3\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -918,15 +968,17 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/tickets/2",
+					"raw": "http://localhost:8080/api/v1/tickets/20",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
+						"api",
+						"v1",
 						"tickets",
-						"2"
+						"20"
 					]
 				}
 			},
@@ -957,13 +1009,15 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/airports/013",
+					"raw": "http://localhost:8080/api/v1/airports/013",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
+						"api",
+						"v1",
 						"airports",
 						"013"
 					]
@@ -996,13 +1050,15 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/seats/A4",
+					"raw": "http://localhost:8080/api/v1/seats/A4",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
+						"api",
+						"v1",
 						"seats",
 						"A4"
 					]
@@ -1030,13 +1086,15 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://localhost:8080/aircrafts/1",
+					"raw": "http://localhost:8080/api/v1/aircrafts/1",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
+						"api",
+						"v1",
 						"aircrafts",
 						"1"
 					]
@@ -1064,13 +1122,15 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://localhost:8080/flights/5",
+					"raw": "http://localhost:8080/api/v1/flights/5",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
+						"api",
+						"v1",
 						"flights",
 						"5"
 					]
@@ -1098,13 +1158,15 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://localhost:8080/tickets/22",
+					"raw": "http://localhost:8080/api/v1/tickets/22",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
+						"api",
+						"v1",
 						"tickets",
 						"22"
 					]
@@ -1132,13 +1194,15 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://localhost:8080/airports/014",
+					"raw": "http://localhost:8080/api/v1/airports/014",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
+						"api",
+						"v1",
 						"airports",
 						"014"
 					]
@@ -1159,23 +1223,29 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://localhost:8080/search?depart=VCE&destination=JFK",
+					"raw": "http://localhost:8080/api/v1/search?depart=JFK&destination=VCE&dataOra=2025-07-24 7:00",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
+						"api",
+						"v1",
 						"search"
 					],
 					"query": [
 						{
 							"key": "depart",
-							"value": "VCE"
+							"value": "JFK"
 						},
 						{
 							"key": "destination",
-							"value": "JFK"
+							"value": "VCE"
+						},
+						{
+							"key": "dataOra",
+							"value": "2025-07-24 7:00"
 						}
 					]
 				}
@@ -1207,16 +1277,121 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/airlines/LH/setup",
+					"raw": "http://localhost:8080/api/v1/airlines/lufthansa@project_flight.it/setup",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
+						"api",
+						"v1",
 						"airlines",
-						"LH",
+						"lufthansa@project_flight.it",
 						"setup"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Airlines",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{JWT_TOKEN_TAW}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/airlines/emirates@flight_project.it",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"airlines",
+						"emirates@flight_project.it"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Aircraft from Airlines",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{JWT_TOKEN_TAW}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/airlines/emirates@flight_project.it/aircrafts",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"airlines",
+						"emirates@flight_project.it",
+						"aircrafts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Passengers",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{JWT_TOKEN_TAW}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/users",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"users"
 					]
 				}
 			},

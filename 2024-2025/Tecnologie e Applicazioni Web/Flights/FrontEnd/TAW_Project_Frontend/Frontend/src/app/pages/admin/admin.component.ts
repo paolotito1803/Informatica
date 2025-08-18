@@ -34,17 +34,7 @@ export class AdminComponent implements OnInit {
               private us : UserHttpService) {}
 
   ngOnInit(): void {
-    /*
-      data: { 
-                        _signature: string,
-                        username: string, 
-                        name: string, 
-                        mail: string, 
-                        password: string,
-                        passportID: string,
-                        roles: 'airline',
-                      }
-    */
+   
     this.inviteForm = this.fb.group({
       _signature: ['', Validators.required],
       username: ['', Validators.required],

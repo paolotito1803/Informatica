@@ -69,9 +69,9 @@ declare global {
 
 Inizializzazione(app);
 
-app.get("/", (req,res) => {
+app.get("/api/v1/", (req,res) => {
     res.status(200).json( { api_version: "1.0",
-        endpoints: [ "/users", "/airlines", "/login", "/search", "/seats", "/aircrafts", "/airports", "/routes", "/flights", "/tickets"]
+        endpoints: [ "/api/v1/users", "/api/v1/airlines", "/api/v1/login", "/api/v1/search", "/api/v1/seats", "/api/v1/aircrafts", "/api/v1/airports", "/api/v1/routes", "/api/v1/flights", "/api/v1/tickets"]
     } );
 });
 
@@ -92,7 +92,7 @@ passport.use( new passportHTTP.BasicStrategy(
     }
 ));
 
-app.get("/login", passport.authenticate('basic', { session: false }), (req,res,next) =>  {
+app.get("/api/v1/login", passport.authenticate('basic', { session: false }), (req,res,next) =>  {
     if(req.user.mustChangePassword){
         return res.status(403).json({ error: true, errormessage: "Password change required before access", mustChangePassword: true});
     }
@@ -109,7 +109,7 @@ app.get("/login", passport.authenticate('basic', { session: false }), (req,res,n
 });
 
 //signup user
-app.post('/users', (req,res,next) => {
+app.post('/api/v1/users', (req,res,next) => {
     let u = users.newUser( req.body );
     if( !req.body.password ) {
         return next({ statusCode: 400, error: true, errormessage: "Password field missing"});
@@ -150,7 +150,7 @@ app.post('/users', (req,res,next) => {
 });
 
 // get all passengers
-app.get('/users', auth, (req, res, next) => {
+app.get('/api/v1/users', auth, (req, res, next) => {
     if(!users.newUser(req.auth).hasAdminRole()){
         return next({ statusCode:404, error: true, errormessage: "Unauthorized: user is not an administrator."} );
     }
@@ -163,7 +163,7 @@ app.get('/users', auth, (req, res, next) => {
 
 
 //delete user
-app.delete('/users/:mail', auth, (req,res,next) => {
+app.delete('/api/v1/users/:mail', auth, (req,res,next) => {
     if( !users.newUser(req.auth).hasAdminRole() ) {
         return next({ statusCode:404, error: true, errormessage: "Unauthorized: user is not an administrator."} );
     }
@@ -178,11 +178,11 @@ app.delete('/users/:mail', auth, (req,res,next) => {
 });
 
 //user data modifications
-app.put('/users/:id', auth, async (req, res, next) => {
+app.put('/api/v1/users/:id', auth, async (req, res, next) => {
     try {
         const userId = req.params.id;
         const u = await users.getModel().findById(userId);
-        //Checks if both password and username are not empty fields
+        //Checks if password, username, mail and passportID are not empty fields
         if (!req.body.password && !req.body.username && !req.body.mail && !req.body.passportID) {
             return next({ statusCode: 400, error: true, errormessage: "At least one field must be provided"});
         }
@@ -212,7 +212,7 @@ app.put('/users/:id', auth, async (req, res, next) => {
     }
 });
 
-app.post('/routes', auth, (req,res,next) => {
+app.post('/api/v1/routes', auth, (req,res,next) => {
     let r = routes.newRoute(req.body);
     let a = users.newUser(req.auth).hasAirlineRole();
     if(a){
@@ -230,7 +230,7 @@ app.post('/routes', auth, (req,res,next) => {
     }
 });
 
-app.put('/routes/:id', auth, async (req,res,next) => {
+app.put('/api/v1/routes/:id', auth, async (req,res,next) => {
     try {
         const userId_routes = req.params.id;
         const r = await routes.getModel().findById(userId_routes);
@@ -259,7 +259,7 @@ app.put('/routes/:id', auth, async (req,res,next) => {
     }
 });
 
-app.delete('/routes/:id', auth, (req,res,next) => {
+app.delete('/api/v1/routes/:id', auth, (req,res,next) => {
     if( !users.newUser(req.auth).hasAirlineRole() ) {
         return next({ statusCode:404, error: true, errormessage: "Unauthorized: user is not an administrator."} );
     }
@@ -273,7 +273,7 @@ app.delete('/routes/:id', auth, (req,res,next) => {
     })
 });
 
-app.get('/routes', auth, (req, res, next) => {
+app.get('/api/v1/routes', auth, (req, res, next) => {
     if(!users.newUser(req.auth).hasAirlineRole())
         return next({statuscode: 403, error: true, errormessage: "Unauthorized"});
     routes.getModel().find({}).then((routes) => {
@@ -283,7 +283,7 @@ app.get('/routes', auth, (req, res, next) => {
     });
 });
 
-app.get("/airlines/:mail", auth, (req, res, next) =>{
+app.get("/api/v1/airlines/:mail", auth, (req, res, next) =>{
     if(!users.newUser(req.auth).hasAirlineRole()) {
         return next({ statusCode: 403, error: true, errormessage: "Unauthorized" });
     }
@@ -294,7 +294,7 @@ app.get("/airlines/:mail", auth, (req, res, next) =>{
     }
 });
 
-app.get("/airlines", auth, (req, res, next) => {
+app.get("/api/v1/airlines", auth, (req, res, next) => {
     if(!users.newUser(req.auth).hasAdminRole()) {
         return next({ statusCode: 403, error: true, errormessage: "Unauthorized" });
     }
@@ -305,7 +305,7 @@ app.get("/airlines", auth, (req, res, next) => {
     }
 });
 
-app.get("/airlines/:mail/aircrafts", auth, (req, res, next) => {
+app.get("/api/v1/airlines/:mail/aircrafts", auth, (req, res, next) => {
     if (!users.newUser(req.auth).hasAirlineRole()) {
         return next({ statusCode: 403, error: true, errormessage: "Unauthorized" });
     }
@@ -325,7 +325,7 @@ app.get("/airlines/:mail/aircrafts", auth, (req, res, next) => {
 
 
 
-app.post("/airlines", auth, async (req, res, next) => {
+app.post("/api/v1/airlines", auth, async (req, res, next) => {
     if (!users.newUser(req.auth).hasAdminRole()) {
         return next({ statusCode: 403, error: true, errormessage: "Unauthorized" });
     }
@@ -353,7 +353,7 @@ app.post("/airlines", auth, async (req, res, next) => {
     }
 });
 
-app.put('/airlines/:id', auth, async (req, res, next) => {
+app.put('/api/v1/airlines/:id', auth, async (req, res, next) => {
     try {
         const mail_airline = req.params.id;
         const ar = await airlines.getModel().findOne({mail : mail_airline});
@@ -384,7 +384,7 @@ app.put('/airlines/:id', auth, async (req, res, next) => {
     }
 });
 
-app.put("/airlines/:id/setup", auth, async (req, res, next) => {
+app.put("/api/v1/airlines/:id/setup", auth, async (req, res, next) => {
     try {
         const airline = await airlines.getModel().findOne({mail : req.params.id});
         if (!airline) {
@@ -428,7 +428,7 @@ app.put("/airlines/:id/setup", auth, async (req, res, next) => {
     }
 });
 
-app.delete('/airlines/:id', auth, (req,res,next) => {
+app.delete('/api/v1/airlines/:id', auth, (req,res,next) => {
     if( !users.newUser(req.auth).hasAdminRole() ) {
         return next({ statusCode:404, error: true, errormessage: "Unauthorized: user is not an administrator."} );
     }
@@ -447,7 +447,7 @@ app.delete('/airlines/:id', auth, (req,res,next) => {
     })
 });
 
-app.post('/aircrafts', auth, (req, res, next) => {
+app.post('/api/v1/aircrafts', auth, (req, res, next) => {
     let u = users.newUser(req.auth).hasAirlineRole();
     let aircraft = aircrafts.newAircraft(req.body);
     if(u){
@@ -468,7 +468,7 @@ app.post('/aircrafts', auth, (req, res, next) => {
     }
 });
 
-app.put('/aircrafts/:id', auth, async (req, res, next) =>{
+app.put('/api/v1/aircrafts/:id', auth, async (req, res, next) =>{
     try {
         const userId_aircrafts = req.params.id;
         const aircraft = await aircrafts.getModel().findOne({_numAircraft : userId_aircrafts});
@@ -500,7 +500,7 @@ app.put('/aircrafts/:id', auth, async (req, res, next) =>{
     }
 });
 
-app.delete('/aircrafts/:id', auth, async (req, res, next) => {
+app.delete('/api/v1/aircrafts/:id', auth, async (req, res, next) => {
     if( !users.newUser(req.auth).hasAirlineRole()) {
         return next({ statusCode:404, error: true, errormessage: "Unauthorized: user is not an administrator."} );
     }
@@ -518,7 +518,7 @@ app.delete('/aircrafts/:id', auth, async (req, res, next) => {
 });
 
 
-app.get('/aircrafts', auth, (req, res, next) => {
+app.get('/api/v1/aircrafts', auth, (req, res, next) => {
    aircrafts.getModel().find({}, {}).then((aircrafts) => {
        return res.status(200).json(aircrafts);
    }).catch( (reason)=> {
@@ -526,7 +526,7 @@ app.get('/aircrafts', auth, (req, res, next) => {
    })
 });
 
-app.post('/flights', auth, (req, res, next) => {
+app.post('/api/v1/flights', auth, (req, res, next) => {
     if(!users.newUser(req.auth).hasAirlineRole()) {
         return next({statuscode: 403, error: true, errormessage: "Unauthorized."} );
     } else {
@@ -542,7 +542,7 @@ app.post('/flights', auth, (req, res, next) => {
     }
 });
 
-app.get('/flights', auth, (req, res, next) => {
+app.get('/api/v1/flights', auth, (req, res, next) => {
     airlines.getModel().findOne({mail : req.auth.mail}).then((airline) => {
         const aircraftCodes = airline.aircrafts.map(a => a._numAircraft);
         flights.getModel().find({aircraft: { $in: aircraftCodes }}).then((flightsList) => {
@@ -555,7 +555,7 @@ app.get('/flights', auth, (req, res, next) => {
     });
 })
 
-app.delete('/flights/:id', auth, (req, res, next) => {
+app.delete('/api/v1/flights/:id', auth, (req, res, next) => {
     if(!users.newUser(req.auth).hasAirlineRole()){
         return next({statuscode: 403, error: true, errormessage: "Unauthorized"});
     }else{
@@ -571,7 +571,7 @@ app.delete('/flights/:id', auth, (req, res, next) => {
     }
 });
 
-app.put('/flights/:id', auth, async (req, res, next) =>{
+app.put('/api/v1/flights/:id', auth, async (req, res, next) =>{
     try {
         const userId_flights = req.params.id;
         const flight = await flights.getModel().findOne({_flightCode : userId_flights});
@@ -604,7 +604,7 @@ app.put('/flights/:id', auth, async (req, res, next) =>{
     }
 });
 
-app.post('/tickets', auth, async (req, res, next) => {
+app.post('/api/v1/tickets', auth, async (req, res, next) => {
     const user = users.newUser(req.auth);
 
     try {
@@ -673,11 +673,6 @@ app.post('/tickets', auth, async (req, res, next) => {
             await aircraft.save();
             
             return res.status(200).json({error: false, errormessage: "", id: ticket._code});
-            /*const seat = await seats.getModel().findOne({ _numSeat: ticket.seat, flight: ticket.flight });
-            if (seat) {
-                seat.setIsFree(false);
-                await seat.save();
-            }*/
         }
         return next({statuscode: 403, error: true, errormessage: "Unauthorized"});
     } catch (error) {
@@ -686,7 +681,7 @@ app.post('/tickets', auth, async (req, res, next) => {
 });
 
 
-app.get('/tickets', auth, async (req, res, next) => {
+app.get('/api/v1/tickets', auth, async (req, res, next) => {
     if(!users.newUser(req.auth).hasAirlineRole() && !users.newUser(req.auth).hasPassangerRole())
         return next({statuscode: 403, error: true, errormessage: "Unauthorized."} );
     let u = await users.getModel().findOne({mail : req.auth.mail});
@@ -697,7 +692,7 @@ app.get('/tickets', auth, async (req, res, next) => {
     });
 });
 
-app.delete('/tickets/:id', auth, async (req, res, next) => {
+app.delete('/api/v1/tickets/:id', auth, async (req, res, next) => {
     if (!users.newUser(req.auth).hasPassangerRole() && !users.newUser(req.auth).hasAirlineRole()) {
         return next({ statuscode: 403, error: true, errormessage: "Unauthorized"});
     }
@@ -770,7 +765,7 @@ app.delete('/tickets/:id', auth, async (req, res, next) => {
 });
 
 
-app.put('/tickets/:id', auth, async (req, res, next) => {
+app.put('/api/v1/tickets/:id', auth, async (req, res, next) => {
     try {
         const userId_tickets = req.params.id;
         const ticket = await tickets.getModel().findOne({_code : userId_tickets});
@@ -805,7 +800,7 @@ app.put('/tickets/:id', auth, async (req, res, next) => {
     }
 });
 
-app.post("/airports", auth, (req, res, next) => {
+app.post("/api/v1/airports", auth, (req, res, next) => {
     if(!users.newUser(req.auth).hasAdminRole())
         return next({ statuscode: 403, error: true, errormessage: "Unauthorized"});
 
@@ -821,7 +816,7 @@ app.post("/airports", auth, (req, res, next) => {
     })
 })
 
-app.put("/airports/:id", auth, async (req, res, next) => {
+app.put("/api/v1/airports/:id", auth, async (req, res, next) => {
     try {
         if (!users.newUser(req.auth).hasAdminRole())
             return next({ statuscode: 403, error: true, errormessage: "Access denied! Unauthorized to alter the airport " + req.params.id});
@@ -846,7 +841,7 @@ app.put("/airports/:id", auth, async (req, res, next) => {
     }
 })
 
-app.delete("/airports/:id", auth, (req, res, next) => {
+app.delete("/api/v1/airports/:id", auth, (req, res, next) => {
     if(!users.newUser(req.auth).hasAdminRole())
         return next({ statuscode: 403, error: true, errormessage: "Access denied! Unauthorized user"});
 
@@ -860,7 +855,7 @@ app.delete("/airports/:id", auth, (req, res, next) => {
     })
 })
 
-app.get("/airports", auth, (req, res, next) => {
+app.get("/api/v1/airports", auth, (req, res, next) => {
     airports.getModel().find({}).then((airport) => {
         return res.status(200).json(airport);
     }).catch((reason) => {
@@ -868,7 +863,7 @@ app.get("/airports", auth, (req, res, next) => {
     });
 })
 
-app.post("/seats", auth, (req, res, next) => {
+app.post("/api/v1/seats", auth, (req, res, next) => {
     if(!users.newUser(req.auth).hasAirlineRole())
         return next({statuscode: 403, error: true, errormessage: "Unauthorized"});
     
@@ -884,7 +879,7 @@ app.post("/seats", auth, (req, res, next) => {
     })
 })
 
-app.put("/seats/:id", auth, async (req, res, next) => {
+app.put("/api/v1/seats/:id", auth, async (req, res, next) => {
     try {
         if (!users.newUser(req.auth).hasAirlineRole())
             return next({ statuscode: 403, error: true, errormessage: "Access denied! Unauthorized to alter the airport " + req.params.id})
@@ -912,7 +907,7 @@ app.put("/seats/:id", auth, async (req, res, next) => {
     }
 })
 
-app.get("/seats", auth, (req, res, next) => {
+app.get("/api/v1/seats", auth, (req, res, next) => {
     if(!users.newUser(req.auth).hasPassangerRole() && users.newUser(req.auth).hasAirlineRole())
         return next({ statuscode: 403, error: true, errormessage: "Unauthorized."});
 
@@ -923,7 +918,7 @@ app.get("/seats", auth, (req, res, next) => {
     });
 })
 
-app.get("/search", async (req, res, next) => {
+app.get("/api/v1/search", async (req, res, next) => {
     const search: any = {
         depart: req.query.depart,
         destination: req.query.destination,
@@ -1018,7 +1013,6 @@ app.get("/search", async (req, res, next) => {
                                 const secondDeparture = new Date(second.dataOra);
                                 const diffHours = (secondDeparture.getTime() - firstArrival.getTime()) / (1000 * 60 * 60);
 
-                                //if (diffHours < 2) continue; // salto connessioni troppo strette
 
                                 const ticketsSecond = await tickets.getModel().find({ flight: second._flightCode });
                                 const aircraftSecond = await aircrafts.getModel().findOne({ _numAircraft: second.aircraft });

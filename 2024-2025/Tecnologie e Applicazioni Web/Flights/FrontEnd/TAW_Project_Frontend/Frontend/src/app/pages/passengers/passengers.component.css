@@ -69,8 +69,6 @@
   height: 100vh;
   /* con questo */
   background-color: #ffffff;
-  /* oppure, se vuoi mantenere RGBA */
-  /* background: rgba(255, 255, 255, 1); */
 
   /* assicurati NON ci sia opacity globale */
   opacity: 1;

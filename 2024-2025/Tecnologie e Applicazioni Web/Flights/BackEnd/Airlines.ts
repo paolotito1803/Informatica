@@ -17,11 +17,9 @@ export interface Airlines extends mongoose.Document{
 
     getName: () => string,
     getRevenue: () => number,
-    //getTickets: () => Tickets[],
     getAircrafts: () => Aircrafts[],
     setName: (name: string) => void,
     setRevenue: (revenue : number) => void,
-    //setTickets: (tickets : Tickets[]) => void,
     setAircrafts: (aircrafts : Aircrafts[]) => void,
     setAirlinePassword: (pwd:string)=>void,
     validateAirlinePassword: (pwd:string)=>boolean,
@@ -71,9 +69,6 @@ airlineSchema.methods.getRevenue = function() : number {
     return this.revenue;
 }
 
-/*airlineSchema.methods.getTickets = function() : Tickets[] {
-    return this.tickets;
-}*/
 
 airlineSchema.methods.getAircrafts = function() : Aircrafts[] {
     return this.aircrafts;
@@ -86,9 +81,6 @@ airlineSchema.methods.setRevenue = function(revenue : number){
     this.revenue = revenue;
 }
 
-/*airlineSchema.methods.setTickets = function(tickets : Tickets[]){
-    this.tickets = tickets;
-}*/
 
 airlineSchema.methods.setAircrafts = function(aircrafts : Aircrafts[]){
     this.aircrafts = aircrafts;

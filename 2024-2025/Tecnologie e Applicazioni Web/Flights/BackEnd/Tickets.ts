@@ -60,9 +60,6 @@ ticketSchema.methods.getSeat = function() : mongoose.Schema.Types.ObjectId{
     return this.seat;
 }
 
-/*ticketSchema.methods.getAirline = function() : mongoose.Schema.Types.ObjectId{
-    return this.airline;
-}*/
 
 ticketSchema.methods.getFlight = function() : mongoose.Schema.Types.ObjectId{
     return this.flight;
@@ -84,9 +81,6 @@ ticketSchema.methods.setSeat = function(seat : mongoose.Schema.Types.String){
     this.seat = seat;
 }
 
-/*ticketSchema.methods.setAirline = function(airline : mongoose.Schema.Types.String){
-    this.airline = airline;
-}*/
 
 ticketSchema.methods.setFlight = function(flight : mongoose.Schema.Types.String){
     this.flight = flight;

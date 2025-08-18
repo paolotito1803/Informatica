@@ -47,7 +47,7 @@ export function Inizializzazione(app){
                     tickets : []
                 });
                 m1.setPassword("123456");
-                //m1.save();
+                
                 let m2 = Users.newUser({
                     username: "bordjack47",
                     passportID: "VY3141592",
@@ -56,7 +56,7 @@ export function Inizializzazione(app){
                     tickets : []
                 });
                 m2.setPassword("7891011");
-                //m2.save();
+                
                 let m3 = Users.newUser({
                     username: "tito_paul",
                     passportID: "GK1618033",
@@ -65,7 +65,7 @@ export function Inizializzazione(app){
                     tickets : []
                 });
                 m3.setPassword("abdef");
-                //m3.save();
+                
                 let m4 = Users.newUser({
                     username: "lufthansa",
                     passportID : "AB12345",
@@ -74,7 +74,7 @@ export function Inizializzazione(app){
                     tickets : []
                 });
                 m4.setPassword("prova");
-                //m4.save();
+                
                 let m5 = Users.newUser({
                     username: "emirates",
                     passportID : "EM6754",
@@ -83,7 +83,7 @@ export function Inizializzazione(app){
                     tickets : []
                 });
                 m5.setPassword("ek12345");
-                //m5.save();
+               
                 let m6 = Users.newUser({
                     username: "ITA Airways",
                     passportID : "IT2025",
@@ -92,7 +92,7 @@ export function Inizializzazione(app){
                     tickets : []
                 });
                 m6.setPassword("provaI");
-                //m6.save();
+                
 
                 return Promise.all([m1.save(), m2.save(), m3.save(), m4.save(), m5.save(), m6.save()]);
             }
@@ -376,7 +376,7 @@ export function Inizializzazione(app){
                         dataOra : new Date(2025, 5, 25, 15, 30),
                         route : routeid1,
                         aircraft : "1",
-                        duration : 640 //760
+                        duration : 640 
                     });
                 let f2 = Flights
                     .getModel()
@@ -515,83 +515,6 @@ export function Inizializzazione(app){
                     await createTicket(user, flight, seat, numBag, code);
                 }
             }
-            /*if (count == 0) {
-                console.log("Adding some test ticket into the database");
-
-                
-                // Ora possiamo recuperare gli utenti (sono sicuramente creati)
-                let username1 = Users.getModel().findOne({ username: 'micbos71' });
-                let username2 = Users.getModel().findOne({ username: 'bordjack47' });
-                let username3 = Users.getModel().findOne({ username: 'tito_paul' });
-                let username4 = Users.getModel().findOne({ username: 'lufthansa' });
-                let username5 = Users.getModel().findOne({ username: 'emirates' });
-                let username6 = Users.getModel().findOne({ username: 'ITA Airways' });
-
-                let users = await Promise.all([username1, username2, username3, username4, username5, username6]);
-
-                if (users.some(u => !u)) {
-                    console.error("Uno o più utenti non trovati, salto la creazione dei ticket.");
-                    return;
-                }
-
-                let [u1, u2, u3, u4, u5, u6] = users;
-
-                let seat = await Seats.getModel().find({});
-                let seatClassMap = new Map();
-                seat.forEach(seat => seatClassMap.set(seat._numSeat, seat.class));
-
-                // Funzione per determinare il prezzo
-                const getPriceFromClass = (seatClass) => {
-                    switch (seatClass.toLowerCase()) {
-                        case "economy": return 10;
-                        case "business": return 30;
-                        case "first": return 50;
-                        default: return 20;
-                    }
-                };
-
-                const createTicket = async (user, seatCode, flightCode, numBag, code) => {
-                    const seatClass = seatClassMap.get(seatCode) || "economy";
-                    const price = getPriceFromClass(seatClass);
-                    const ticket = await Tickets.getModel().create({
-                        user: user._id,
-                        seat: seatCode,
-                        flight: flightCode,
-                        price: price,
-                        numBag: numBag,
-                        _code: code
-                    });
-                    user.tickets.push(ticket);
-                    return user.save();
-                };
-
-                let biglietti = [
-                    [u1, "B1", "AB104", 1, "1"],
-                    [u2, "C2", "AB105", 2, "2"],
-                    [u3, "A3", "AB106", 3, "3"],
-                    [u4, "B1", "AB107", 1, "4"],
-                    [u4, "B2", "AB107", 2, "5"],
-                    [u4, "B3", "AB107", 3, "6"],
-                    //createTicket(u4, "B1", "AB104", 1, "1"),
-                    [u4, "B2", "AB104", 2, "7"],
-                    [u4, "B3", "AB104", 3, "8"],
-                    [u5, "C1", "AB108", 1, "9"],
-                    [u5, "C2", "AB108", 2, "10"],
-                    [u5, "C3", "AB108", 3, "11"],
-                    [u5, "C1", "AB105", 1, "12"],
-                    //createTicket(u5, "C2", "AB105", 2, "2"),
-                    [u5, "C3", "AB105", 3, "13"],
-                    [u6, "A1", "AB109", 3, "14"],
-                    [u6, "A2", "AB109", 3, "15"],
-                    [u6, "A3", "AB109", 3, "16"],
-                    [u6, "A1", "AB106", 3, "17"],
-                    [u6, "A2", "AB106", 3, "18"]
-                    //createTicket(u6, "A3", "AB106", 3, "3")
-                ];
-                for (const [user, seat, flight, numBag, code] of biglietti) { 
-                    await createTicket(user, seat, flight, numBag, code);
-                }
-            }*/
         }).then(() => {
             let server = http.createServer(app);
 

@@ -161,9 +161,6 @@ export class DashboardComponent implements OnInit {
           }
 
           // Popola dati aggiornamento
-          /*this.updateData.name = res.name;
-          this.updateData.revenue = res.revenue;
-          this.updateData.aircrafts = res.aircrafts;*/
           this.airlineName = res.name;
 
           this.companyLogo = this.logoMap[this.airlineName];

@@ -106,32 +106,5 @@
 
 <div *ngIf="passengerRole">
   <app-passengers></app-passengers>
-  <!--<section style="margin-top: 20px;">
-  <h3>I tuoi Biglietti</h3>
-
-  <div *ngIf="tickets.length > 0; else noTickets">
-    <div *ngFor="let t of tickets" class="ticket-card">
-      <p><strong>Codice:</strong> {{ t._code }}</p>
-      <p><strong>Utente:</strong> {{ t.user }}</p>
-      <p><strong>Volo:</strong> {{ t.flight }}</p>
-      <p><strong>Posto:</strong> {{ t.seat }}</p>
-      <p><strong>Prezzo:</strong> {{ t.price }}€</p>
-      <p><strong>Bagagli:</strong> {{ t.numBag }}</p>
-      <button (click)="deleteTickets(t)">Rimuovi Biglietto</button>
-    </div>
-  </div>
-
-  <ng-template #noTickets>
-    <p>Non ci sono biglietti</p>
-  </ng-template>
-
-  <div *ngIf="newTicket" style="margin-top: 20px; border: 1px solid #ccc; padding: 10px;">
-    <h4>Completa l'acquisto del biglietto</h4>
-    <label>Volo: <input [(ngModel)]="newTicket.flight" disabled /></label><br />
-    <label>Posto: <input [(ngModel)]="newTicket.seat" placeholder="Numero posto" /></label><br />
-    <label>Prezzo: <input type="number" [(ngModel)]="newTicket.price" disabled /></label><br />
-    <label>Bagagli: <input type="number" [(ngModel)]="newTicket.numBag" min="0" /></label><br />
-    <button (click)="acquistaBiglietto()">Conferma Acquisto</button>
-  </div>
-  </section>-->
+  
 </div>
